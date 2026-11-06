@@ -36,6 +36,7 @@ window.KHULAGI = {
       { id: "bas-paul", title: "سر البولس", page: 257 },
       { id: "bas-kathulikon", title: "سر الكاثوليكون", page: 268 },
       { id: "bas-ibraxis", title: "سر الإبركسيس", page: 276 },
+      { id: "bas-qadasat", title: "الثلاثة تقديسات", page: 281 },
       { id: "bas-ewash-ing", title: "أوشية الإنجيل", page: 282 },
       { id: "bas-sir-ing", title: "سر الإنجيل", page: 286 },
       { id: "bas-hijab", title: "صلاة الحجاب", page: 297 },
