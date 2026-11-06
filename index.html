@@ -91,6 +91,14 @@ mark{background:rgba(240,138,60,.4);color:inherit;border-radius:3px}
 :root[data-theme^=church] .lets button small{color:#d8c9a3}
 :root[data-theme^=church] .lets button.on{background:linear-gradient(180deg,var(--gold-hi),var(--gold) 60%,var(--gold-lo));color:#2b1d12;box-shadow:0 0 14px rgba(235,203,126,.5)}
 :root[data-theme^=church] .lets button.on small{color:#2b1d12}
+.med{margin:4px 10px 12px}
+.medb{border:1.5px solid var(--line);border-radius:999px;padding:6px 14px;font-size:.9rem;background:var(--card2);color:var(--ink)}
+.medc{margin-top:8px;padding:12px 14px;border:1px dashed var(--line);border-radius:14px;background:var(--card2);color:var(--ink);line-height:2}
+.medc h4{margin:0 0 4px;color:var(--acc);font-size:1.1rem}
+.medc p{margin:4px 0}
+.medc .mv{color:var(--mute);font-size:.9rem}
+.medc .mp{color:var(--acc)}
+.medc .ms{display:block;margin-top:6px;color:var(--mute);font-size:.75rem}
 .sec .sub{display:block;color:var(--mute);font-size:.8rem;margin-top:2px}
 .sec .pn{color:var(--mute);font-size:.85rem;white-space:nowrap}
 .sec.soon{opacity:.55}
@@ -176,7 +184,7 @@ mark{background:rgba(240,138,60,.4);color:inherit;border-radius:3px}
 (function(){
 "use strict";
 var D=window.KHULAGI, $=function(s,e){return (e||document).querySelector(s)};
-var DEF={theme:"church",fs:22,cop:true,ar:true,tr:true,pg:false,rub:true,notes:true};
+var DEF={theme:"church",fs:22,cop:true,ar:true,tr:true,pg:false,rub:true,notes:true,med:true};
 var S=Object.assign({},DEF);
 
 var TRM={"ⲁ":"ا","ⲃ":"ڤ","ⲅ":"غ","ⲇ":"د","ⲉ":"ي","ⲍ":"ز","ⲏ":"ي","ⲑ":"ث","ⲓ":"ي","ⲕ":"ك","ⲗ":"ل","ⲙ":"م","ⲛ":"ن","ⲝ":"كس","ⲟ":"و","ⲡ":"ب","ⲣ":"ر","ⲥ":"س","ⲧ":"ت","ⲩ":"ي","ⲫ":"ف","ⲭ":"خ","ⲯ":"بس","ⲱ":"و","ϣ":"ش","ϥ":"ف","ϧ":"خ","ϩ":"ه","ϫ":"ج","ϭ":"تش","ϯ":"تي"};
@@ -205,6 +213,7 @@ function parse(txt){
     if(l.indexOf("## ")===0){var p=l.slice(3).split("|");cur=D.content[p[0].trim()]={range:(p[1]||"").trim(),notes:{},items:[]};mode=0;who=null;return}
     if(!cur)return;
     if(l==="%"){mode=mode===0?1:0;return}
+    if(mode===0&&l.charAt(0)==="~"){var mm=l.match(/^~(\w): ?(.*)$/),li=cur.items[cur.items.length-1];if(mm&&li){(li.med=li.med||{})[mm[1]]=mm[2]}return}
     if(mode===1){var m=l.match(/^(\d+): (.*)$/);if(m)cur.notes[m[1]]=m[2];return}
     if(l.indexOf("# ")===0){it=null;cur.items.push({k:"pg",n:l.slice(2).trim()});return}
     if(l.indexOf("! ")===0){it=null;cur.items.push({k:"r",t:l.slice(2)});return}
@@ -245,6 +254,14 @@ function fillPick(){
 }
 pick.addEventListener("change",function(){go(pick.value)});
 
+function medHtml(it){var m=it.med;if(!m||!S.med)return'';
+  var h='<div class="med"><button class="medb" data-med="1">🕯 تأمل'+(m.k?' · '+esc(m.k):'')+'</button><div class="medc" hidden>';
+  if(m.t)h+='<h4>'+esc(m.t)+'</h4>';
+  if(m.v)h+='<p class="mv">'+esc(m.v)+'</p>';
+  if(m.r)h+='<p>'+esc(m.r)+'</p>';
+  if(m.p)h+='<p class="mp"><b>صلاة:</b> '+esc(m.p)+'</p>';
+  if(m.x)h+='<p class="mx"><b>تدريب:</b> '+esc(m.x)+'</p>';
+  h+='<small class="ms">'+(m.s==='reviewed'?'مراجَع':'مسوّدة — تحتاج مراجعة كنسية')+'</small></div></div>';return h}
 function reader(id,q){
   var s=BYID[id];if(!s){return}
   pick.value=id;document.title=s.title+" — الخولاجي";
@@ -256,7 +273,7 @@ function reader(id,q){
     h+='<div class="rd" style="--n:'+Math.max(cols.length,1)+'">';
     c.items.forEach(function(it){
       if(it.k==="pg"){if(S.pg)h+='<div class="pgm">ص '+it.n+'</div>'}
-      else if(it.k==="r"){if(S.rub)h+='<div class="rub">'+fnify(it.t,q)+'</div>'}
+      else if(it.k==="r"){if(S.rub)h+='<div class="rub">'+fnify(it.t,q)+'</div>';h+=medHtml(it)}
       else{
         if(!cols.length)return;
         h+='<div class="row">';
@@ -266,7 +283,7 @@ function reader(id,q){
           else if(k==="tr")h+='<div class="cell tr">'+(it.tr?(q?hl(esc(it.tr),q):esc(it.tr)):(it.cop?esc(trLine(it.cop)):''))+'</div>';
           else h+='<div class="cell cop">'+(it.cop?(q?hl(esc(it.cop),q):esc(it.cop)):'')+'</div>';
         });
-        h+='</div>';
+        h+='</div>'+medHtml(it);
       }
     });
     h+='</div><div class="pending">انتهى المنقول من هذا القسم'+(c.range?' — ص '+c.range:'')+' — يُستكمل بقية القسم في الدفعة التالية.</div>';
@@ -316,6 +333,7 @@ function route(){
 function go(id){location.hash="#/s/"+id}
 window.addEventListener("hashchange",route);
 app.addEventListener("click",function(e){
+  var mb=e.target.closest("[data-med]");if(mb){var c=mb.nextElementSibling;c.hidden=!c.hidden;return}
   var nv=e.target.closest("[data-nav]");if(nv){location.hash=nv.getAttribute("data-nav");return}
   var lt=e.target.closest("[data-let]");if(lt){LET[lt.getAttribute("data-g")]=lt.getAttribute("data-let");groupView(lt.getAttribute("data-g"));return}
   var g=e.target.closest("[data-go]");if(g){if(g.getAttribute("data-go"))go(g.getAttribute("data-go"));return}
@@ -334,7 +352,7 @@ function settings(){
   var h='<h3>الإعدادات</h3><div class="set"><span>المظهر</span></div><div class="sw" style="margin-bottom:8px">';
   THEMES.forEach(function(t){h+='<button data-th="'+t[0]+'" class="'+(S.theme===t[0]?'on':'')+'">'+t[1]+'</button>'});
   h+='</div><div class="set"><span>حجم الخط</span><div class="fsr"><button data-fs="-2">أ-</button><b>'+S.fs+'</b><button data-fs="2">أ+</button></div></div>';
-  [["rub","الإرشادات الحمراء"]].forEach(function(r){h+='<div class="set"><span>'+r[1]+'</span><button class="tg'+(S[r[0]]?' on':'')+'" data-tg="'+r[0]+'" aria-label="'+r[1]+'"></button></div>'});
+  [["rub","الإرشادات الحمراء"],["med","التأملات"]].forEach(function(r){h+='<div class="set"><span>'+r[1]+'</span><button class="tg'+(S[r[0]]?' on':'')+'" data-tg="'+r[0]+'" aria-label="'+r[1]+'"></button></div>'});
   h+='<p class="hint">المعرب تعريب آلي تقريبي. النص القبطي منقول يدويًا من الطبعة المطبوعة ويحتاج مراجعة كنسية قبل الاستعمال الطقسي.</p>';
   sheet(h);
 }
