@@ -92,7 +92,15 @@ mark{background:rgba(240,138,60,.4);color:inherit;border-radius:3px}
 :root[data-theme^=church] .lets button.on{background:linear-gradient(180deg,var(--gold-hi),var(--gold) 60%,var(--gold-lo));color:#2b1d12;box-shadow:0 0 14px rgba(235,203,126,.5)}
 :root[data-theme^=church] .lets button.on small{color:#2b1d12}
 .med{margin:4px 10px 12px}
-.medb{border:1.5px solid var(--line);border-radius:999px;padding:6px 14px;font-size:.9rem;background:var(--card2);color:var(--ink)}
+.medb{display:flex;align-items:center;gap:8px;width:100%;border:1.5px solid var(--line);border-radius:12px;padding:7px 12px;font-size:.9rem;background:var(--card2);color:var(--ink);text-align:right}
+.medb .mbi{white-space:nowrap;color:var(--acc);font-weight:700}
+.medb .mbt{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.medb .mbc{color:var(--mute)}
+.medbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:10px 12px 0;font-size:.85rem;color:var(--mute)}
+.medbar span{flex:1}
+.medbar button{border:1px solid var(--line);border-radius:999px;padding:4px 12px;background:var(--card2);color:var(--ink)}
+:root[data-theme^=church] .medbar{color:#d8c9a3}
+:root[data-theme^=church] .medbar button{background:rgba(235,203,126,.1);color:var(--gold-hi);border-color:var(--gold)}
 .medc{margin-top:8px;padding:12px 14px;border:1px dashed var(--line);border-radius:14px;background:var(--card2);color:var(--ink);line-height:2}
 .medc h4{margin:0 0 4px;color:var(--acc);font-size:1.1rem}
 .medc p{margin:4px 0}
@@ -184,7 +192,7 @@ mark{background:rgba(240,138,60,.4);color:inherit;border-radius:3px}
 (function(){
 "use strict";
 var D=window.KHULAGI, $=function(s,e){return (e||document).querySelector(s)};
-var DEF={theme:"church",fs:22,cop:true,ar:true,tr:true,pg:false,rub:true,notes:true,med:true};
+var DEF={theme:"church",fs:22,cop:true,ar:true,tr:true,pg:false,rub:true,notes:true,med:true,medAll:"closed"};
 var S=Object.assign({},DEF);
 
 var TRM={"ⲁ":"ا","ⲃ":"ڤ","ⲅ":"غ","ⲇ":"د","ⲉ":"ي","ⲍ":"ز","ⲏ":"ي","ⲑ":"ث","ⲓ":"ي","ⲕ":"ك","ⲗ":"ل","ⲙ":"م","ⲛ":"ن","ⲝ":"كس","ⲟ":"و","ⲡ":"ب","ⲣ":"ر","ⲥ":"س","ⲧ":"ت","ⲩ":"ي","ⲫ":"ف","ⲭ":"خ","ⲯ":"بس","ⲱ":"و","ϣ":"ش","ϥ":"ف","ϧ":"خ","ϩ":"ه","ϫ":"ج","ϭ":"تش","ϯ":"تي"};
@@ -255,7 +263,8 @@ function fillPick(){
 pick.addEventListener("change",function(){go(pick.value)});
 
 function medHtml(it){var m=it.med;if(!m||!S.med)return'';
-  var h='<div class="med"><button class="medb" data-med="1">🕯 تأمل'+(m.k?' · '+esc(m.k):'')+'</button><div class="medc" hidden>';
+  var op=S.medAll==="open";
+  var h='<div class="med"><button class="medb" data-med="1" aria-expanded="'+op+'"><span class="mbi">🕯 '+(m.k?esc(m.k):'تأمل')+'</span><span class="mbt">'+(m.t?esc(m.t):'تأمل')+'</span><span class="mbc">'+(op?'▴':'▾')+'</span></button><div class="medc"'+(op?'':' hidden')+'>';
   if(m.t)h+='<h4>'+esc(m.t)+'</h4>';
   if(m.v)h+='<p class="mv">'+esc(m.v)+'</p>';
   if(m.r)h+='<p>'+esc(m.r)+'</p>';
@@ -268,6 +277,7 @@ function reader(id,q){
   var c=D.content[id],h='';
   var cols=[];if(S.ar)cols.push("ar");if(S.tr)cols.push("tr");if(S.cop)cols.push("cop");
   h+='<div class="crumb"><button data-nav="#/">⌂ الرئيسية</button><button data-nav="#/g/'+s.group.id+'">‹ '+esc(s.group.title)+'</button></div>';
+  if(c&&S.med&&c.items.some(function(i){return i.med})){var n=c.items.filter(function(i){return i.med}).length;h+='<div class="medbar"><span>'+n+' تأملًا في هذا القسم</span><button data-medall="open">فتح الكل</button><button data-medall="closed">طيّ الكل</button></div>'}
   if(!c){h+='<div class="empty"><b>هذا القسم لم يُنقل بعد</b>موضعه في الكتاب المطبوع صفحة '+s.page+'. يُضاف في الدفعات القادمة.</div>'}
   else{
     h+='<div class="rd" style="--n:'+Math.max(cols.length,1)+'">';
@@ -333,7 +343,8 @@ function route(){
 function go(id){location.hash="#/s/"+id}
 window.addEventListener("hashchange",route);
 app.addEventListener("click",function(e){
-  var mb=e.target.closest("[data-med]");if(mb){var c=mb.nextElementSibling;c.hidden=!c.hidden;return}
+  var ma=e.target.closest("[data-medall]");if(ma){S.medAll=ma.getAttribute("data-medall");save();var op=S.medAll==="open";app.querySelectorAll(".medc").forEach(function(x){x.hidden=!op});app.querySelectorAll(".medb").forEach(function(x){x.setAttribute("aria-expanded",op);x.querySelector(".mbc").textContent=op?"▴":"▾"});return}
+  var mb=e.target.closest("[data-med]");if(mb){var c=mb.nextElementSibling;c.hidden=!c.hidden;mb.setAttribute("aria-expanded",!c.hidden);mb.querySelector(".mbc").textContent=c.hidden?"▾":"▴";return}
   var nv=e.target.closest("[data-nav]");if(nv){location.hash=nv.getAttribute("data-nav");return}
   var lt=e.target.closest("[data-let]");if(lt){LET[lt.getAttribute("data-g")]=lt.getAttribute("data-let");groupView(lt.getAttribute("data-g"));return}
   var g=e.target.closest("[data-go]");if(g){if(g.getAttribute("data-go"))go(g.getAttribute("data-go"));return}
