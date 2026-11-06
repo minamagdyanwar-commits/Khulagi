@@ -6,13 +6,13 @@
 <title>الخولاجي المقدس</title>
 <meta name="theme-color" content="#14110c">
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" href="icons/icon-192.png">
-<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
 <style>
-@font-face{font-family:"Amiri";font-weight:400;src:url(fonts/amiri-arabic-400-normal.woff2) format("woff2");font-display:swap}
-@font-face{font-family:"Amiri";font-weight:700;src:url(fonts/amiri-arabic-700-normal.woff2) format("woff2");font-display:swap}
-@font-face{font-family:"CopticNoto";src:url(fonts/noto-sans-coptic-coptic-400-normal.woff2) format("woff2");font-display:swap;unicode-range:U+0370-03FF,U+1F00-1FFF,U+2C80-2CFF}
-@font-face{font-family:"CopticNoto";src:url(fonts/noto-sans-coptic-latin-400-normal.woff2) format("woff2");font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F}
+@font-face{font-family:"Amiri";font-weight:400;src:url(amiri-arabic-400-normal.woff2) format("woff2");font-display:swap}
+@font-face{font-family:"Amiri";font-weight:700;src:url(amiri-arabic-700-normal.woff2) format("woff2");font-display:swap}
+@font-face{font-family:"CopticNoto";src:url(noto-sans-coptic-coptic-400-normal.woff2) format("woff2");font-display:swap;unicode-range:U+0370-03FF,U+1F00-1FFF,U+2C80-2CFF}
+@font-face{font-family:"CopticNoto";src:url(noto-sans-coptic-latin-400-normal.woff2) format("woff2");font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F}
 
 :root{--bg:#14110c;--card:#1d1812;--card2:#262017;--ink:#f1e6cf;--mute:#b3a688;--acc:#d4a84a;--acc2:#8c1d2b;--rub:#e0786a;--line:#3a3022;--cop:#ffe9a8;--shadow:0 6px 24px rgba(0,0,0,.35)}
 :root[data-theme=parchment]{--bg:#efe4c8;--card:#f7efd9;--card2:#eadcb8;--ink:#2b2013;--mute:#6f5d3d;--acc:#8c1d2b;--acc2:#8c1d2b;--rub:#a3261f;--line:#cdb98a;--cop:#4a1d0e;--shadow:0 6px 20px rgba(80,55,20,.18)}
@@ -157,7 +157,7 @@ function parse(txt){
 }
 function ensure(gid){
   if(LOADED[gid])return LOADED[gid];
-  LOADED[gid]=fetch("content/"+gid+".txt").then(function(r){if(!r.ok)throw 0;return r.text()}).then(parse).catch(function(){});
+  LOADED[gid]=fetch("content-"+gid+".txt").then(function(r){if(!r.ok)throw 0;return r.text()}).then(parse).catch(function(){});
   return LOADED[gid];
 }
 function ensureAll(){return Promise.all(D.groups.map(function(g){return ensure(g.id)}))}
