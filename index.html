@@ -21,6 +21,8 @@
 :root[data-theme=forest]{--bg:#0f1a14;--card:#16241c;--card2:#1e3226;--ink:#e8f1e6;--mute:#9ab5a2;--acc:#8fd18b;--acc2:#3d7a47;--rub:#f0a08a;--line:#2a4234;--cop:#d9f2c9}
 :root[data-theme=royal]{--bg:#1a1022;--card:#241632;--card2:#2f1d41;--ink:#f1e6f7;--mute:#b9a2c9;--acc:#e0b34a;--acc2:#7a2a8a;--rub:#f09aa0;--line:#432a58;--cop:#ffe9b0}
 
+:root[data-theme=church]{--c-ar:#2A1B10;--c-tr:#0b6a6a;--c-cop:#3b1e0a;--bg:#16213f;--card:#F8F0DC;--card2:#EFE3C6;--ink:#2A1B10;--mute:#6f5a3d;--acc:#8F6F27;--acc2:#9E2B25;--rub:#A8261E;--line:#C9A44C;--cop:#3b1e0a;--shadow:0 14px 30px -14px rgba(0,0,0,.65);--gold:#C9A44C;--gold-hi:#EBCB7E;--gold-lo:#8F6F27;--red:#9E2B25;--cream:#F6ECD6;--orn:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='14' viewBox='0 0 120 14'%3E%3Cg fill='none' stroke='%23C9A44C' stroke-width='1.2'%3E%3Cpath d='M0 7h46M74 7h46'/%3E%3Cpath d='M60 1v12M54 7h12'/%3E%3Cpath d='M57 1h6M57 13h6M54 4v6M66 4v6' stroke-width='1'/%3E%3C/g%3E%3C/svg%3E")}
+:root[data-theme=churchnight]{--c-ar:#F6ECD6;--c-tr:#6fe0d6;--c-cop:#ffe9a8;--bg:#120C1C;--card:#241833;--card2:#2f2144;--ink:#F6ECD6;--mute:#bcae92;--acc:#EBCB7E;--acc2:#C9A44C;--rub:#f0a08a;--line:#C9A44C;--cop:#ffe9a8;--shadow:0 14px 30px -14px rgba(0,0,0,.8);--gold:#C9A44C;--gold-hi:#EBCB7E;--gold-lo:#8F6F27;--red:#e08a7e;--cream:#F6ECD6;--orn:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='14' viewBox='0 0 120 14'%3E%3Cg fill='none' stroke='%23C9A44C' stroke-width='1.2'%3E%3Cpath d='M0 7h46M74 7h46'/%3E%3Cpath d='M60 1v12M54 7h12'/%3E%3Cpath d='M57 1h6M57 13h6M54 4v6M66 4v6' stroke-width='1'/%3E%3C/g%3E%3C/svg%3E")}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;background:var(--bg);color:var(--ink);font-family:"Amiri","Noto Naskh Arabic","Segoe UI",Tahoma,serif;-webkit-text-size-adjust:100%}
 body{min-height:100vh;padding-bottom:env(safe-area-inset-bottom)}
@@ -80,6 +82,7 @@ mark{background:rgba(240,138,60,.4);color:inherit;border-radius:3px}
 .list{margin:0 14px;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
 .sec{display:flex;width:100%;justify-content:space-between;align-items:center;gap:10px;padding:14px;border-bottom:1px solid var(--line);text-align:right}
 .list .sec:last-child{border-bottom:0}
+.sec .sub{display:block;color:var(--mute);font-size:.8rem;margin-top:2px}
 .sec .pn{color:var(--mute);font-size:.85rem;white-space:nowrap}
 .sec.soon{opacity:.55}
 .search{width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--card2);color:var(--ink);font:inherit;font-size:1.05rem;margin-bottom:10px;direction:rtl}
@@ -103,6 +106,48 @@ mark{background:rgba(240,138,60,.4);color:inherit;border-radius:3px}
 .fsr button{width:40px;height:40px;border-radius:10px;background:var(--card2);border:1px solid var(--line);font-size:1.1rem}
 .toast{position:fixed;bottom:24px;inset-inline:0;margin:auto;width:max-content;max-width:90%;background:var(--card2);border:1px solid var(--line);padding:10px 16px;border-radius:12px;z-index:60;box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:.25s}
 .toast.on{opacity:1}
+/* تصميم «الكنيسة»: لازورد وذهب ورق وقباب ومحاريب (مأخوذ من الرفيق الروحي) */
+:root[data-theme^=church] body{color:var(--cream);background-color:var(--bg);background-image:radial-gradient(ellipse 120% 38% at 50% -4%,rgba(235,203,126,.20),transparent 62%),linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,.28));background-attachment:fixed}
+:root[data-theme^=church] .banner{height:150px;background:radial-gradient(ellipse 120% 90% at 50% -10%,rgba(235,203,126,.30),transparent 62%),linear-gradient(180deg,#1b2a57,#0f1a3a);border-radius:0 0 28px 28px/0 0 18px 18px;box-shadow:0 2px 0 var(--gold),0 5px 0 rgba(201,164,76,.35),0 14px 28px -12px rgba(0,0,0,.7)}
+:root[data-theme=churchnight] .banner{background:radial-gradient(ellipse 120% 90% at 50% -10%,rgba(235,203,126,.22),transparent 62%),linear-gradient(180deg,#1d1330,#0d0816)}
+:root[data-theme^=church] .banner .cr{color:rgba(235,203,126,.22)}
+:root[data-theme^=church] .banner .cr.l,:root[data-theme^=church] .banner .cr.r{color:rgba(235,203,126,.14)}
+:root[data-theme^=church] .banner h1{color:var(--cream);text-shadow:0 1px 0 rgba(0,0,0,.5),0 0 18px rgba(235,203,126,.3)}
+:root[data-theme^=church] .burger{color:var(--gold-hi)}
+:root[data-theme^=church] .opts label{color:var(--cream)}
+:root[data-theme^=church] .opts input{accent-color:var(--gold)}
+:root[data-theme^=church] .sbtn{background:linear-gradient(180deg,#b8362f,var(--red) 55%,#7c1f1a);color:#fff6dc;border:1.5px solid var(--gold);box-shadow:0 0 0 2px rgba(201,164,76,.22),0 8px 16px -8px rgba(0,0,0,.7);text-shadow:0 1px 0 rgba(0,0,0,.35)}
+:root[data-theme^=church] .selw select{background:var(--card);color:var(--ink);border:1.5px solid var(--gold);border-radius:14px;box-shadow:0 0 0 3px rgba(201,164,76,.25)}
+:root[data-theme^=church] .selw::after{background:var(--gold);color:#2b1d12}
+:root[data-theme^=church] .home h2::after,:root[data-theme^=church] .gh h2::after{content:"";display:block;height:14px;margin:6px 0 0;background:var(--orn) center/120px 14px no-repeat;opacity:.85}
+:root[data-theme^=church] .home h2,:root[data-theme^=church] .gh h2{color:var(--gold-hi);text-align:center}
+:root[data-theme^=church] .card{color:var(--ink);background:linear-gradient(180deg,#fffaf0,var(--card));border:1.5px solid var(--gold);border-radius:72px 72px 20px 20px;padding-top:20px;box-shadow:0 0 0 3px rgba(201,164,76,.38),0 10px 18px -10px rgba(0,0,0,.7)}
+:root[data-theme=churchnight] .card{background:linear-gradient(180deg,#34234a,var(--card))}
+:root[data-theme^=church] .card .ic{color:var(--red)}
+:root[data-theme^=church] .card b{color:var(--red)}
+:root[data-theme=churchnight] .card b{color:var(--gold-hi)}
+:root[data-theme^=church] .card.cont{border-radius:20px;padding-top:14px}
+:root[data-theme^=church] .crumb button{background:rgba(235,203,126,.10);color:var(--gold-hi);border:1.5px solid var(--gold)}
+:root[data-theme^=church] .list,:root[data-theme^=church] .rd{color:var(--ink);background:linear-gradient(180deg,rgba(255,255,255,.5),rgba(255,255,255,0) 38%),var(--card);border:1.5px solid var(--gold);border-radius:20px 20px 16px 16px;box-shadow:0 0 0 3px rgba(201,164,76,.14),0 0 0 5px rgba(201,164,76,.45) inset,0 12px 26px -14px rgba(0,0,0,.6)}
+:root[data-theme=churchnight] .list,:root[data-theme=churchnight] .rd{background:linear-gradient(180deg,rgba(235,203,126,.08),rgba(255,255,255,0) 45%),var(--card)}
+:root[data-theme^=church] .rd{margin:12px 10px 0;padding:14px 8px 16px}
+:root[data-theme^=church] .rd .rub{color:var(--rub)}
+:root[data-theme^=church] .rd .cell{border-inline-start-color:var(--gold-lo)}
+:root[data-theme^=church] .rd .pgm{color:var(--gold-lo)}
+:root[data-theme^=church] .rd .pgm::before,:root[data-theme^=church] .rd .pgm::after{background:var(--gold)}
+:root[data-theme^=church] .sec{color:var(--ink)}
+:root[data-theme^=church] .list .sec+.sec{border-top:1px solid rgba(201,164,76,.45)}
+:root[data-theme^=church] .pending,:root[data-theme^=church] .hint,:root[data-theme^=church] .empty{color:#d8c9a3;border-color:rgba(201,164,76,.5)}
+:root[data-theme^=church] .empty b{color:var(--cream)}
+:root[data-theme^=church] .pager button{background:var(--card);color:var(--ink);border:1.5px solid var(--gold);border-radius:999px}
+:root[data-theme^=church] .sheet{background:var(--card);color:var(--ink);border:1.5px solid var(--gold);box-shadow:0 0 0 4px rgba(201,164,76,.2),0 -16px 40px -12px rgba(0,0,0,.7)}
+:root[data-theme^=church] .sheet h3{color:var(--red)}
+:root[data-theme^=church] .sheet .hint{color:var(--mute)}
+:root[data-theme=churchnight] .sheet h3{color:var(--gold-hi)}
+:root[data-theme^=church] .sw button{border-color:var(--gold);color:var(--ink)}
+:root[data-theme^=church] .sw button.on{background:linear-gradient(180deg,var(--gold-hi),var(--gold) 60%,var(--gold-lo));color:#2b1d12;border-color:var(--gold-lo)}
+:root[data-theme^=church] .search{background:var(--card2);color:var(--ink);border:1.5px solid var(--gold)}
+:root[data-theme^=church] .toast{background:var(--card);color:var(--ink);border-color:var(--gold)}
 @media (max-width:520px){.cop,.ar{padding:8px 9px}}
 @media print{header.top,.pager,.ib{display:none}body{background:#fff;color:#000}}
 </style>
@@ -122,7 +167,7 @@ mark{background:rgba(240,138,60,.4);color:inherit;border-radius:3px}
 (function(){
 "use strict";
 var D=window.KHULAGI, $=function(s,e){return (e||document).querySelector(s)};
-var DEF={theme:"light",fs:22,cop:true,ar:true,tr:true,pg:false,rub:true,notes:true};
+var DEF={theme:"church",fs:22,cop:true,ar:true,tr:true,pg:false,rub:true,notes:true};
 var S=Object.assign({},DEF);
 
 var TRM={"ⲁ":"ا","ⲃ":"ڤ","ⲅ":"غ","ⲇ":"د","ⲉ":"ي","ⲍ":"ز","ⲏ":"ي","ⲑ":"ث","ⲓ":"ي","ⲕ":"ك","ⲗ":"ل","ⲙ":"م","ⲛ":"ن","ⲝ":"كس","ⲟ":"و","ⲡ":"ب","ⲣ":"ر","ⲥ":"س","ⲧ":"ت","ⲩ":"ي","ⲫ":"ف","ⲭ":"خ","ⲯ":"بس","ⲱ":"و","ϣ":"ش","ϥ":"ف","ϧ":"خ","ϩ":"ه","ϫ":"ج","ϭ":"تش","ϯ":"تي"};
@@ -155,6 +200,7 @@ function parse(txt){
     if(l.indexOf("# ")===0){it=null;cur.items.push({k:"pg",n:l.slice(2).trim()});return}
     if(l.indexOf("! ")===0){it=null;cur.items.push({k:"r",t:l.slice(2)});return}
     if(l.indexOf("@ ")===0){who=l.slice(2);return}
+    if(l.indexOf("t: ")===0){if(it)it.tr=l.slice(3);return}
     if(l.indexOf("c: ")===0||l.indexOf("a: ")===0){
       var isC=l[0]==="c";
       if(!it||(isC&&it.cop!==undefined)||(!isC&&it.ar!==undefined)){it={k:"p"};if(who){it.who=who;who=null};cur.items.push(it)}
@@ -207,8 +253,8 @@ function reader(id,q){
         h+='<div class="row">';
         if(it.who)h+='<div class="who">'+esc(it.who)+'</div>';
         cols.forEach(function(k){
-          if(k==="ar")h+='<div class="cell ar">'+(it.ar?fnify(it.ar,q):'')+'</div>';
-          else if(k==="tr")h+='<div class="cell tr">'+(it.cop?esc(trLine(it.cop)):'')+'</div>';
+          if(k==="ar")h+='<div class="cell ar">'+(it.ar?fnify(it.ar,q).replace(/ \/ /g,'<br>'):'')+'</div>';
+          else if(k==="tr")h+='<div class="cell tr">'+(it.tr?(q?hl(esc(it.tr),q):esc(it.tr)):(it.cop?esc(trLine(it.cop)):''))+'</div>';
           else h+='<div class="cell cop">'+(it.cop?(q?hl(esc(it.cop),q):esc(it.cop)):'')+'</div>';
         });
         h+='</div>';
@@ -224,7 +270,7 @@ function reader(id,q){
 }
 
 /* home & group views */
-var ICONS={intro:"📖",raf:"🕯️",bas:"⛪",greg:"⛪",cyr:"⛪",qisam:"✝",misc:"📜",bless:"🙏",app:"📎"};
+var ICONS={intro:"📖",raf:"🕯️",bas:"⛪",greg:"⛪",cyr:"⛪",qisam:"✝",misc:"📜",bless:"🙏",app:"📎",dox:"🌟"};
 function ctl(on){$("#opts").style.display=on?"":"none";$("#selw").style.display=on?"":"none"}
 function home(){
   ctl(false);document.title="الخولاجي المقدس";
@@ -239,7 +285,7 @@ function groupView(gid){
   var g=D.groups.filter(function(x){return x.id===gid})[0];if(!g)return home();
   ctl(false);document.title=g.title+" — الخولاجي";
   var h='<div class="crumb"><button data-nav="#/">⌂ الرئيسية</button></div><div class="gh"><h2>'+esc(g.title)+'</h2></div><div class="list">';
-  g.sections.forEach(function(s){h+='<button class="sec'+(s.has?'':' soon')+'" data-nav="#/s/'+s.id+'"><span>'+esc(s.title)+(s.has?'':' — قريبًا')+'</span><span class="pn">ص '+s.page+'</span></button>'});
+  g.sections.forEach(function(s){h+='<button class="sec'+(s.has?'':' soon')+'" data-nav="#/s/'+s.id+'"><span>'+esc(s.title)+(s.has?'':' — قريبًا')+(s.sub?'<small class="sub">'+esc(s.sub)+'</small>':'')+'</span><span class="pn">'+(s.page?'ص '+s.page:'')+'</span></button>'});
   h+='</div>';app.innerHTML=h;window.scrollTo(0,0)}
 
 /* routing */
@@ -264,7 +310,7 @@ function close(){sh.classList.remove("on");sc.classList.remove("on")}
 sc.addEventListener("click",close);
 document.addEventListener("keydown",function(e){if(e.key==="Escape")close()});
 
-var THEMES=[["dark","ليلي ذهبي"],["parchment","رَقّ"],["light","فاتح"],["night","أزرق ليلي"],["forest","أخضر"],["royal","ملكي"]];
+var THEMES=[["church","كنيسة · لازورد وذهب"],["churchnight","كنيسة · ليل بنفسجي"],["dark","ليلي ذهبي"],["parchment","رَقّ"],["light","فاتح"],["night","أزرق ليلي"],["forest","أخضر"],["royal","ملكي"]];
 function settings(){
   var h='<h3>الإعدادات</h3><div class="set"><span>المظهر</span></div><div class="sw" style="margin-bottom:8px">';
   THEMES.forEach(function(t){h+='<button data-th="'+t[0]+'" class="'+(S.theme===t[0]?'on':'')+'">'+t[1]+'</button>'});
@@ -283,7 +329,7 @@ $("#btnSet").addEventListener("click",settings);
 
 /* search */
 var IDX=null;
-function build(){IDX=[];SECS.forEach(function(s){IDX.push({id:s.id,t:s.title,n:norm(s.title),txt:s.title,sec:s});var c=D.content[s.id];if(c)c.items.forEach(function(it){if(it.k==="pg")return;var tx=it.ar||it.t||"";if(tx)IDX.push({id:s.id,t:s.title,n:norm(tx),txt:tx.replace(/\[\^\d+\]/g,"")});if(it.cop)IDX.push({id:s.id,t:s.title,n:it.cop.toLowerCase(),txt:it.cop,cop:1})})})}
+function build(){IDX=[];SECS.forEach(function(s){IDX.push({id:s.id,t:s.title,n:norm(s.title),txt:s.title,sec:s});var c=D.content[s.id];if(c)c.items.forEach(function(it){if(it.k==="pg")return;var tx=it.ar||it.t||"";if(tx)IDX.push({id:s.id,t:s.title,n:norm(tx),txt:tx.replace(/\[\^\d+\]/g,"")});if(it.cop)IDX.push({id:s.id,t:s.title,n:it.cop.toLowerCase(),txt:it.cop,cop:1});if(it.tr)IDX.push({id:s.id,t:s.title,n:norm(it.tr),txt:it.tr})})})}
 function doSearch(q){
   var out=$("#sr");if(!q.trim()){out.innerHTML="";return}
   if(!IDX)build();var nq=norm(q.trim()),cq=q.trim().toLowerCase(),res=[],seen={};
@@ -295,7 +341,7 @@ function openSearch(){sheet('<h3>بحث</h3><input id="q" class="search" placeho
 /* PWA */
 if("serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})})}
 
-load();if(S.theme==="dark"&&!localStorage.getItem("khulagi.v11")){S.theme="light";save();try{localStorage.setItem("khulagi.v11","1")}catch(e){}}apply();opts();ensureAll().then(function(){SECS.forEach(function(x){x.has=!!D.content[x.id]});fillPick();route()});
+load();try{if(!localStorage.getItem("khulagi.v12")){S.theme="church";save();localStorage.setItem("khulagi.v12","1")}}catch(e){}apply();opts();ensureAll().then(function(){SECS.forEach(function(x){x.has=!!D.content[x.id]});fillPick();route()});
 })();
 </script>
 </body>
