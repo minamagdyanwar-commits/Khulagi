@@ -36,7 +36,6 @@ main{max-width:980px;margin:0 auto;padding:0 0 90px}
 .opts{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;padding:12px 10px 8px;direction:rtl}
 .opts label{display:flex;align-items:center;gap:6px;font-size:1.15rem;cursor:pointer;user-select:none}
 .opts input{width:26px;height:26px;accent-color:#f08a3c}
-.opts label.dis{opacity:.45}
 .sbtn{border:2px solid #d12a2a;color:#c01818;background:#f4eded;border-radius:12px;padding:12px 20px;font-size:1rem;box-shadow:0 2px 6px rgba(0,0,0,.2)}
 .selw{position:relative;margin:10px 14px 8px}
 .selw select{width:100%;appearance:none;-webkit-appearance:none;background:#4f4fa8;color:#fff;border:3px solid #1f4fd8;border-radius:8px;padding:14px 62px 14px 14px;font:inherit;font-size:1.2rem;direction:rtl}
@@ -103,7 +102,7 @@ mark{background:rgba(240,138,60,.4);color:inherit;border-radius:3px}
 (function(){
 "use strict";
 var D=window.KHULAGI, $=function(s,e){return (e||document).querySelector(s)};
-var DEF={theme:"light",fs:22,cop:true,ar:true,tr:true,en:false,pg:false,rub:true,notes:true};
+var DEF={theme:"light",fs:22,cop:true,ar:true,tr:true,pg:false,rub:true,notes:true};
 var S=Object.assign({},DEF);
 
 var TRM={"ⲁ":"ا","ⲃ":"ڤ","ⲅ":"غ","ⲇ":"د","ⲉ":"ي","ⲍ":"ز","ⲏ":"ي","ⲑ":"ث","ⲓ":"ي","ⲕ":"ك","ⲗ":"ل","ⲙ":"م","ⲛ":"ن","ⲝ":"كس","ⲟ":"و","ⲡ":"ب","ⲣ":"ر","ⲥ":"س","ⲧ":"ت","ⲩ":"ي","ⲫ":"ف","ⲭ":"خ","ⲯ":"بس","ⲱ":"و","ϣ":"ش","ϥ":"ف","ϧ":"خ","ϩ":"ه","ϫ":"ج","ϭ":"تش","ϯ":"تي"};
@@ -158,12 +157,11 @@ function hl(h,q){if(!q)return h;try{var re=new RegExp("("+q.replace(/[.*+?^${}()
 
 var app=$("#app"),pick=$("#pick");
 function opts(){
-  var d=[["ar","ع","عربي"],["tr","م","معرب"],["cop","ق","قبطي"],["en","E","إنجليزي (غير متوفر بعد)"],["pg","ص.ك","أرقام صفحات الكتاب"]];
-  $("#opts").innerHTML=d.map(function(x){return '<label class="'+(x[0]==="en"?'dis':'')+'" title="'+x[2]+'"><input type="checkbox" data-o="'+x[0]+'"'+(S[x[0]]?' checked':'')+'><span>'+x[1]+'</span></label>'}).join("")+'<button class="sbtn" id="btnSearch">بحث</button>';
+  var d=[["ar","ع","عربي"],["tr","م","معرب"],["cop","ق","قبطي"],["pg","ص.ك","أرقام صفحات الكتاب"]];
+  $("#opts").innerHTML=d.map(function(x){return '<label title="'+x[2]+'"><input type="checkbox" data-o="'+x[0]+'"'+(S[x[0]]?' checked':'')+'><span>'+x[1]+'</span></label>'}).join("")+'<button class="sbtn" id="btnSearch">بحث</button>';
   $("#btnSearch").addEventListener("click",openSearch);
 }
 $("#opts").addEventListener("change",function(e){var k=e.target.getAttribute("data-o");if(!k)return;
-  if(k==="en"){e.target.checked=false;toast("النص الإنجليزي غير متوفر في هذه الطبعة");return}
   S[k]=e.target.checked;save();route()});
 function toast(t){var x=$("#toast");x.textContent=t;x.classList.add("on");setTimeout(function(){x.classList.remove("on")},2200)}
 function fillPick(){
