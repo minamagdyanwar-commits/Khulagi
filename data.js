@@ -25,7 +25,7 @@ window.KHULAGI = {
       { id: "raf-blessing", title: "البركة والتسريح", page: 152 },
       { id: "raf-canons", title: "قوانين لأجل الكنيسة والقداس والقربان", page: 187 } ] },
     { id: "bas", title: "قداس القديس باسيليوس", sections: [
-      { id: "bas-istid", title: "صلاة الاستعداد", page: 208 },
+      { id: "bas-istid", title: "صلاة الاستعداد", page: 205 },
       { id: "bas-hamal", title: "تقديم الحمل", page: 214 },
       { id: "bas-tazkarat", title: "تذكارات الحمل", page: 217 },
       { id: "bas-dawra", title: "دورة الحمل", page: 224 },
