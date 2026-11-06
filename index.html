@@ -82,6 +82,15 @@ mark{background:rgba(240,138,60,.4);color:inherit;border-radius:3px}
 .list{margin:0 14px;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
 .sec{display:flex;width:100%;justify-content:space-between;align-items:center;gap:10px;padding:14px;border-bottom:1px solid var(--line);text-align:right}
 .list .sec:last-child{border-bottom:0}
+.lets{display:flex;flex-wrap:wrap;gap:6px;padding:0 14px 12px;direction:rtl}
+.lets button{min-width:46px;padding:7px 11px;border:1.5px solid var(--line);border-radius:999px;background:var(--card);font-size:1.05rem;display:inline-flex;align-items:baseline;justify-content:center;gap:4px}
+.lets button small{font-size:.65rem;color:var(--mute)}
+.lets button.on{background:var(--acc);color:#fff}
+.lets button.on small{color:inherit;opacity:.85}
+:root[data-theme^=church] .lets button{background:rgba(235,203,126,.10);color:var(--gold-hi);border-color:var(--gold)}
+:root[data-theme^=church] .lets button small{color:#d8c9a3}
+:root[data-theme^=church] .lets button.on{background:linear-gradient(180deg,var(--gold-hi),var(--gold) 60%,var(--gold-lo));color:#2b1d12;box-shadow:0 0 14px rgba(235,203,126,.5)}
+:root[data-theme^=church] .lets button.on small{color:#2b1d12}
 .sec .sub{display:block;color:var(--mute);font-size:.8rem;margin-top:2px}
 .sec .pn{color:var(--mute);font-size:.85rem;white-space:nowrap}
 .sec.soon{opacity:.55}
@@ -281,11 +290,20 @@ function home(){
     h+='<button class="card" data-nav="#/g/'+g.id+'"><span class="ic">'+(ICONS[g.id]||"☩")+'</span><b>'+esc(g.title)+'</b><small>'+n+' قسمًا'+(k<n?' · '+(k?k+' متاح':'قريبًا'):'')+'</small></button>'});
   h+='</div></div>';
   app.innerHTML=h;window.scrollTo(0,0)}
+var LET={},LORDER="ابتثجحخدذرزسشصضطظعغفقكلمنهوي".split("");
 function groupView(gid){
   var g=D.groups.filter(function(x){return x.id===gid})[0];if(!g)return home();
   ctl(false);document.title=g.title+" — الخولاجي";
-  var h='<div class="crumb"><button data-nav="#/">⌂ الرئيسية</button></div><div class="gh"><h2>'+esc(g.title)+'</h2></div><div class="list">';
-  g.sections.forEach(function(s){h+='<button class="sec'+(s.has?'':' soon')+'" data-nav="#/s/'+s.id+'"><span>'+esc(s.title)+(s.has?'':' — قريبًا')+(s.sub?'<small class="sub">'+esc(s.sub)+'</small>':'')+'</span><span class="pn">'+(s.page?'ص '+s.page:'')+'</span></button>'});
+  var h='<div class="crumb"><button data-nav="#/">⌂ الرئيسية</button></div><div class="gh"><h2>'+esc(g.title)+'</h2></div>';
+  var cur=LET[gid]||"";
+  if(g.sections.some(function(x){return x.l})){
+    var cnt={};g.sections.forEach(function(x){if(x.l)cnt[x.l]=(cnt[x.l]||0)+1});
+    h+='<div class="lets" role="group" aria-label="بحث بالحرف الأول"><button data-let="" data-g="'+gid+'" class="'+(cur?'':'on')+'">الكل<small>'+g.sections.length+'</small></button>';
+    LORDER.concat(["template"]).forEach(function(l){if(cnt[l])h+='<button data-let="'+l+'" data-g="'+gid+'" class="'+(cur===l?'on':'')+'">'+(l==="template"?"قوالب":l)+'<small>'+cnt[l]+'</small></button>'});
+    h+='</div>';
+  }
+  h+='<div class="list">';
+  g.sections.filter(function(x){return !cur||x.l===cur}).forEach(function(s){h+='<button class="sec'+(s.has?'':' soon')+'" data-nav="#/s/'+s.id+'"><span>'+esc(s.title)+(s.has?'':' — قريبًا')+(s.sub?'<small class="sub">'+esc(s.sub)+'</small>':'')+'</span><span class="pn">'+(s.page?'ص '+s.page:'')+'</span></button>'});
   h+='</div>';app.innerHTML=h;window.scrollTo(0,0)}
 
 /* routing */
@@ -299,6 +317,7 @@ function go(id){location.hash="#/s/"+id}
 window.addEventListener("hashchange",route);
 app.addEventListener("click",function(e){
   var nv=e.target.closest("[data-nav]");if(nv){location.hash=nv.getAttribute("data-nav");return}
+  var lt=e.target.closest("[data-let]");if(lt){LET[lt.getAttribute("data-g")]=lt.getAttribute("data-let");groupView(lt.getAttribute("data-g"));return}
   var g=e.target.closest("[data-go]");if(g){if(g.getAttribute("data-go"))go(g.getAttribute("data-go"));return}
   var f=e.target.closest("sup.fn");if(f){var sid=(location.hash.match(/s\/([^?]+)/)||[])[1]||pick.value;var c=D.content[sid];var t=c&&c.notes&&c.notes[f.dataset.n];sheet('<h3>هامش '+f.dataset.n+'</h3><div class="nt">'+(t?fnify(t):"—")+'</div>')}
 });
