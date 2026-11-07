@@ -155,15 +155,17 @@ function planCard(){
   else h+='<p class="hint">أنهيتَ الخطة. اختر قداسًا آخر من «خطتي».</p>';
   return h+'<button class="ksb" data-nav="#/plan">فتح الخطة</button></div>'}
 function homeHtml(){
-  var h='';
-  if(S().today){
-    var cd=copticOf(new Date()),dx=todayDox(cd);
-    h+='<div class="ksc"><b>🗓 اليوم</b><span>'+ar(cd.d)+' '+CM[cd.m]+' '+ar(cd.y)+' للشهداء</span>';
-    if(dx.length)h+='<div class="ksl"><small>ذكصولوجيات اليوم (ثابتة بحسب الكتاب):</small>'+dx.map(function(s){return '<button class="sec" data-nav="#/s/'+s.id+'"><span>'+esc(s.title)+'</span></button>'}).join("")+'</div>';
-    h+='</div>'}
-  h+=planCard();
-  h+='<div class="ksc"><b>🔎 دراسة</b><div class="ksl"><button class="sec" data-nav="#/compare"><span>مقارنة بين القداسات الثلاثة</span><span class="pn">‹</span></button><button class="sec" data-nav="#/lex"><span>قاموس القبطي المعرَّب</span><span class="pn">‹</span></button><button class="sec" data-nav="#/g/taqs"><span>دليل طقس القداس وحركات الكاهن</span><span class="pn">‹</span></button></div></div>';
-  return h}
+  var cd=copticOf(new Date()),dx=S().today?todayDox(cd):[],p=plan(),all=planItems(p.lit),done=all.filter(function(x){return p.done[x.id]}).length,wk=weekItems(p);
+  var chip=function(h,t){return '<button class="lsb" data-nav="'+h+'">'+t+'</button>'};
+  var sum=(S().today?'🗓 '+ar(cd.d)+' '+CM[cd.m]+' · ':'')+'📅 خطتي '+ar(done)+'/'+ar(all.length)+' · 🔎 دراسة';
+  var h='<details class="hq"'+(S().hqo?' open':'')+'><summary><span>'+sum+'</span></summary><div class="hqb">';
+  if(S().today){h+='<div class="hqr"><b>اليوم</b>'+ar(cd.d)+' '+CM[cd.m]+' '+ar(cd.y)+' للشهداء</div>';
+    if(dx.length)h+='<div class="hqc">'+dx.map(function(x){return chip('#/s/'+x.id,esc(x.title))}).join("")+'</div>'}
+  h+='<div class="hqr"><b>خطتي</b>'+ar(done)+' من '+ar(all.length)+' جزءًا</div><div class="hqc">'+wk.map(function(x){return chip('#/s/'+x.id,esc(x.title))}).join("")+chip('#/plan','فتح الخطة ‹')+'</div>';
+  h+='<div class="hqr"><b>دراسة</b></div><div class="hqc">'+chip('#/compare','مقارنة القداسات')+chip('#/lex','قاموس القبطي المعرَّب')+chip('#/g/taqs','دليل الطقس')+'</div>';
+  return h+'</div></details>'}
+document.addEventListener("toggle",function(e){var t=e.target;if(t&&t.classList&&t.classList.contains("hq")){S().hqo=t.open;K.save()}},true);
+
 function lexView(){
   K.ctl(false);var q=(window.__lq||""),h='<div class="crumb"><button data-nav="#/">⌂ الرئيسية</button></div><div class="gh"><h2>قاموس القبطي المعرَّب</h2></div><p class="hint">عبارات قبطية معرَّبة كما وردت في دليل الطقس، مع معناها وموضعها في القداس. مسوّدة تحتاج مراجعة.</p><div class="dd"><label>بحث<input data-ks="lq" value="'+esc(q)+'" placeholder="اكتب جزءًا من العبارة أو معناها"></label></div><div class="list" id="lexl">';
   h+=lexList(q)+'</div>';document.getElementById("app").innerHTML=h}
