@@ -85,6 +85,8 @@ window.KHULAGI = {
       { id: "greg-solh2", title: "صلاة صلح ثانية", page: 520 },
       { id: "greg-anaphora", title: "الأنافورا — الأغابي", page: 527 },
       { id: "greg-mustahiq", title: "مستحق ومستوجب", page: 530 },
+      { id: "greg-feto", title: "الكائن السيد", page: 533 },
+      { id: "greg-ntok", title: "لأنك أنت (حولك القيام)", page: 535 },
       { id: "greg-qudduus", title: "قدوس", page: 537 },
       { id: "greg-anta-sayyidi", title: "أنت يا سيدي", page: 541 },
       { id: "greg-anta-kain", title: "أنت الكائن", page: 543 },
