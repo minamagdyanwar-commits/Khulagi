@@ -82,7 +82,18 @@ function openVerse(b,c,v,full){
 function stageOf(s){var m=DT.stageOf&&DT.stageOf[s.group.id];return m&&m[s.id]!==undefined?m[s.id]:null}
 function speakers(c){var o={pr:0,di:0,pe:0};c.items.forEach(function(i){if(i.k==="p"&&i.sp)o[i.sp]++});return o}
 function refsOf(c){var seen={},list=[];Object.keys(c.notes||{}).forEach(function(k){scan(c.notes[k]).forEach(function(r){var key=r.b+r.c+":"+r.v;if(seen[key])return;seen[key]=1;list.push(r)})});return list}
+var SYNC=[["bas-hijab","greg-hijab","cyr-hijab"],["bas-solh","greg-solh","cyr-solh"],["bas-anaphora","greg-anaphora",null],["bas-mustahiq","greg-mustahiq","cyr-mustahiq"],["bas-ewash-before","greg-ewash","cyr-ewash1"],["bas-qudduus","greg-qudduus","cyr-qudduus"],["bas-hulul","greg-taqdis","cyr-holool"],["bas-ewash-after","greg-ewash","cyr-ewash2"],["bas-majma","greg-majma","cyr-majma"],["bas-tarheem","greg-tarheem","cyr-tarheem"],["bas-qisma-intro","greg-qisma-intro","cyr-qisma-intro"],["bas-qisma","greg-qisma","cyr-qisma"],["bas-after-qisma",null,"cyr-after-qisma"],["bas-itiraf","greg-itiraf","cyr-itiraf"],["bas-before-comm",null,"cyr-before-comm"],["bas-after-comm","greg-after-comm","cyr-after-comm"],["bas-blessing","greg-blessing","cyr-blessing"]];
+var SALT={"greg-hijab2":"greg-hijab","greg-solh2":"greg-solh"};
+var LNAME=["القداس الباسيلي","القداس الغريغوري","القداس الكيرلسي"];
+function syncBar(id){
+  id=SALT[id]||id;var row=null;SYNC.forEach(function(r){if(!row&&r.indexOf(id)>-1)row=r});if(!row)return"";
+  var me=row.indexOf(id),b="";
+  row.forEach(function(t,i){if(i===me||!t||!K.BYID[t]||!K.BYID[t].has)return;b+='<button class="lsb" data-nav="#/s/'+t+'">↔ '+LNAME[i]+'</button>'});
+  return b?'<div class="lsw"><small>نفس الجزء في:</small>'+b+'</div>':""}
 function guideHtml(id,s,c){
+  var sb=syncBar(id);
+  return sb+(guideInner(id,s,c)||"")}
+function guideInner(id,s,c){
   if(!S().guide||!c)return"";
   var g=(DT.guides||{})[id],st=stageOf(s),sp=speakers(c),refs=refsOf(c),moves=c.items.filter(function(i){return i.k==="r"}).length;
   var h='<details class="kg"><summary>📖 دليل هذا الجزء'+(st!==null?' · '+esc(DT.stages[st][0]):'')+'</summary><div class="kgb">';
