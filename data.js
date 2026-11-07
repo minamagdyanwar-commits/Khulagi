@@ -53,6 +53,7 @@ window.KHULAGI = {
       { id: "bas-hulul", title: "سر حلول الروح القدس", page: 372 },
       { id: "bas-ajalna", title: "اجعلنا مستحقين", page: 376 },
       { id: "bas-ewash-before", title: "أواشي قبل المجمع", page: 377 },
+      { id: "bas-ewash-after", title: "تتمة أواشي المياه والزروع والثمار", page: 386 },
       { id: "bas-majma", title: "المجمع", page: 390 },
       { id: "bas-tarheem", title: "الترحيم", page: 401 },
       { id: "bas-qisma-intro", title: "مقدمة القسمة", page: 422 },
