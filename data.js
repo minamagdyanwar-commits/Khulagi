@@ -51,6 +51,7 @@ window.KHULAGI = {
       { id: "bas-qam", title: "وقام من الأموات", page: 362 },
       { id: "bas-taqdis", title: "التقديس", page: 363 },
       { id: "bas-hulul", title: "سر حلول الروح القدس", page: 372 },
+      { id: "bas-ajalna", title: "اجعلنا مستحقين", page: 376 },
       { id: "bas-ewash-before", title: "أواشي قبل المجمع", page: 376 },
       { id: "bas-majma", title: "المجمع", page: 390 },
       { id: "bas-tarheem", title: "الترحيم", page: 401 },
