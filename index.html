@@ -300,7 +300,7 @@ mark{background:rgba(240,138,60,.4);color:inherit;border-radius:3px}
 (function(){
 "use strict";
 var D=window.KHULAGI, $=function(s,e){return (e||document).querySelector(s)};
-var DEF={vref:true,guide:true,mov:true,today:true,calm:false,wake:false,hide:[],hv:"c",dn:"n",slim:true,hqo:false,theme:"church",fs:22,cop:true,ar:true,tr:true,pg:false,rub:true,notes:true,med:true,medAll:"closed"};
+var DEF={vref:true,guide:true,mov:true,today:true,calm:false,wake:false,swipe:true,hide:[],hv:"c",dn:"n",slim:true,hqo:false,theme:"church",fs:22,cop:true,ar:true,tr:true,pg:false,rub:true,notes:true,med:true,medAll:"closed"};
 var S=Object.assign({},DEF);
 
 var TRM={"ⲁ":"ا","ⲃ":"ڤ","ⲅ":"غ","ⲇ":"د","ⲉ":"ي","ⲍ":"ز","ⲏ":"ي","ⲑ":"ث","ⲓ":"ي","ⲕ":"ك","ⲗ":"ل","ⲙ":"م","ⲛ":"ن","ⲝ":"كس","ⲟ":"و","ⲡ":"ب","ⲣ":"ر","ⲥ":"س","ⲧ":"ت","ⲩ":"ي","ⲫ":"ف","ⲭ":"خ","ⲯ":"بس","ⲱ":"و","ϣ":"ش","ϥ":"ف","ϧ":"خ","ϩ":"ه","ϫ":"ج","ϭ":"تش","ϯ":"تي"};
@@ -510,7 +510,7 @@ function settings(){
   var sy=sh.scrollTop;var look='<div class="stl">الثيم</div><div class="sw">';
   THEMES.forEach(function(t){look+='<button data-th="'+t[0]+'" class="'+(S.theme===t[0]?'on':'')+'">'+t[1]+'</button>'});
   look+='</div><div class="stl">حجم الخط</div><div class="fsr"><button data-fs="-2" aria-label="تصغير الخط">أ-</button><b>'+S.fs+'</b><button data-fs="2" aria-label="تكبير الخط">أ+</button></div>';
-  var rd='';[["rub","الإرشادات الحمراء"],["med","التأملات"]].forEach(function(r){rd+='<div class="set"><span>'+r[1]+'</span><button class="tg'+(S[r[0]]?' on':'')+'" data-tg="'+r[0]+'" aria-label="'+r[1]+'"></button></div>'});
+  var rd='';[["rub","الإرشادات الحمراء"],["med","التأملات"],["swipe","التنقل بالسحب بين الأجزاء (يمين = التالي · يسار = السابق)"]].forEach(function(r){rd+='<div class="set"><span>'+r[1]+'</span><button class="tg'+(S[r[0]]?' on':'')+'" data-tg="'+r[0]+'" aria-label="'+r[1]+'"></button></div>'});
   var pill=function(k,opts){var o='<div class="sw">';opts.forEach(function(x){o+='<button data-set="'+k+'" data-v="'+x[0]+'" class="'+(S[k]===x[0]?'on':'')+'">'+x[1]+'</button>'});return o+'</div>'};
   var lay='<div class="stl">شكل أقسام الصفحة الرئيسية</div>'+pill("hv",[["c","بطاقات مدمجة"],["l","قائمة"],["b","بطاقات كبيرة"]])+'<div class="stl">كثافة القراءة</div>'+pill("dn",[["n","عادية"],["c","مدمجة"]])+'<div class="set"><span>ترويسة مصغّرة</span><button class="tg'+(S.slim?' on':'')+'" data-tg="slim" aria-label="ترويسة مصغّرة"></button></div>';
   var G=window.KS?KS.settings():{};
@@ -551,11 +551,11 @@ function openSearch(){sheet('<h3>بحث</h3><input id="q" class="search" placeho
 if("serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js",{updateViaCache:"none"}).then(function(r){r.update()}).catch(function(){});var had=!!navigator.serviceWorker.controller;navigator.serviceWorker.addEventListener("controllerchange",function(){if(had&&!window.__rl){window.__rl=1;location.reload()}})})}
 
 load();try{if(!localStorage.getItem("khulagi.v12")){S.theme="church";save();localStorage.setItem("khulagi.v12","1")}}catch(e){}apply();opts();ensureAll().then(function(){SECS.forEach(function(x){x.has=!!D.content[x.id]});fillPick();route()});
-window.KH={S:function(){return S},save:save,sheet:sheet,close:close,esc:esc,go:go,ctl:ctl,app:app,route:route,settings:settings,D:D,BYID:BYID};
+window.KH={render:function(id){reader(id)},S:function(){return S},save:save,sheet:sheet,close:close,esc:esc,go:go,ctl:ctl,app:app,route:route,settings:settings,D:D,BYID:BYID};
 })();
 </script>
 <script src="study-data.js"></script>
-<script src="study.js"></script>
+<script src="study.js"></script><script src="swipe.js"></script>
 <script>if(window.KS){KS.apply();document.addEventListener("click",function(){KS.apply()},{once:true})}</script>
 </body>
 </html>
