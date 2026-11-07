@@ -97,6 +97,8 @@ function guideHtml(id,s,c){
   else h+='<p class="hint">لا يوجد شرح مكتوب لهذا الجزء بعد. تظهر هنا المعلومات المستخرجة من النص نفسه.</p>';
   h+='<p><b>من يتكلم:</b> '+(sp.pr?'الكاهن ('+ar(sp.pr)+') ':'')+(sp.di?'· الشماس ('+ar(sp.di)+') ':'')+(sp.pe?'· الشعب ('+ar(sp.pe)+')':'')+(!(sp.pr+sp.di+sp.pe)?'غير محدد في هذا الجزء':'')+'</p>';
   if(moves)h+='<p><b>الإرشادات والحركات:</b> '+ar(moves)+' إرشادًا في هذا الجزء.</p>';
+  if(st!==null&&st<4&&(DT.taqs||{})[st]){var tl=DT.taqs[st].filter(function(x){return K.BYID[x]});if(tl.length)h+='<p><b>شرح الحركات في دليل الطقس:</b> '+tl.map(function(x){return '<a class="vref" data-nav="#/s/'+x+'">'+esc((K.BYID[x].title||x))+'</a>'}).join(" · ")+'</p>';
+    var lx=(DT.lex||[]).filter(function(e){return e.st===st});if(lx.length)h+='<p><b>قبطي معرَّب في هذه المرحلة:</b> '+lx.slice(0,6).map(function(e){return esc(e.c)}).join(" · ")+' <a class="vref" data-nav="#/lex">القاموس كله ‹</a></p>'}
   if(refs.length)h+='<p><b>الآيات في هذا الجزء:</b> '+refs.slice(0,24).map(function(r){return '<a class="vref" data-ks="v" data-b="'+r.b+'" data-c="'+r.c+'" data-v="'+r.v+'">'+esc(r.label)+'</a>'}).join(" · ")+(refs.length>24?' …':'')+'</p>';
   return h+'</div></details>'}
 
@@ -111,7 +113,7 @@ function rubHtml(raw,inner){
   var mv=null;(DT.moves||[]).forEach(function(m,i){if(mv===null&&new RegExp(m.re).test(raw))mv=i});
   return '<div class="rub mv'+(act?' mv-'+act[2]:'')+'"><span class="mvc">'+(act?act[1]+' '+act[0]:kind[1]+' '+kind[0])+(act?' · '+kind[0]:'')+'</span><span class="mvt">'+inner+'</span>'+(mv!==null?'<button class="mvq" data-ks="mv" data-i="'+mv+'">ما معناها؟</button>':'')+'</div>'}
 function openMove(i){var m=DT.moves[i];if(!m)return;
-  K.sheet('<h3>'+esc(m.t)+'</h3><div class="nt">'+esc(m.m)+(m.v?'<br><br><b>في الكتاب:</b> '+linkRefs(esc(m.v)):'')+'</div><small class="ms">مسوّدة — تحتاج مراجعة كنسية</small>')}
+  K.sheet('<h3>'+esc(m.t)+'</h3><div class="nt">'+esc(m.m)+(m.v?'<br><br><b>في الكتاب:</b> '+linkRefs(esc(m.v)):'')+'</div>'+(m.s?'<button class="ksb" data-nav="#/s/'+m.s+'">📖 افتح في دليل الطقس</button>':'')+'<small class="ms">'+(m.src==="taqs"?'المصدر: دليل ترتيب القداس وحركات الكاهن (دير الأنبا بيشوي) — يحتاج مراجعة كنسية':'مسوّدة — تحتاج مراجعة كنسية')+'</small>')}
 
 /* ---------- التاريخ القبطي ---------- */
 var CM=["توت","بابة","هاتور","كيهك","طوبة","أمشير","برمهات","برمودة","بشنس","بؤونة","أبيب","مسرى","النسيء"];
@@ -149,8 +151,14 @@ function homeHtml(){
     if(dx.length)h+='<div class="ksl"><small>ذكصولوجيات اليوم (ثابتة بحسب الكتاب):</small>'+dx.map(function(s){return '<button class="sec" data-nav="#/s/'+s.id+'"><span>'+esc(s.title)+'</span></button>'}).join("")+'</div>';
     h+='</div>'}
   h+=planCard();
-  h+='<div class="ksc"><b>🔎 دراسة</b><div class="ksl"><button class="sec" data-nav="#/compare"><span>مقارنة بين القداسات الثلاثة</span><span class="pn">‹</span></button></div></div>';
+  h+='<div class="ksc"><b>🔎 دراسة</b><div class="ksl"><button class="sec" data-nav="#/compare"><span>مقارنة بين القداسات الثلاثة</span><span class="pn">‹</span></button><button class="sec" data-nav="#/lex"><span>قاموس القبطي المعرَّب</span><span class="pn">‹</span></button><button class="sec" data-nav="#/g/taqs"><span>دليل طقس القداس وحركات الكاهن</span><span class="pn">‹</span></button></div></div>';
   return h}
+function lexView(){
+  K.ctl(false);var q=(window.__lq||""),h='<div class="crumb"><button data-nav="#/">⌂ الرئيسية</button></div><div class="gh"><h2>قاموس القبطي المعرَّب</h2></div><p class="hint">عبارات قبطية معرَّبة كما وردت في دليل الطقس، مع معناها وموضعها في القداس. مسوّدة تحتاج مراجعة.</p><div class="dd"><label>بحث<input data-ks="lq" value="'+esc(q)+'" placeholder="اكتب جزءًا من العبارة أو معناها"></label></div><div class="list" id="lexl">';
+  h+=lexList(q)+'</div>';document.getElementById("app").innerHTML=h}
+function lexList(q){var n0=nm(q),o="";DT.lex.forEach(function(e){if(n0&&nm(e.c+e.m+e.w).indexOf(n0)<0)return;
+  o+='<div class="cmc"><b>'+esc(e.c)+'</b><br>'+esc(e.m)+'<br><small>'+esc(e.w)+(e.st<4?' · '+esc(DT.stages[e.st][0]):' · الصوم المقدس')+'</small> <a class="vref" data-nav="#/s/'+e.s+'">في الدليل ‹</a></div>'});
+  return o||'<p class="hint">لا نتائج.</p>'}
 function planView(){
   K.ctl(false);var p=plan(),h='<div class="crumb"><button data-nav="#/">⌂ الرئيسية</button></div><div class="gh"><h2>خطتي</h2></div><div class="dd">';
   h+='<label>القداس<select data-ks="plit"><option value="bas"'+(p.lit==="bas"?" selected":"")+'>باسيليوس</option><option value="greg"'+(p.lit==="greg"?" selected":"")+'>غريغوريوس</option><option value="cyr"'+(p.lit==="cyr"?" selected":"")+'>كيرلس</option></select></label>';
@@ -193,6 +201,7 @@ document.addEventListener("visibilitychange",applyPrefs);
 function exportAll(){
   var o={};try{for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(k.indexOf("khulagi")===0)o[k]=localStorage.getItem(k)}}catch(e){}
   var a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(o)],{type:"application/json"}));a.download="khulagi-backup.json";a.click()}
+document.addEventListener("input",function(e){var t=e.target;if(t.getAttribute&&t.getAttribute("data-ks")==="lq"){window.__lq=t.value;var l=document.getElementById("lexl");if(l)l.innerHTML=lexList(t.value)}});
 document.addEventListener("change",function(e){var t=e.target;
   if(t.id==="ksimp"&&t.files[0]){var r=new FileReader();r.onload=function(){try{var o=JSON.parse(r.result);Object.keys(o).forEach(function(k){if(k.indexOf("khulagi")===0)localStorage.setItem(k,o[k])});location.reload()}catch(x){alert("ملف غير صالح")}};r.readAsText(t.files[0]);return}
   var d=t.getAttribute&&t.getAttribute("data-ks");if(!d)return;
@@ -212,5 +221,5 @@ document.addEventListener("click",function(e){
   else if(d==="hide"){var s=S(),h=s.hide||[],i=h.indexOf(t.dataset.g);if(i>-1)h.splice(i,1);else h.push(t.dataset.g);s.hide=h;K.save();K.settings();K.route()}
   else if(d==="export")exportAll();
   else if(d==="install"&&deferred){deferred.prompt();deferred=null;K.close()}});
-window.KS={linkRefs:linkRefs,guide:guideHtml,rub:rubHtml,home:homeHtml,plan:planView,compare:compare,settings:settingsHtml,apply:applyPrefs,scan:scan};
+window.KS={lex:lexView,linkRefs:linkRefs,guide:guideHtml,rub:rubHtml,home:homeHtml,plan:planView,compare:compare,settings:settingsHtml,apply:applyPrefs,scan:scan};
 })();

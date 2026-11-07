@@ -404,6 +404,7 @@ function route(){
   if(h.indexOf("s/")===0){var p=h.slice(2).split("?q=");if(!BYID[p[0]])return home();ctl(true);reader(p[0],p[1]?decodeURIComponent(p[1]):"")}
   else if(h==="compare"&&window.KS)KS.compare();
   else if(h==="plan"&&window.KS)KS.plan();
+  else if(h==="lex"&&window.KS)KS.lex();
   else if(h.indexOf("g/")===0)groupView(h.slice(2));
   else home();
 }
