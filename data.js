@@ -80,6 +80,7 @@ window.KHULAGI = {
     { id: "greg", title: "قداس القديس إغريغوريوس", sections: [
       { id: "greg-intro", title: "مقدمة القداس الغريغوري", page: 507 },
       { id: "greg-hijab", title: "صلاة الحجاب", page: 508 },
+      { id: "greg-hijab2", title: "صلاة ثانية للحجاب", page: 511 },
       { id: "greg-solh", title: "صلاة الصلح", page: 514 },
       { id: "greg-mustahiq", title: "مستحق ومستوجب", page: 530 },
       { id: "greg-qudduus", title: "قدوس", page: 537 },
