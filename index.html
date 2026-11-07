@@ -233,7 +233,7 @@ function parse(txt){
     if(mode===0&&l.charAt(0)==="~"){var mm=l.match(/^~(\w): ?(.*)$/),li=cur.items[cur.items.length-1];if(mm&&li){(li.med=li.med||{})[mm[1]]=mm[2]}return}
     if(mode===1){var m=l.match(/^(\d+): (.*)$/);if(m)cur.notes[m[1]]=m[2];return}
     if(l.indexOf("# ")===0){it=null;cur.items.push({k:"pg",n:l.slice(2).trim()});return}
-    if(l.indexOf("! ")===0){it=null;sp="";cur.items.push({k:"r",t:l.slice(2)});return}
+    if(l.indexOf("! ")===0){it=null;if(!who)sp="";cur.items.push({k:"r",t:l.slice(2)});return}
     if(l.indexOf("@ ")===0){who=l.slice(2);sp=who.indexOf("الكاهن")>=0?"pr":who.indexOf("الشماس")>=0?"di":who.indexOf("الشعب")>=0?"pe":"";return}
     if(l.indexOf("t: ")===0){if(it)it.tr=l.slice(3);return}
     if(l.indexOf("c: ")===0||l.indexOf("a: ")===0){
