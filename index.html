@@ -408,7 +408,10 @@ function settings(){
   h+='</div><div class="set"><span>حجم الخط</span><div class="fsr"><button data-fs="-2">أ-</button><b>'+S.fs+'</b><button data-fs="2">أ+</button></div></div>';
   [["rub","الإرشادات الحمراء"],["med","التأملات"]].forEach(function(r){h+='<div class="set"><span>'+r[1]+'</span><button class="tg'+(S[r[0]]?' on':'')+'" data-tg="'+r[0]+'" aria-label="'+r[1]+'"></button></div>'});
   h+='<p class="hint">المعرب تعريب آلي تقريبي. النص القبطي منقول يدويًا من الطبعة المطبوعة ويحتاج مراجعة كنسية قبل الاستعمال الطقسي.</p>';
+  h+='<p class="hint" id="verln">رقم النسخة: …</p>';
   sheet(h);
+  var vn=function(t){var e=document.getElementById("verln");if(e)e.textContent="رقم النسخة: "+t};
+  if(window.caches)caches.keys().then(function(k){var m=k.filter(function(x){return x.indexOf("khulagi")===0}).sort().pop();vn(m?m.replace("khulagi-","").replace("-shell",""):"غير مثبّتة")}).catch(function(){vn("غير متاح")});else vn("غير متاح");
 }
 sh.addEventListener("click",function(e){
   var t=e.target.closest("[data-th]");if(t){S.theme=t.dataset.th;save();apply();settings();return}
