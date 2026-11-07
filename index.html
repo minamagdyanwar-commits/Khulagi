@@ -90,6 +90,7 @@ mark{background:rgba(240,138,60,.4);color:inherit;border-radius:3px}
 .list{margin:0 14px;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
 .sec{display:flex;width:100%;justify-content:space-between;align-items:center;gap:10px;padding:14px;border-bottom:1px solid var(--line);text-align:right}
 .list .sec:last-child{border-bottom:0}
+.dd{display:grid;grid-template-columns:1fr;gap:10px;padding:0 14px 12px}.dd label{display:flex;flex-direction:column;gap:4px;font-size:.85rem;color:var(--mute)}.dd select{padding:10px;border:1.5px solid var(--line);border-radius:12px;background:var(--card);color:var(--ink);font-size:1rem;font-family:inherit}.dd select:disabled{opacity:.55}
 .lets{display:flex;flex-wrap:wrap;gap:6px;padding:0 14px 12px;direction:rtl}
 .lets button{min-width:46px;padding:7px 11px;border:1.5px solid var(--line);border-radius:999px;background:var(--card);font-size:1.05rem;display:inline-flex;align-items:baseline;justify-content:center;gap:4px}
 .lets button small{font-size:.65rem;color:var(--mute)}
@@ -329,7 +330,7 @@ function home(){
     h+='<button class="card big" data-nav="#/g/'+g.id+'"><span class="ic">'+(ICONS[g.id]||"☩")+'</span><b>'+esc(g.title)+'</b><small>'+n+' قسمًا'+(k<n?' · '+(k?k+' متاح':'قريبًا'):'')+'</small></button>'});
   h+='</div></div>';
   app.innerHTML=h;window.scrollTo(0,0)}
-var LET={},LORDER="ابتثجحخدذرزسشصضطظعغفقكلمنهوي".split("");
+var LET={},SAINT={},VAR={},LORDER="ابتثجحخدذرزسشصضطظعغفقكلمنهوي".split("");
 function litView(){
   ctl(false);document.title="القداسات الثلاثة — الخولاجي";
   var h='<div class="crumb"><button data-nav="#/">⌂ الرئيسية</button></div><div class="gh"><h2>القداسات الثلاثة</h2></div><div class="cards">';
@@ -342,11 +343,27 @@ function groupView(gid){
   ctl(false);document.title=g.title+" — الخولاجي";
   var h='<div class="crumb"><button data-nav="#/">⌂ الرئيسية</button></div><div class="gh"><h2>'+esc(g.title)+'</h2></div>';
   var cur=LET[gid]||"";
-  if(g.sections.some(function(x){return x.l})){
-    var cnt={};g.sections.forEach(function(x){if(x.l)cnt[x.l]=(cnt[x.l]||0)+1});
-    h+='<div class="lets" role="group" aria-label="بحث بالحرف الأول"><button data-let="" data-g="'+gid+'" class="'+(cur?'':'on')+'">الكل<small>'+g.sections.length+'</small></button>';
-    LORDER.concat(["template"]).forEach(function(l){if(cnt[l])h+='<button data-let="'+l+'" data-g="'+gid+'" class="'+(cur===l?'on':'')+'">'+(l==="template"?"قوالب":l)+'<small>'+cnt[l]+'</small></button>'});
+  var useDD=g.sections.some(function(x){return x.l});
+  var cur=LET[gid]||"",sn=SAINT[gid]||"",vr=VAR[gid]||"";
+  if(useDD){
+    var info=g.sections.map(function(x){var m=x.title.match(/^(.*?)\s*\(([^)]*ذكصولوجية[^)]*)\)\s*$/);return {s:x,key:m?m[1].trim():x.title,v:m?m[2].replace(/^ال?ذكصولوجية\s*/,"").trim()||"الرئيسية":"الأولى"}});
+    var letters={};info.forEach(function(i){if(i.s.l)letters[i.s.l]=1});
+    var inL=info.filter(function(i){return !cur||i.s.l===cur});
+    var keys=[];inL.forEach(function(i){if(keys.indexOf(i.key)<0)keys.push(i.key)});
+    if(sn&&keys.indexOf(sn)<0){sn="";SAINT[gid]=""}
+    var vs=info.filter(function(i){return i.key===sn});
+    if(vr&&!vs.some(function(i){return i.v===vr})){vr="";VAR[gid]=""}
+    var opt=function(v,t,sel){return '<option value="'+esc(v)+'"'+(sel?' selected':'')+'>'+esc(t)+'</option>'};
+    h+='<div class="dd">';
+    h+='<label>الحرف<select data-dd="let" data-g="'+gid+'">'+opt("","كل الحروف ("+g.sections.length+")",!cur)+LORDER.concat(["template"]).filter(function(l){return letters[l]}).map(function(l){return opt(l,l==="template"?"قوالب":l,cur===l)}).join("")+'</select></label>';
+    h+='<label>اسم القديس<select data-dd="saint" data-g="'+gid+'">'+opt("","كل الأسماء ("+keys.length+")",!sn)+keys.map(function(k){return opt(k,k,sn===k)}).join("")+'</select></label>';
+    var multi=vs.length>1;
+    h+='<label>الذكصولوجية<select data-dd="var" data-g="'+gid+'"'+(multi?'':' disabled')+'>'+(multi?opt("","كل الذكصولوجيات ("+vs.length+")",!vr)+vs.map(function(i){return opt(i.v,i.v,vr===i.v)}).join(""):opt("",sn?"ذكصولوجية واحدة":"اختر القديس أولًا",true))+'</select></label>';
     h+='</div>';
+    var shown=inL.filter(function(i){return (!sn||i.key===sn)&&(!vr||i.v===vr)}).map(function(i){return i.s});
+    h+='<div class="list">';
+    shown.forEach(function(s){h+='<button class="sec'+(s.has?'':' soon')+'" data-nav="#/s/'+s.id+'"><span>'+esc(s.title)+(s.has?'':' — قريبًا')+(s.sub?'<small class="sub">'+esc(s.sub)+'</small>':'')+'</span><span class="pn">'+(s.page?'ص '+s.page:'')+'</span></button>'});
+    h+='</div>';app.innerHTML=h;window.scrollTo(0,0);return;
   }
   h+='<div class="list">';
   g.sections.filter(function(x){return !cur||x.l===cur}).forEach(function(s){h+='<button class="sec'+(s.has?'':' soon')+'" data-nav="#/s/'+s.id+'"><span>'+esc(s.title)+(s.has?'':' — قريبًا')+(s.sub?'<small class="sub">'+esc(s.sub)+'</small>':'')+'</span><span class="pn">'+(s.page?'ص '+s.page:'')+'</span></button>'});
@@ -361,6 +378,8 @@ function route(){
 }
 function go(id){location.hash="#/s/"+id}
 window.addEventListener("hashchange",route);
+app.addEventListener("change",function(e){var d=e.target.getAttribute&&e.target.getAttribute("data-dd");if(!d)return;var g=e.target.getAttribute("data-g");
+  if(d==="let"){LET[g]=e.target.value;SAINT[g]="";VAR[g]=""}else if(d==="saint"){SAINT[g]=e.target.value;VAR[g]=""}else VAR[g]=e.target.value;groupView(g)});
 app.addEventListener("click",function(e){
   var ma=e.target.closest("[data-medall]");if(ma){S.medAll=ma.getAttribute("data-medall");save();var op=S.medAll==="open";app.querySelectorAll(".medc").forEach(function(x){x.hidden=!op});app.querySelectorAll(".medb").forEach(function(x){x.setAttribute("aria-expanded",op);x.querySelector(".mbc").textContent=op?"▴":"▾"});return}
   var mb=e.target.closest("[data-med]");if(mb){var c=mb.nextElementSibling;c.hidden=!c.hidden;mb.setAttribute("aria-expanded",!c.hidden);mb.querySelector(".mbc").textContent=c.hidden?"▾":"▴";return}
