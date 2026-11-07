@@ -52,8 +52,8 @@ main{max-width:980px;margin:0 auto;padding:0 0 90px}
 .row.sp-di{background:var(--sp-di);box-shadow:inset -5px 0 0 var(--sp-dib)}
 .row.sp-pe{background:var(--sp-pe);box-shadow:inset -5px 0 0 var(--sp-peb)}
 .row.sp-pr .who{color:var(--sp-prb)}.row.sp-di .who{color:var(--sp-dib)}.row.sp-pe .who{color:var(--sp-peb)}
-:root{--sp-pr:rgba(201,164,76,.20);--sp-prb:#B8892B;--sp-di:rgba(70,120,210,.15);--sp-dib:#3B6FC8;--sp-pe:rgba(70,160,100,.15);--sp-peb:#2F9157}
-:root[data-theme=night],:root[data-theme=forest],:root[data-theme=royal],:root[data-theme=churchnight]{--sp-pr:rgba(235,203,126,.17);--sp-prb:#EBCB7E;--sp-di:rgba(110,160,255,.18);--sp-dib:#8DB4FF;--sp-pe:rgba(110,210,150,.16);--sp-peb:#7FDDA5}
+:root{--sp-pr:rgba(214,170,60,.42);--sp-prb:#B8892B;--sp-di:rgba(70,120,210,.30);--sp-dib:#3B6FC8;--sp-pe:rgba(70,160,100,.30);--sp-peb:#2F9157}
+:root[data-theme=night],:root[data-theme=forest],:root[data-theme=royal],:root[data-theme=churchnight]{--sp-pr:rgba(235,203,126,.32);--sp-prb:#EBCB7E;--sp-di:rgba(110,160,255,.34);--sp-dib:#8DB4FF;--sp-pe:rgba(110,210,150,.30);--sp-peb:#7FDDA5}
 .cell{padding:8px 8px;line-height:1.9;font-size:calc(var(--fs)*.78);border-inline-start:2px solid var(--ink);min-width:0;overflow-wrap:anywhere}
 .cell:first-of-type{border-inline-start:0}
 .ar{direction:rtl;text-align:right;color:var(--c-ar);font-size:calc(var(--fs)*.95)}
@@ -78,6 +78,8 @@ mark{background:rgba(240,138,60,.4);color:inherit;border-radius:3px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 10px;text-align:center;display:flex;flex-direction:column;gap:6px;align-items:center;justify-content:center;min-height:118px;box-shadow:var(--shadow)}
 .card:active{transform:scale(.98)}
 .card .ic{font-size:1.9rem;line-height:1}
+.card.big{min-height:132px}.card.big b{font-size:1.25rem}
+.sec{border-inline-start:4px solid var(--acc)}
 .card b{font-size:1.1rem;line-height:1.5}
 .card small{color:var(--mute);font-size:.82rem}
 .card.cont{grid-column:1/-1;flex-direction:row;justify-content:space-between;text-align:right;min-height:0;padding:14px 16px;border-color:var(--acc)}
@@ -319,12 +321,23 @@ function home(){
   var h='<div class="home">',l=lastGet();
   if(l&&BYID[l]&&BYID[l].has)h+='<div class="cards" style="margin-bottom:14px"><button class="card cont" data-nav="#/s/'+l+'"><span><small>تابع القراءة</small><b>'+esc(BYID[l].title)+'</b></span><span class="ic">▶</span></button></div>';
   h+='<h2>الأقسام</h2><div class="cards">';
-  D.groups.forEach(function(g){var n=g.sections.length,k=g.sections.filter(function(x){return x.has}).length;
-    h+='<button class="card" data-nav="#/g/'+g.id+'"><span class="ic">'+(ICONS[g.id]||"☩")+'</span><b>'+esc(g.title)+'</b><small>'+n+' قسمًا'+(k<n?' · '+(k?k+' متاح':'قريبًا'):'')+'</small></button>'});
+  var LIT={bas:1,greg:1,cyr:1},did=false;
+  D.groups.forEach(function(g){
+    if(LIT[g.id]){if(did)return;did=true;
+      h+='<button class="card big" data-nav="#/g/lit"><span class="ic">⛪</span><b>القداسات الثلاثة</b><small>باسيليوس · غريغوريوس · كيرلس</small></button>';return}
+    var n=g.sections.length,k=g.sections.filter(function(x){return x.has}).length;
+    h+='<button class="card big" data-nav="#/g/'+g.id+'"><span class="ic">'+(ICONS[g.id]||"☩")+'</span><b>'+esc(g.title)+'</b><small>'+n+' قسمًا'+(k<n?' · '+(k?k+' متاح':'قريبًا'):'')+'</small></button>'});
   h+='</div></div>';
   app.innerHTML=h;window.scrollTo(0,0)}
 var LET={},LORDER="ابتثجحخدذرزسشصضطظعغفقكلمنهوي".split("");
+function litView(){
+  ctl(false);document.title="القداسات الثلاثة — الخولاجي";
+  var h='<div class="crumb"><button data-nav="#/">⌂ الرئيسية</button></div><div class="gh"><h2>القداسات الثلاثة</h2></div><div class="cards">';
+  ["bas","greg","cyr"].forEach(function(id){var g=D.groups.filter(function(x){return x.id===id})[0];if(!g)return;
+    h+='<button class="card big" data-nav="#/g/'+id+'"><span class="ic">⛪</span><b>'+esc(g.title)+'</b><small>'+g.sections.length+' قسمًا</small></button>'});
+  app.innerHTML=h+'</div>';window.scrollTo(0,0)}
 function groupView(gid){
+  if(gid==="lit")return litView();
   var g=D.groups.filter(function(x){return x.id===gid})[0];if(!g)return home();
   ctl(false);document.title=g.title+" — الخولاجي";
   var h='<div class="crumb"><button data-nav="#/">⌂ الرئيسية</button></div><div class="gh"><h2>'+esc(g.title)+'</h2></div>';
