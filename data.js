@@ -59,6 +59,7 @@ window.KHULAGI = {
       { id: "bas-euxes", title: "بصلوات وشفاعات (تذكارات البطاركة)", page: 407 },
       { id: "bas-pinishti", title: "الأب العظيم أنبا أنطونيوس (ⲡⲓⲛⲓϣϯ)", page: 416 },
       { id: "bas-raqdeen", title: "طلبة عن الراقدين", page: 417 },
+      { id: "bas-nhmen", title: "فأولئك يا رب (ⲛⲏ ⲙⲉⲛ)", page: 420 },
       { id: "bas-qisma-intro", title: "مقدمة القسمة", page: 422 },
       { id: "bas-qisma", title: "القسمة", page: 427 },
       { id: "bas-after-qisma", title: "صلوات ما بعد القسمة", page: 431 },
