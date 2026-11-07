@@ -83,6 +83,7 @@ window.KHULAGI = {
       { id: "greg-hijab2", title: "صلاة ثانية للحجاب", page: 511 },
       { id: "greg-solh", title: "صلاة الصلح", page: 514 },
       { id: "greg-solh2", title: "صلاة صلح ثانية", page: 520 },
+      { id: "greg-anaphora", title: "الأنافورا — الأغابي", page: 527 },
       { id: "greg-mustahiq", title: "مستحق ومستوجب", page: 530 },
       { id: "greg-qudduus", title: "قدوس", page: 537 },
       { id: "greg-anta-sayyidi", title: "أنت يا سيدي", page: 541 },
