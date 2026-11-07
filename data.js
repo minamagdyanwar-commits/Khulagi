@@ -43,6 +43,7 @@ window.KHULAGI = {
       { id: "bas-after-ing", title: "الأواشي بعد الإنجيل", page: 306 },
       { id: "bas-amana", title: "الأمانة", page: 321 },
       { id: "bas-solh", title: "صلاة الصلح", page: 328 },
+      { id: "bas-aspasmos", title: "الأسبسمسات", page: 338 },
       { id: "bas-mustahiq", title: "مستحق ومستوجب", page: 347 },
       { id: "bas-qudduus", title: "قدوس", page: 358 },
       { id: "bas-tajassud", title: "تجسد وتأنس", page: 360 },
