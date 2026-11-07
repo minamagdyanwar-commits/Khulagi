@@ -129,6 +129,20 @@ mark{background:rgba(240,138,60,.4);color:inherit;border-radius:3px}
 .scrim.on{display:block}
 .sheet{position:fixed;inset-inline:0;bottom:0;z-index:50;background:var(--card);border-top:1px solid var(--line);border-radius:20px 20px 0 0;padding:16px 16px calc(18px + env(safe-area-inset-bottom));max-height:80vh;overflow:auto;transform:translateY(105%);transition:transform .25s;box-shadow:var(--shadow);max-width:860px;margin:0 auto}
 .sheet.on{transform:none}
+.sheet.drawer{inset:0 auto 0 0;width:min(380px,92vw);max-height:none;border-radius:0 18px 18px 0;border:1px solid var(--line);border-top:0;transform:translateX(-105%);padding:0 10px calc(14px + env(safe-area-inset-bottom))}
+.sheet.drawer.on{transform:none}
+.sth{position:sticky;top:0;z-index:2;background:var(--card);display:flex;align-items:center;justify-content:space-between;padding:12px 4px 10px;font-weight:700;font-size:1.1rem;color:var(--ink)}
+.stx{width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:var(--card2);color:var(--ink);font-size:1rem}
+.stg{border:1px solid var(--line);border-radius:12px;background:var(--card2);margin:0 0 10px;overflow:hidden}
+.stgh{display:flex;width:100%;align-items:center;justify-content:space-between;padding:13px 14px;background:transparent;border:0;color:var(--ink);font:inherit;font-weight:700;font-size:.98rem;cursor:pointer}
+.stgc{transition:transform .2s;color:var(--lk)}
+.stg.open .stgc{transform:rotate(180deg)}
+.stgb{display:none;padding:2px 14px 12px;border-top:1px dashed var(--line)}
+.stg.open .stgb{display:block}
+.stl{margin:12px 0 6px;font-size:.85rem;color:var(--mute,var(--ink));font-weight:700}
+.stgb .set:last-child{border-bottom:0}
+.sheet.drawer .sw button{border-radius:10px;padding:7px 11px}
+
 .sheet h3{margin:0 0 10px;color:var(--acc)}
 .sheet .nt{line-height:2;font-size:1.02rem}
 .set{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
@@ -423,25 +437,33 @@ app.addEventListener("click",function(e){
 
 /* sheets */
 var sh=$("#sheet"),sc=$("#scrim");
-function sheet(html){sh.innerHTML=html;sh.classList.add("on");sc.classList.add("on")}
+function sheet(html,dr){sh.innerHTML=html;sh.classList.toggle("drawer",!!dr);sh.classList.add("on");sc.classList.add("on")}
 function close(){sh.classList.remove("on");sc.classList.remove("on")}
 sc.addEventListener("click",close);
 document.addEventListener("keydown",function(e){if(e.key==="Escape")close()});
 
 var THEMES=[["church","كنيسة · لازورد وذهب"],["churchnight","كنيسة · ليل بنفسجي"],["dark","ليلي ذهبي"],["parchment","رَقّ"],["light","فاتح"],["night","أزرق ليلي"],["forest","أخضر"],["royal","ملكي"]];
+var STG={look:true};
+function grp(id,ic,t,body){var o=!!STG[id];return '<div class="stg'+(o?' open':'')+'"><button class="stgh" data-stg="'+id+'" aria-expanded="'+o+'"><span>'+ic+' '+t+'</span><span class="stgc">▾</span></button><div class="stgb">'+body+'</div></div>'}
 function settings(){
-  var h='<h3>الإعدادات</h3><div class="set"><span>المظهر</span></div><div class="sw" style="margin-bottom:8px">';
-  THEMES.forEach(function(t){h+='<button data-th="'+t[0]+'" class="'+(S.theme===t[0]?'on':'')+'">'+t[1]+'</button>'});
-  h+='</div><div class="set"><span>حجم الخط</span><div class="fsr"><button data-fs="-2">أ-</button><b>'+S.fs+'</b><button data-fs="2">أ+</button></div></div>';
-  [["rub","الإرشادات الحمراء"],["med","التأملات"]].forEach(function(r){h+='<div class="set"><span>'+r[1]+'</span><button class="tg'+(S[r[0]]?' on':'')+'" data-tg="'+r[0]+'" aria-label="'+r[1]+'"></button></div>'});
-  if(window.KS)h+=KS.settings();
-  h+='<p class="hint">المعرب تعريب آلي تقريبي. النص القبطي منقول يدويًا من الطبعة المطبوعة ويحتاج مراجعة كنسية قبل الاستعمال الطقسي.</p>';
-  h+='<p class="hint" id="verln">رقم النسخة: …</p>';
-  sheet(h);
+  var sy=sh.scrollTop;var look='<div class="stl">الثيم</div><div class="sw">';
+  THEMES.forEach(function(t){look+='<button data-th="'+t[0]+'" class="'+(S.theme===t[0]?'on':'')+'">'+t[1]+'</button>'});
+  look+='</div><div class="stl">حجم الخط</div><div class="fsr"><button data-fs="-2" aria-label="تصغير الخط">أ-</button><b>'+S.fs+'</b><button data-fs="2" aria-label="تكبير الخط">أ+</button></div>';
+  var rd='';[["rub","الإرشادات الحمراء"],["med","التأملات"]].forEach(function(r){rd+='<div class="set"><span>'+r[1]+'</span><button class="tg'+(S[r[0]]?' on':'')+'" data-tg="'+r[0]+'" aria-label="'+r[1]+'"></button></div>'});
+  var G=window.KS?KS.settings():{};
+  var h='<div class="sth"><span>⚙ الإعدادات</span><button class="stx" data-x aria-label="إغلاق">✕</button></div>';
+  h+=grp("look","🎨","المظهر والخط",look);
+  h+=grp("read","📖","القراءة والدراسة",rd+(G.study||""));
+  if(G.home)h+=grp("home","🏠","أقسام الصفحة الرئيسية",G.home);
+  if(G.backup)h+=grp("bk","💾","النسخة الاحتياطية والتثبيت",G.backup);
+  h+=grp("about","ℹ","عن التطبيق",'<p class="hint">المعرب تعريب آلي تقريبي. النص القبطي منقول يدويًا من الطبعة المطبوعة ويحتاج مراجعة كنسية قبل الاستعمال الطقسي.</p><p class="hint" id="verln">رقم النسخة: …</p>');
+  sheet(h,true);sh.scrollTop=sy;
   var vn=function(t){var e=document.getElementById("verln");if(e)e.textContent="رقم النسخة: "+t};
   if(window.caches)caches.keys().then(function(k){var m=k.filter(function(x){return x.indexOf("khulagi")===0}).sort().pop();vn(m?m.replace("khulagi-","").replace("-shell",""):"غير مثبّتة")}).catch(function(){vn("غير متاح")});else vn("غير متاح");
 }
 sh.addEventListener("click",function(e){
+  var sg=e.target.closest("[data-stg]");if(sg){var k=sg.getAttribute("data-stg");STG[k]=!STG[k];var bx=sg.parentNode;bx.classList.toggle("open",!!STG[k]);sg.setAttribute("aria-expanded",!!STG[k]);return}
+  if(e.target.closest("[data-x]")){close();return}
   var t=e.target.closest("[data-th]");if(t){S.theme=t.dataset.th;save();apply();settings();return}
   var f=e.target.closest("[data-fs]");if(f){S.fs=Math.max(14,Math.min(40,S.fs+parseInt(f.dataset.fs,10)));save();apply();settings();route();return}
   var g=e.target.closest("[data-tg]");if(g){S[g.dataset.tg]=!S[g.dataset.tg];save();settings();route();return}

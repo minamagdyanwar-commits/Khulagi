@@ -185,13 +185,12 @@ function compare(){
 /* ---------- إعدادات إضافية ---------- */
 var TOG=[["vref","روابط الآيات (اضغط الآية لقراءتها)"],["guide","دليل كل جزء"],["mov","بطاقات الحركات والإرشادات"],["today","تاريخ اليوم والذكصولوجيات"],["calm","تقليل الحركة"],["wake","إبقاء الشاشة مضاءة"]];
 function settingsHtml(){
-  var h='<div class="set"><span><b>الدراسة والقراءة</b></span></div>';
-  TOG.forEach(function(r){h+='<div class="set"><span>'+r[1]+'</span><button class="tg'+(S()[r[0]]?' on':'')+'" data-tg="'+r[0]+'" aria-label="'+r[1]+'"></button></div>'});
-  h+='<div class="set"><span><b>أقسام الصفحة الرئيسية</b></span></div>';
-  K.D.groups.forEach(function(g){var hid=(S().hide||[]).indexOf(g.id)>-1;h+='<div class="set"><span>'+esc(g.title)+'</span><button class="tg'+(hid?'':' on')+'" data-ks="hide" data-g="'+g.id+'" aria-label="'+esc(g.title)+'"></button></div>'});
-  h+='<div class="set"><span><b>النسخة الاحتياطية</b></span></div><div class="set"><button class="ksb" data-ks="export">تصدير ملاحظاتي وإعداداتي</button><label class="ksb" for="ksimp">استرجاع</label><input id="ksimp" type="file" accept="application/json" hidden></div>';
-  if(deferred)h+='<div class="set"><span>تثبيت التطبيق</span><button class="ksb" data-ks="install">تثبيت الآن</button></div>';
-  return h}
+  var o={study:'',home:'',backup:''};
+  TOG.forEach(function(r){o.study+='<div class="set"><span>'+r[1]+'</span><button class="tg'+(S()[r[0]]?' on':'')+'" data-tg="'+r[0]+'" aria-label="'+r[1]+'"></button></div>'});
+  K.D.groups.forEach(function(g){var hid=(S().hide||[]).indexOf(g.id)>-1;o.home+='<div class="set"><span>'+esc(g.title)+'</span><button class="tg'+(hid?'':' on')+'" data-ks="hide" data-g="'+g.id+'" aria-label="'+esc(g.title)+'"></button></div>'});
+  o.backup+='<div class="set"><button class="ksb" data-ks="export">تصدير ملاحظاتي وإعداداتي</button><label class="ksb" for="ksimp">استرجاع</label><input id="ksimp" type="file" accept="application/json" hidden></div>';
+  if(deferred)o.backup+='<div class="set"><span>تثبيت التطبيق</span><button class="ksb" data-ks="install">تثبيت الآن</button></div>';
+  return o}
 var deferred=null;
 window.addEventListener("beforeinstallprompt",function(e){e.preventDefault();deferred=e});
 function applyPrefs(){
