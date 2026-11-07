@@ -56,6 +56,7 @@ window.KHULAGI = {
       { id: "bas-ewash-after", title: "تتمة أواشي المياه والزروع والثمار", page: 386 },
       { id: "bas-majma", title: "المجمع", page: 390 },
       { id: "bas-tarheem", title: "الترحيم", page: 401 },
+      { id: "bas-euxes", title: "بصلوات وشفاعات (تذكارات البطاركة)", page: 407 },
       { id: "bas-qisma-intro", title: "مقدمة القسمة", page: 422 },
       { id: "bas-qisma", title: "القسمة", page: 427 },
       { id: "bas-after-qisma", title: "صلوات ما بعد القسمة", page: 431 },
