@@ -61,6 +61,7 @@ window.KHULAGI = {
       { id: "bas-raqdeen", title: "طلبة عن الراقدين", page: 417 },
       { id: "bas-nhmen", title: "فأولئك يا رب (ⲛⲏ ⲙⲉⲛ)", page: 420 },
       { id: "bas-qisma-intro", title: "مقدمة القسمة", page: 422 },
+      { id: "bas-tartib", title: "ترتيب القسمة", page: 426 },
       { id: "bas-qisma", title: "القسمة", page: 427 },
       { id: "bas-after-qisma", title: "صلوات ما بعد القسمة", page: 431 },
       { id: "bas-itiraf", title: "الاعتراف", page: 452 },
