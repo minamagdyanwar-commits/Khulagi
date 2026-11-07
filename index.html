@@ -188,6 +188,26 @@ mark{background:rgba(240,138,60,.4);color:inherit;border-radius:3px}
 :root[data-theme^=church] .toast{background:var(--card);color:var(--ink);border-color:var(--gold)}
 @media (max-width:520px){.cop,.ar{padding:8px 9px}}
 @media print{header.top,.pager,.ib{display:none}body{background:#fff;color:#000}}
+
+.vref{color:var(--acc);text-decoration:underline dotted;cursor:pointer;font-weight:600}
+.vtext p{margin:6px 0;line-height:2}.vtext b{color:var(--acc);font-size:.8em;padding-inline-end:4px}.vl.vh{background:var(--card2);border-radius:8px;padding:2px 6px}
+.vnav{display:flex;gap:8px;margin:10px 0}.vnav button,.ksb{padding:8px 14px;border:1.5px solid var(--acc);border-radius:999px;background:transparent;color:var(--ink);font:inherit;font-size:.9rem;display:inline-block;cursor:pointer}
+.kg{margin:8px 12px;border:1.5px solid var(--line);border-radius:14px;background:var(--card)}.kg summary{padding:10px 14px;font-weight:700;color:var(--acc);cursor:pointer}.kgb{padding:2px 14px 12px;line-height:1.9;font-size:.95rem}.kgb p{margin:6px 0}
+.kgs{display:flex;gap:6px;flex-wrap:wrap;margin:4px 0 8px}.kgs span{padding:3px 9px;border:1px solid var(--line);border-radius:999px;font-size:.78rem;color:var(--mute)}.kgs span.on{background:var(--acc);color:#fff;border-color:var(--acc)}
+.rub.mv{display:flex;gap:8px;align-items:flex-start;text-align:start;margin:10px 10px 6px;padding:8px 10px;border:1px solid var(--line);border-inline-start:4px solid var(--acc);border-radius:10px;background:var(--card2)}
+.mv .mvc{flex:none;font-size:.72rem;color:var(--acc);font-weight:700;white-space:nowrap;padding-top:4px}.mv .mvt{flex:1}.mv .mvq{flex:none;border:1px solid var(--acc);background:transparent;color:var(--acc);border-radius:999px;font-size:.72rem;padding:2px 8px;cursor:pointer;font:inherit;font-size:.72rem}
+.ksc{margin:0 0 12px;padding:12px 14px;border:1.5px solid var(--line);border-radius:14px;background:var(--card)}.ksc>b{display:block;color:var(--acc);margin-bottom:4px}.ksc>span{color:var(--mute);font-size:.9rem}.ksl{display:flex;flex-direction:column;gap:6px;margin:8px 0}
+.plr{display:flex;align-items:center;gap:10px}.pk{width:28px;height:28px;border:2px solid var(--acc);border-radius:8px;background:transparent;color:var(--acc);font-weight:700}.plr.pd .pt{text-decoration:line-through;opacity:.6}.plr .pt{flex:1;cursor:pointer}
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 10px}.cmc{border:1.5px solid var(--line);border-radius:12px;padding:8px;background:var(--card);min-width:0}.cmc h4{margin:0 0 6px;color:var(--acc)}.cmt{max-height:60vh;overflow:auto;font-size:.82rem;line-height:1.8}.cmt p{margin:4px 0}.cmt .cr{color:var(--rub);font-size:.75rem}
+
+:root{--lk:var(--acc);--onacc:#111}
+:root[data-theme=church],:root[data-theme=parchment],:root[data-theme=light]{--lk:#6b4a00;--onacc:#fff}
+.kg,.ksc,.cmc{color:var(--ink)}
+.vref{color:var(--lk)!important}.kg summary,.ksc>b,.mv .mvc,.mv .mvq,.cmc h4{color:var(--lk)}
+.mv .mvt{color:var(--ink)}.mv .mvq{border-color:var(--lk)}
+.kgs span.on{background:var(--acc);color:var(--onacc)}
+:root[data-theme=church] .kgs span.on,:root[data-theme=parchment] .kgs span.on,:root[data-theme=light] .kgs span.on{background:#6b4a00;border-color:#6b4a00}
+.calm *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
 </style>
 </head>
 <body>
@@ -205,7 +225,7 @@ mark{background:rgba(240,138,60,.4);color:inherit;border-radius:3px}
 (function(){
 "use strict";
 var D=window.KHULAGI, $=function(s,e){return (e||document).querySelector(s)};
-var DEF={theme:"church",fs:22,cop:true,ar:true,tr:true,pg:false,rub:true,notes:true,med:true,medAll:"closed"};
+var DEF={vref:true,guide:true,mov:true,today:true,calm:false,wake:false,hide:[],theme:"church",fs:22,cop:true,ar:true,tr:true,pg:false,rub:true,notes:true,med:true,medAll:"closed"};
 var S=Object.assign({},DEF);
 
 var TRM={"ⲁ":"ا","ⲃ":"ڤ","ⲅ":"غ","ⲇ":"د","ⲉ":"ي","ⲍ":"ز","ⲏ":"ي","ⲑ":"ث","ⲓ":"ي","ⲕ":"ك","ⲗ":"ل","ⲙ":"م","ⲛ":"ن","ⲝ":"كس","ⲟ":"و","ⲡ":"ب","ⲣ":"ر","ⲥ":"س","ⲧ":"ت","ⲩ":"ي","ⲫ":"ف","ⲭ":"خ","ⲯ":"بس","ⲱ":"و","ϣ":"ش","ϥ":"ف","ϧ":"خ","ϩ":"ه","ϫ":"ج","ϭ":"تش","ϯ":"تي"};
@@ -290,6 +310,7 @@ function reader(id,q){
   var c=D.content[id],h='';
   var cols=[];if(S.ar)cols.push("ar");if(S.tr)cols.push("tr");if(S.cop)cols.push("cop");
   h+='<div class="crumb"><button data-nav="#/">⌂ الرئيسية</button><button data-nav="#/g/'+s.group.id+'">‹ '+esc(s.group.title)+'</button></div>';
+  if(window.KS)h+=KS.guide(id,s,c);
   if(c&&S.med&&c.items.some(function(i){return i.med})){var n=c.items.filter(function(i){return i.med}).length;h+='<div class="medbar"><span>'+n+' تأملًا في هذا القسم</span><button data-medall="open">فتح الكل</button><button data-medall="closed">طيّ الكل</button></div>'}
   if(!c){h+='<div class="empty"><b>هذا القسم لم يُنقل بعد</b>موضعه في الكتاب المطبوع صفحة '+s.page+'. يُضاف في الدفعات القادمة.</div>'}
   else{
@@ -297,7 +318,7 @@ function reader(id,q){
     var alt=0,isDox=s.group.id==="dox";
     c.items.forEach(function(it){
       if(it.k==="pg"){if(S.pg)h+='<div class="pgm">ص '+it.n+'</div>'}
-      else if(it.k==="r"){if(S.rub)h+='<div class="rub">'+fnify(it.t,q)+'</div>';h+=medHtml(it)}
+      else if(it.k==="r"){if(S.rub)h+=(window.KS?KS.rub(it.t,fnify(it.t,q)):'<div class="rub">'+fnify(it.t,q)+'</div>');h+=medHtml(it)}
       else{
         if(!cols.length)return;
         var zc="";if(isDox&&!it.sp){zc=(alt++%2)?' zb':' za'}
@@ -327,9 +348,11 @@ function home(){
   ctl(false);document.title="الخولاجي المقدس";
   var h='<div class="home">',l=lastGet();
   if(l&&BYID[l]&&BYID[l].has)h+='<div class="cards" style="margin-bottom:14px"><button class="card cont" data-nav="#/s/'+l+'"><span><small>تابع القراءة</small><b>'+esc(BYID[l].title)+'</b></span><span class="ic">▶</span></button></div>';
+  if(window.KS)h+=KS.home();
   h+='<h2>الأقسام</h2><div class="cards">';
   var LIT={bas:1,greg:1,cyr:1},did=false;
   D.groups.forEach(function(g){
+    if((S.hide||[]).indexOf(g.id)>-1&&!(LIT[g.id]))return;
     if(LIT[g.id]){if(did)return;did=true;
       h+='<button class="card big" data-nav="#/g/lit"><span class="ic">⛪</span><b>القداسات الثلاثة</b><small>باسيليوس · غريغوريوس · كيرلس</small></button>';return}
     var n=g.sections.length,k=g.sections.filter(function(x){return x.has}).length;
@@ -379,6 +402,8 @@ function groupView(gid){
 function route(){
   var h=location.hash.replace(/^#\/?/,"");
   if(h.indexOf("s/")===0){var p=h.slice(2).split("?q=");if(!BYID[p[0]])return home();ctl(true);reader(p[0],p[1]?decodeURIComponent(p[1]):"")}
+  else if(h==="compare"&&window.KS)KS.compare();
+  else if(h==="plan"&&window.KS)KS.plan();
   else if(h.indexOf("g/")===0)groupView(h.slice(2));
   else home();
 }
@@ -392,7 +417,7 @@ app.addEventListener("click",function(e){
   var nv=e.target.closest("[data-nav]");if(nv){location.hash=nv.getAttribute("data-nav");return}
   var lt=e.target.closest("[data-let]");if(lt){LET[lt.getAttribute("data-g")]=lt.getAttribute("data-let");groupView(lt.getAttribute("data-g"));return}
   var g=e.target.closest("[data-go]");if(g){if(g.getAttribute("data-go"))go(g.getAttribute("data-go"));return}
-  var f=e.target.closest("sup.fn");if(f){var sid=(location.hash.match(/s\/([^?]+)/)||[])[1]||pick.value;var c=D.content[sid];var t=c&&c.notes&&c.notes[f.dataset.n];sheet('<h3>هامش '+f.dataset.n+'</h3><div class="nt">'+(t?fnify(t):"—")+'</div>')}
+  var f=e.target.closest("sup.fn");if(f){var sid=(location.hash.match(/s\/([^?]+)/)||[])[1]||pick.value;var c=D.content[sid];var t=c&&c.notes&&c.notes[f.dataset.n];sheet('<h3>هامش '+f.dataset.n+'</h3><div class="nt">'+(t?(window.KS?KS.linkRefs(fnify(t)):fnify(t)):"—")+'</div>')}
 });
 
 /* sheets */
@@ -408,6 +433,7 @@ function settings(){
   THEMES.forEach(function(t){h+='<button data-th="'+t[0]+'" class="'+(S.theme===t[0]?'on':'')+'">'+t[1]+'</button>'});
   h+='</div><div class="set"><span>حجم الخط</span><div class="fsr"><button data-fs="-2">أ-</button><b>'+S.fs+'</b><button data-fs="2">أ+</button></div></div>';
   [["rub","الإرشادات الحمراء"],["med","التأملات"]].forEach(function(r){h+='<div class="set"><span>'+r[1]+'</span><button class="tg'+(S[r[0]]?' on':'')+'" data-tg="'+r[0]+'" aria-label="'+r[1]+'"></button></div>'});
+  if(window.KS)h+=KS.settings();
   h+='<p class="hint">المعرب تعريب آلي تقريبي. النص القبطي منقول يدويًا من الطبعة المطبوعة ويحتاج مراجعة كنسية قبل الاستعمال الطقسي.</p>';
   h+='<p class="hint" id="verln">رقم النسخة: …</p>';
   sheet(h);
@@ -437,7 +463,11 @@ function openSearch(){sheet('<h3>بحث</h3><input id="q" class="search" placeho
 if("serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js",{updateViaCache:"none"}).then(function(r){r.update()}).catch(function(){});var had=!!navigator.serviceWorker.controller;navigator.serviceWorker.addEventListener("controllerchange",function(){if(had&&!window.__rl){window.__rl=1;location.reload()}})})}
 
 load();try{if(!localStorage.getItem("khulagi.v12")){S.theme="church";save();localStorage.setItem("khulagi.v12","1")}}catch(e){}apply();opts();ensureAll().then(function(){SECS.forEach(function(x){x.has=!!D.content[x.id]});fillPick();route()});
+window.KH={S:function(){return S},save:save,sheet:sheet,close:close,esc:esc,go:go,ctl:ctl,app:app,route:route,settings:settings,D:D,BYID:BYID};
 })();
 </script>
+<script src="study-data.js"></script>
+<script src="study.js"></script>
+<script>if(window.KS){KS.apply();document.addEventListener("click",function(){KS.apply()},{once:true})}</script>
 </body>
 </html>
