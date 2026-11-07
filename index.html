@@ -433,7 +433,7 @@ function doSearch(q){
 function openSearch(){sheet('<h3>بحث</h3><input id="q" class="search" placeholder="ابحث في الأقسام والنصوص…" autocomplete="off"><div id="sr"></div>');var q=$("#q");q.focus();q.addEventListener("input",function(){doSearch(q.value)})}
 
 /* PWA */
-if("serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})})}
+if("serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js",{updateViaCache:"none"}).then(function(r){r.update()}).catch(function(){});var had=!!navigator.serviceWorker.controller;navigator.serviceWorker.addEventListener("controllerchange",function(){if(had&&!window.__rl){window.__rl=1;location.reload()}})})}
 
 load();try{if(!localStorage.getItem("khulagi.v12")){S.theme="church";save();localStorage.setItem("khulagi.v12","1")}}catch(e){}apply();opts();ensureAll().then(function(){SECS.forEach(function(x){x.has=!!D.content[x.id]});fillPick();route()});
 })();
