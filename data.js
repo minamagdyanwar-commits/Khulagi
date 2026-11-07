@@ -66,6 +66,7 @@ window.KHULAGI = {
       { id: "bas-after-qisma", title: "صلوات ما بعد القسمة", page: 431 },
       { id: "bas-khudu", title: "صلاة الخضوع", page: 433 },
       { id: "bas-tahlil-ab", title: "تحليل الآب", page: 437 },
+      { id: "bas-tazkar-ab", title: "تذكار تحليل الآب", page: 442 },
       { id: "bas-itiraf", title: "الاعتراف", page: 452 },
       { id: "bas-before-comm", title: "صلوات ما قبل التناول", page: 458 },
       { id: "bas-comm", title: "التناول", page: 462 },
