@@ -73,6 +73,7 @@ window.KHULAGI = {
       { id: "bas-comm", title: "التناول", page: 462 },
       { id: "bas-after-comm", title: "صلوات ما بعد التناول", page: 468 },
       { id: "bas-wad-yad", title: "صلاة وضع يد بعد التناول", page: 472 },
+      { id: "bas-tasrih", title: "التسريح", page: 474 },
       { id: "bas-blessing", title: "البركة والتسريح", page: 475 },
       { id: "bas-rushum", title: "رشومات القداس وإشاراته", page: 489 } ] },
     { id: "greg", title: "قداس القديس إغريغوريوس", sections: [
