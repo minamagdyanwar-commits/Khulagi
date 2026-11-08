@@ -352,22 +352,23 @@ div.ixgh{color:var(--lk)}
 :root[data-theme^=church] .ixmb button{color:var(--ink);border-color:var(--gold)}
 :root[data-theme^=church] .ixmb button.on{background:linear-gradient(180deg,var(--gold-hi),var(--gold) 60%,var(--gold-lo));color:#2b1d12}
 
-/* التأمل: خط وخلفية وشكل مختلفة عن نص الصلاة */
-:root{--md-bg:#1c2e26;--md-ink:#e6f1ea;--md-line:#5aa883;--md-acc:#8fd8b0;--md-mute:#a9c4b4}
-:root[data-theme=church],:root[data-theme=parchment],:root[data-theme=light]{--md-bg:#e4eee3;--md-ink:#1c2a1e;--md-line:#5f8f69;--md-acc:#2a6638;--md-mute:#46594a}
-.med{margin:10px 10px 12px;background:var(--md-bg);color:var(--md-ink);border:1.5px solid var(--md-line);border-inline-start:6px solid var(--md-line);border-radius:14px;font-family:"Tajawal","Cairo","Segoe UI",Tahoma,sans-serif;overflow:hidden}
-.med .medb{width:100%;border:0;border-radius:0;background:rgba(95,143,105,.18);color:var(--md-acc);padding:7px 12px;font-family:inherit;font-size:.88rem;display:flex;gap:8px;align-items:center;text-align:start}
+/* التأمل: خط وخلفية وشكل مختلفة عن نص الصلاة، بنفس روح ألوان الثيم (درجة أغمق/أفتح من البطاقة) */
+:root{--md-bg:var(--card2);--md-ink:var(--ink);--md-line:var(--line);--md-acc:var(--lk);--md-mute:var(--mute)}
+.med{margin:10px 10px 12px;background:var(--md-bg);color:var(--md-ink);border:1.5px dashed var(--md-line);border-inline-start:6px solid var(--md-line);border-radius:14px;font-family:"Tajawal","Cairo","Segoe UI",Tahoma,sans-serif;overflow:hidden}
+:root[data-theme^=church] .med{border-color:var(--gold)}
+.med .medb{width:100%;border:0;border-radius:0;background:color-mix(in srgb,var(--md-acc) 14%,transparent);color:var(--md-acc);padding:7px 12px;font-family:inherit;font-size:.88rem;display:flex;gap:8px;align-items:center;text-align:start}
 .med .mbi{color:var(--md-acc);font-weight:700}.med .mbt{color:var(--md-ink);font-weight:400;opacity:.9}.med .mbc{margin-inline-start:auto;color:var(--md-acc)}
 .med .medc{margin:0;padding:10px 14px 12px;border:0;border-radius:0;background:transparent;color:var(--md-ink);line-height:2;font-size:.96rem}
 .med .medc h4{color:var(--md-acc);font-size:1.02rem;margin:0 0 2px}
 .med .medc .mv{color:var(--md-mute);font-size:.84rem;margin:0 0 4px}
-.med .medc p{margin:5px 0}.med .mp,.med .mx{background:rgba(95,143,105,.14);border-radius:9px;padding:6px 10px;color:var(--md-ink)}
+.med .medc p{margin:5px 0}.med .mp,.med .mx{background:color-mix(in srgb,var(--md-acc) 10%,transparent);border-radius:9px;padding:6px 10px;color:var(--md-ink)}
 .med .mp b,.med .mx b{display:block;color:var(--md-acc);font-size:.8rem}
 .med .medc .ms{color:var(--md-mute);font-size:.72rem}
 .unp .med{margin:8px 10px}
-.unq{margin:12px 12px 0;font-family:"Tajawal","Cairo",sans-serif;font-size:.8rem;color:var(--md-acc)}
-:root[data-theme=church] .unq{color:#bfe3cc}
+.unq{margin:12px 12px 0;font-family:"Tajawal","Cairo",sans-serif;font-size:.8rem;color:var(--lk)}
+:root[data-theme=church] .unq{color:#d8c9a3}
 .medcue{display:block;margin:10px 10px 2px;width:calc(100% - 20px);padding:9px 12px;border:1.5px dashed var(--md-line);border-radius:12px;background:var(--md-bg);color:var(--md-acc);font-family:"Tajawal","Cairo",sans-serif;font-weight:700;font-size:.92rem;text-align:start}
+:root[data-theme^=church] .medcue{border-color:var(--gold)}
 </style>
 </head>
 <body>
