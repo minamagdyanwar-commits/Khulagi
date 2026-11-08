@@ -16,7 +16,7 @@ function hscroll(t){
     var o=getComputedStyle(t).overflowX;if((o==="auto"||o==="scroll")&&t.scrollWidth>t.clientWidth+4)return true}
   return false}
 function blocked(t){
-  return !t||!t.closest||!!t.closest("input,textarea,select,[contenteditable],.sheet.on,.scrim.on,.idx,#opts,#selw")||hscroll(t)||sel()}
+  return !t||!t.closest||!!t.closest("input,textarea,select,[contenteditable],.sheet.on,.scrim.on,.idx,.dsheet,#opts,#selw")||hscroll(t)||sel()}
 function go(to,from){
   if(to.id===from.id&&K.setUnit(to.u))return;
   K.render(to.id,to.u);if(to.id!==from.id){try{history.pushState(null,"","#/s/"+to.id)}catch(e){location.hash="#/s/"+to.id}}window.scrollTo(0,0)}
