@@ -527,7 +527,7 @@ function unitParts(id,s,c,us,u,q,cols){
   tx+='</div>';
   if(S.med&&U.med.length){
     if(S.mp==="tab")tx+='<button class="medcue" data-ut="b">💭 تأمل هذه القطعة '+cnt(U.med.length)+' ‹</button>';
-    else U.med.forEach(function(it){var ctx=plain(it.ar||"").split(/\s+/).slice(0,9).join(" ");tx+='<div class="unq">تأمل في: «'+esc(ctx)+'…»</div>'+medHtml(it).replace('<div class="medc" hidden>','<div class="medc">').replace('aria-expanded="false"','aria-expanded="true"').replace('▾','▴')})}
+    else U.med.forEach(function(it){var ctx=(U.med.length===1?U.head:plain(it.ar||"").split(/\s+/).slice(0,9).join(" "));tx+='<div class="unq">'+(U.med.length===1?'تأمل في هذه القطعة':'تأمل في')+': «'+esc(ctx)+'…»</div>'+medHtml(it).replace('<div class="medc" hidden>','<div class="medc">').replace('aria-expanded="false"','aria-expanded="true"').replace('▾','▴')})}
   inner+='<div class="unp" data-up="a"'+(tab==="a"?'':' hidden')+'>'+tx+'</div>';
   if(medTab){var mh='';U.med.forEach(function(it){var ctx=plain(it.ar||"").split(/\s+/).slice(0,10).join(" ");mh+='<div class="unq">«'+esc(ctx)+'…»</div>'+medHtml(it).replace('<div class="medc" hidden>','<div class="medc">').replace('aria-expanded="false"','aria-expanded="true"').replace('▾','▴')});
     inner+='<div class="unp" data-up="b"'+(tab==="b"?'':' hidden')+'>'+mh+'</div>'}
