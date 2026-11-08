@@ -303,6 +303,7 @@ mark{background:rgba(240,138,60,.4);color:inherit;border-radius:3px}
 :root[data-theme^=church] .rmb{color:var(--gold-hi)}
 :root[data-theme^=church] .unq{color:#d8c9a3}
 .unp .medb{display:none}
+.cnt{unicode-bidi:isolate;white-space:nowrap}
 </style>
 </head>
 <body>
@@ -438,15 +439,16 @@ function rowHtml(it,cols,isDox,st,q){
     else if(k==="tr")h+='<div class="cell tr">'+(it.tr?(q?hl(esc(it.tr),q):esc(it.tr)):(it.cop?esc(trLine(it.cop)):''))+'</div>';
     else h+='<div class="cell cop">'+(it.cop?(q?hl(esc(it.cop),q):esc(it.cop)):'')+'</div>'});
   return h+'</div>'}
+function cnt(n){return '<span class="cnt" dir="ltr">('+String(n).replace(/\d/g,function(d){return "٠١٢٣٤٥٦٧٨٩"[d]})+')</span>'}
 function plain(t){return String(t).replace(/<[^>]*>/g,"").replace(/\[\^\d+\]/g,"")}
 function unitView(id,s,c,us,u,q,cols){
   var U=us[u],n=us.length,isDox=s.group.id==="dox",st={alt:0},pct=Math.round((u+1)/n*100);
   var h='<div class="unh"><span>القطعة '+(u+1)+' من '+n+(U.who?' · '+esc(U.who):'')+'</span><button data-uidx="1">فهرس القطع ▾</button></div><div class="unb"><i style="width:'+pct+'%"></i></div>';
   var tabs=[["a","النص"]];
   var medTab=S.med&&U.med.length&&S.mp!=="after";
-  if(medTab)tabs.push(["b","تأمل"+(U.med.length>1?" ("+U.med.length+")":"")]);
-  if(S.rub&&U.rub.length)tabs.push(["c","الحركات ("+U.rub.length+")"]);
-  if(U.notes.length)tabs.push(["d","هوامش ("+U.notes.length+")"]);
+  if(medTab)tabs.push(["b","تأمل"+(U.med.length>1?" "+cnt(U.med.length):"")]);
+  if(S.rub&&U.rub.length)tabs.push(["c","الحركات "+cnt(U.rub.length)]);
+  if(U.notes.length)tabs.push(["d","هوامش "+cnt(U.notes.length)]);
   var tab=tabs.some(function(t){return t[0]===UT})?UT:"a";
   if(tabs.length>1)h+='<div class="untabs" role="tablist">'+tabs.map(function(t){return '<button role="tab" data-ut="'+t[0]+'" class="'+(t[0]===tab?'on':'')+'" aria-selected="'+(t[0]===tab)+'">'+t[1]+'</button>'}).join("")+'</div>';
   // النص
