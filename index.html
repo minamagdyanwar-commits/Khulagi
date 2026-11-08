@@ -13,6 +13,10 @@
 @font-face{font-family:"Amiri";font-weight:700;src:url(amiri-arabic-700-normal.woff2) format("woff2");font-display:swap}
 @font-face{font-family:"Amiri";font-weight:400;src:url(amiri-latin-400-normal.woff2) format("woff2");font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122,U+2212,U+2215}
 @font-face{font-family:"Amiri";font-weight:700;src:url(amiri-latin-700-normal.woff2) format("woff2");font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122,U+2212,U+2215}
+@font-face{font-family:"Tajawal";font-weight:400;src:url(tajawal-arabic-400.woff2) format("woff2");font-display:swap;unicode-range:U+0600-06FF,U+0750-077F,U+0870-088E,U+0890-0891,U+0897-08E1,U+08E3-08FF,U+200C-200E,U+2010-2011,U+204F,U+2E41,U+FB50-FDFF,U+FE70-FE74,U+FE76-FEFC}
+@font-face{font-family:"Tajawal";font-weight:400;src:url(tajawal-latin-400.woff2) format("woff2");font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215}
+@font-face{font-family:"Tajawal";font-weight:700;src:url(tajawal-arabic-700.woff2) format("woff2");font-display:swap;unicode-range:U+0600-06FF,U+0750-077F,U+0870-088E,U+0890-0891,U+0897-08E1,U+08E3-08FF,U+200C-200E,U+2010-2011,U+204F,U+2E41,U+FB50-FDFF,U+FE70-FE74,U+FE76-FEFC}
+@font-face{font-family:"Tajawal";font-weight:700;src:url(tajawal-latin-700.woff2) format("woff2");font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215}
 @font-face{font-family:"CopticNoto";src:url(noto-sans-coptic-coptic-400-normal.woff2) format("woff2");font-display:swap;unicode-range:U+0370-03FF,U+1F00-1FFF,U+2C80-2CFF}
 @font-face{font-family:"CopticNoto";src:url(noto-sans-coptic-latin-400-normal.woff2) format("woff2");font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F}
 
@@ -304,7 +308,6 @@ mark{background:rgba(240,138,60,.4);color:inherit;border-radius:3px}
 :root[data-theme^=church] .unb i{background:var(--gold-hi)}
 :root[data-theme^=church] .rmb{color:var(--gold-hi)}
 :root[data-theme^=church] .unq{color:#d8c9a3}
-.unp .medb{display:none}
 .unm{position:relative}.unmi{will-change:auto}
 .cnt{unicode-bidi:isolate;white-space:nowrap}
 
@@ -348,6 +351,23 @@ div.ixgh{color:var(--lk)}
 .ixmb button.on{background:var(--lk);color:var(--card)}
 :root[data-theme^=church] .ixmb button{color:var(--ink);border-color:var(--gold)}
 :root[data-theme^=church] .ixmb button.on{background:linear-gradient(180deg,var(--gold-hi),var(--gold) 60%,var(--gold-lo));color:#2b1d12}
+
+/* التأمل: خط وخلفية وشكل مختلفة عن نص الصلاة */
+:root{--md-bg:#1c2e26;--md-ink:#e6f1ea;--md-line:#5aa883;--md-acc:#8fd8b0;--md-mute:#a9c4b4}
+:root[data-theme=church],:root[data-theme=parchment],:root[data-theme=light]{--md-bg:#e4eee3;--md-ink:#1c2a1e;--md-line:#5f8f69;--md-acc:#2a6638;--md-mute:#46594a}
+.med{margin:10px 10px 12px;background:var(--md-bg);color:var(--md-ink);border:1.5px solid var(--md-line);border-inline-start:6px solid var(--md-line);border-radius:14px;font-family:"Tajawal","Cairo","Segoe UI",Tahoma,sans-serif;overflow:hidden}
+.med .medb{width:100%;border:0;border-radius:0;background:rgba(95,143,105,.18);color:var(--md-acc);padding:7px 12px;font-family:inherit;font-size:.88rem;display:flex;gap:8px;align-items:center;text-align:start}
+.med .mbi{color:var(--md-acc);font-weight:700}.med .mbt{color:var(--md-ink);font-weight:400;opacity:.9}.med .mbc{margin-inline-start:auto;color:var(--md-acc)}
+.med .medc{margin:0;padding:10px 14px 12px;border:0;border-radius:0;background:transparent;color:var(--md-ink);line-height:2;font-size:.96rem}
+.med .medc h4{color:var(--md-acc);font-size:1.02rem;margin:0 0 2px}
+.med .medc .mv{color:var(--md-mute);font-size:.84rem;margin:0 0 4px}
+.med .medc p{margin:5px 0}.med .mp,.med .mx{background:rgba(95,143,105,.14);border-radius:9px;padding:6px 10px;color:var(--md-ink)}
+.med .mp b,.med .mx b{display:block;color:var(--md-acc);font-size:.8rem}
+.med .medc .ms{color:var(--md-mute);font-size:.72rem}
+.unp .med{margin:8px 10px}
+.unq{margin:12px 12px 0;font-family:"Tajawal","Cairo",sans-serif;font-size:.8rem;color:var(--md-acc)}
+:root[data-theme=church] .unq{color:#bfe3cc}
+.medcue{display:block;margin:10px 10px 2px;width:calc(100% - 20px);padding:9px 12px;border:1.5px dashed var(--md-line);border-radius:12px;background:var(--md-bg);color:var(--md-acc);font-family:"Tajawal","Cairo",sans-serif;font-weight:700;font-size:.92rem;text-align:start}
 </style>
 </head>
 <body>
@@ -366,7 +386,7 @@ div.ixgh{color:var(--lk)}
 (function(){
 "use strict";
 var D=window.KHULAGI, $=function(s,e){return (e||document).querySelector(s)};
-var DEF={vref:true,guide:true,mov:true,today:true,calm:false,wake:false,swipe:true,rm:"unit",mp:"tab",hide:[],hv:"c",dn:"n",slim:true,hqo:false,theme:"church",fs:22,cop:true,ar:true,tr:true,pg:false,rub:true,notes:true,med:true,medAll:"closed"};
+var DEF={vref:true,guide:true,mov:true,today:true,calm:false,wake:false,swipe:true,rm:"unit",mp:"after",hide:[],hv:"c",dn:"n",slim:true,hqo:false,theme:"church",fs:22,cop:true,ar:true,tr:true,pg:false,rub:true,notes:true,med:true,medAll:"closed"};
 var S=Object.assign({},DEF);
 
 var TRM={"ⲁ":"ا","ⲃ":"ڤ","ⲅ":"غ","ⲇ":"د","ⲉ":"ي","ⲍ":"ز","ⲏ":"ي","ⲑ":"ث","ⲓ":"ي","ⲕ":"ك","ⲗ":"ل","ⲙ":"م","ⲛ":"ن","ⲝ":"كس","ⲟ":"و","ⲡ":"ب","ⲣ":"ر","ⲥ":"س","ⲧ":"ت","ⲩ":"ي","ⲫ":"ف","ⲭ":"خ","ⲯ":"بس","ⲱ":"و","ϣ":"ش","ϥ":"ف","ϧ":"خ","ϩ":"ه","ϫ":"ج","ϭ":"تش","ϯ":"تي"};
@@ -438,12 +458,12 @@ pick.addEventListener("change",function(){go(pick.value)});
 
 function medHtml(it){var m=it.med;if(!m||!S.med)return'';
   var op=S.medAll==="open";
-  var h='<div class="med"><button class="medb" data-med="1" aria-expanded="'+op+'"><span class="mbi">🕯 '+(m.k?esc(m.k):'تأمل')+'</span><span class="mbt">'+(m.t?esc(m.t):'تأمل')+'</span><span class="mbc">'+(op?'▴':'▾')+'</span></button><div class="medc"'+(op?'':' hidden')+'>';
+  var h='<div class="med"><button class="medb" data-med="1" aria-expanded="'+op+'"><span class="mbi">💭 '+(m.k?esc(m.k):'تأمل')+'</span><span class="mbt">'+(m.t?esc(m.t):'')+'</span><span class="mbc">'+(op?'▴':'▾')+'</span></button><div class="medc"'+(op?'':' hidden')+'>';
   if(m.t)h+='<h4>'+esc(m.t)+'</h4>';
   if(m.v)h+='<p class="mv">'+esc(m.v)+'</p>';
-  if(m.r)h+='<p>'+esc(m.r)+'</p>';
-  if(m.p)h+='<p class="mp"><b>صلاة:</b> '+esc(m.p)+'</p>';
-  if(m.x)h+='<p class="mx"><b>تدريب:</b> '+esc(m.x)+'</p>';
+  if(m.r)h+='<p class="mr_">'+esc(m.r)+'</p>';
+  if(m.p)h+='<p class="mp"><b>🙏 صلاة</b>'+esc(m.p)+'</p>';
+  if(m.x)h+='<p class="mx"><b>✍ تدريب</b>'+esc(m.x)+'</p>';
   h+='<small class="ms">'+(m.s==='reviewed'?'مراجَع':'مسوّدة — تحتاج مراجعة كنسية')+'</small></div></div>';return h}
 /* ---------- وضع المتابعة: قطعة قطعة ---------- */
 var CUR={id:null,u:0},UT="a",UC={};
@@ -490,7 +510,7 @@ function unitParts(id,s,c,us,u,q,cols){
   var U=us[u],n=us.length,isDox=s.group.id==="dox",st={alt:0},pct=Math.round((u+1)/n*100);
   var inner='<div class="unh"><span>القطعة '+(u+1)+' من '+n+(U.who?' · '+esc(U.who):'')+'</span><button data-uidx="1">فهرس القطع ▾</button></div><div class="unb"><i style="width:'+pct+'%"></i></div>';
   var tabs=[["a","النص"]];
-  var medTab=S.med&&U.med.length&&S.mp!=="after";
+  var medTab=S.med&&U.med.length&&S.mp==="tab";
   if(medTab)tabs.push(["b","تأمل"+(U.med.length>1?" "+cnt(U.med.length):"")]);
   if(S.rub&&U.rub.length)tabs.push(["c","الحركات "+cnt(U.rub.length)]);
   if(U.notes.length)tabs.push(["d","هوامش "+cnt(U.notes.length)]);
@@ -500,8 +520,11 @@ function unitParts(id,s,c,us,u,q,cols){
   U.items.forEach(function(it){
     if(it.k==="pg"){if(S.pg)tx+='<div class="pgm">ص '+it.n+'</div>'}
     else if(it.k==="r"){if(S.rub)tx+='<button class="rubi" data-ut="c" title="اضغط لمعنى الحركة">'+esc(plain(it.t))+'</button>'}
-    else{tx+=rowHtml(it,cols,isDox,st,q);if(S.mp==="after")tx+=medHtml(it)}});
+    else{tx+=rowHtml(it,cols,isDox,st,q)}});
   tx+='</div>';
+  if(S.med&&U.med.length){
+    if(S.mp==="tab")tx+='<button class="medcue" data-ut="b">💭 تأمل هذه القطعة '+cnt(U.med.length)+' ‹</button>';
+    else U.med.forEach(function(it){var ctx=plain(it.ar||"").split(/\s+/).slice(0,9).join(" ");tx+='<div class="unq">تأمل في: «'+esc(ctx)+'…»</div>'+medHtml(it).replace('<div class="medc" hidden>','<div class="medc">').replace('aria-expanded="false"','aria-expanded="true"').replace('▾','▴')})}
   inner+='<div class="unp" data-up="a"'+(tab==="a"?'':' hidden')+'>'+tx+'</div>';
   if(medTab){var mh='';U.med.forEach(function(it){var ctx=plain(it.ar||"").split(/\s+/).slice(0,10).join(" ");mh+='<div class="unq">«'+esc(ctx)+'…»</div>'+medHtml(it).replace('<div class="medc" hidden>','<div class="medc">').replace('aria-expanded="false"','aria-expanded="true"').replace('▾','▴')});
     inner+='<div class="unp" data-up="b"'+(tab==="b"?'':' hidden')+'>'+mh+'</div>'}
@@ -661,7 +684,7 @@ function settings(){
   look+='</div><div class="stl">حجم الخط</div><div class="fsr"><button data-fs="-2" aria-label="تصغير الخط">أ-</button><b>'+S.fs+'</b><button data-fs="2" aria-label="تكبير الخط">أ+</button></div>';
   var rd='';[["rub","الإرشادات الحمراء"],["med","التأملات"],["swipe","التنقل بالسحب بين الأجزاء (يمين = التالي · يسار = السابق)"]].forEach(function(r){rd+='<div class="set"><span>'+r[1]+'</span><button class="tg'+(S[r[0]]?' on':'')+'" data-tg="'+r[0]+'" aria-label="'+r[1]+'"></button></div>'});
   var pill=function(k,opts){var o='<div class="sw">';opts.forEach(function(x){o+='<button data-set="'+k+'" data-v="'+x[0]+'" class="'+(S[k]===x[0]?'on':'')+'">'+x[1]+'</button>'});return o+'</div>'};
-  var lay='<div class="stl">شكل أقسام الصفحة الرئيسية</div>'+pill("hv",[["c","بطاقات مدمجة"],["l","قائمة"],["b","بطاقات كبيرة"]])+'<div class="stl">طريقة القراءة</div>'+pill("rm",[["unit","قطعة قطعة"],["flow","عرض متصل"]])+'<div class="stl">موضع التأمل</div>'+pill("mp",[["tab","في تبويب"],["after","بعد النص"]])+'<div class="stl">كثافة القراءة</div>'+pill("dn",[["n","عادية"],["c","مدمجة"]])+'<div class="set"><span>ترويسة مصغّرة</span><button class="tg'+(S.slim?' on':'')+'" data-tg="slim" aria-label="ترويسة مصغّرة"></button></div>';
+  var lay='<div class="stl">شكل أقسام الصفحة الرئيسية</div>'+pill("hv",[["c","بطاقات مدمجة"],["l","قائمة"],["b","بطاقات كبيرة"]])+'<div class="stl">طريقة القراءة</div>'+pill("rm",[["unit","قطعة قطعة"],["flow","عرض متصل"]])+'<div class="stl">موضع التأمل</div>'+pill("mp",[["after","بعد النص مباشرة"],["tab","في تبويب"]])+'<div class="stl">كثافة القراءة</div>'+pill("dn",[["n","عادية"],["c","مدمجة"]])+'<div class="set"><span>ترويسة مصغّرة</span><button class="tg'+(S.slim?' on':'')+'" data-tg="slim" aria-label="ترويسة مصغّرة"></button></div>';
   var G=window.KS?KS.settings():{};
   var h='<div class="sth"><span>⚙ الإعدادات</span><button class="stx" data-x aria-label="إغلاق">✕</button></div>';
   h+=grp("look","🎨","المظهر والخط",look);
