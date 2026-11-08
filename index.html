@@ -371,6 +371,17 @@ div.ixgh{color:var(--lk)}
 :root[data-theme^=church] .medcue{border-color:var(--gold)}
 .vref{text-decoration:none!important;border-bottom:1.5px dotted currentColor;margin-inline:2px;padding-bottom:1px;line-height:1.9}
 .unn{font-size:1.02rem}
+
+.ixhome{display:block;width:100%;margin:0 0 8px;padding:9px 12px;border:1.5px solid var(--lk);border-radius:12px;color:var(--lk);background:transparent;font:inherit;font-weight:700;font-size:.92rem;text-align:center}
+:root[data-theme^=church] .ixhome{border-color:var(--gold);color:var(--ink);background:rgba(201,164,76,.14)}
+.ie{display:flex;align-items:stretch;gap:4px;margin:0 0 4px}
+.ie .isec{flex:1;min-width:0;border:1px solid var(--line);border-radius:10px;background:var(--card2)}
+.ie .iex{flex:none;width:34px;border:1px solid var(--line);border-radius:10px;background:var(--card2);color:var(--lk);font-size:.9rem}
+.ik{display:none;margin:0 0 6px;padding-inline-start:14px;border-inline-start:3px solid var(--line)}.ik.open{display:block}
+.ik .isec{border:0;border-bottom:1px solid var(--line);font-size:.84rem;padding:6px 8px;border-radius:0;color:var(--ink)}
+.ik .isec:last-child{border-bottom:0}
+.isec.ihead{font-weight:700}
+.sec.kid{padding-inline-start:30px;font-size:.92rem;background:var(--card2)}
 </style>
 </head>
 <body>
@@ -432,6 +443,7 @@ function parse(txt){
   });
 }
 function ensure(gid){
+  var gg=D.groups.filter(function(x){return x.id===gid})[0];if(gg&&gg.file)gid=gg.file;
   if(LOADED[gid])return LOADED[gid];
   LOADED[gid]=fetch("content-"+gid+".txt").then(function(r){if(!r.ok)throw 0;return r.text()}).then(parse).catch(function(){});
   return LOADED[gid];
@@ -590,19 +602,23 @@ function goPos(p){if(!p)return;if(p.id!==CUR.id){location.hash="#/s/"+p.id;usave
 /* home & group views */
 var ICONS={intro:"📖",raf:"🕯️",bas:"⛪",greg:"⛪",cyr:"⛪",qisam:"✝",misc:"📜",bless:"🙏",app:"📎",taqs:"🕯",dox:"🌟"};
 function ctl(on){$("#opts").style.display=on?"":"none";$("#selw").style.display=on?"":"none"}
+/* فهرس الكتاب: الفقرات الرئيسية (كما في فهرس الخولاجي ص١٠٣٣) وما تحتها من أجزاء مفصّلة */
+function outline(g){
+  var heads=g.heads,out=[];
+  g.sections.forEach(function(sec){
+    if(!heads||heads.indexOf(sec.id)>-1||!out.length)out.push({s:sec,kids:[]});
+    else out[out.length-1].kids.push(sec)});
+  return out}
 function home(){
   ctl(false);document.title="الخولاجي المقدس";
   var h='<div class="home">',l=lastGet();
   if(l&&BYID[l]&&BYID[l].has)h+='<div class="cards" style="margin-bottom:14px"><button class="card cont" data-nav="#/s/'+l+'"><span><small>تابع القراءة</small><b>'+esc(BYID[l].title)+'</b></span><span class="ic">▶</span></button></div>';
   if(window.KS)h+=KS.home();
   h+='<h2>الأقسام</h2><div class="cards">';
-  var LIT={bas:1,greg:1,cyr:1},did=false;
   D.groups.forEach(function(g){
-    if((S.hide||[]).indexOf(g.id)>-1&&!(LIT[g.id]))return;
-    if(LIT[g.id]){if(did)return;did=true;
-      h+='<button class="card big" data-nav="#/g/lit"><span class="ic">⛪</span><b>القداسات الثلاثة</b><small>باسيليوس · غريغوريوس · كيرلس</small></button>';return}
-    var n=g.sections.length,k=g.sections.filter(function(x){return x.has}).length;
-    h+='<button class="card big" data-nav="#/g/'+g.id+'"><span class="ic">'+(ICONS[g.id]||"☩")+'</span><b>'+esc(g.title)+'</b><small>'+n+' قسمًا'+(k<n?' · '+(k?k+' متاح':'قريبًا'):'')+'</small></button>'});
+    if((S.hide||[]).indexOf(g.id)>-1)return;
+    var ol=outline(g),n=ol.length,k=g.sections.filter(function(x){return x.has}).length;
+    h+='<button class="card big" data-nav="#/g/'+g.id+'"><span class="ic">'+(ICONS[g.id]||"☩")+'</span><b>'+esc(g.title)+'</b><small>'+n+' قسمًا'+(k<g.sections.length?' · '+(k?k+' متاح':'قريبًا'):'')+'</small></button>'});
   h+='</div></div>';
   app.innerHTML=h;window.scrollTo(0,0)}
 var LET={},SAINT={},VAR={},LORDER="ابتثجحخدذرزسشصضطظعغفقكلمنهوي".split("");
@@ -613,7 +629,7 @@ function litView(){
     h+='<button class="card big" data-nav="#/g/'+id+'"><span class="ic">⛪</span><b>'+esc(g.title)+'</b><small>'+g.sections.length+' قسمًا</small></button>'});
   app.innerHTML=h+'</div>';window.scrollTo(0,0)}
 function groupView(gid){
-  if(gid==="lit")return litView();
+  if(gid==="lit")return home();
   var g=D.groups.filter(function(x){return x.id===gid})[0];if(!g)return home();
   ctl(false);document.title=g.title+" — الخولاجي";
   var h='<div class="crumb"><button data-nav="#/">⌂ الرئيسية</button></div><div class="gh"><h2>'+esc(g.title)+'</h2></div>';
@@ -641,7 +657,8 @@ function groupView(gid){
     h+='</div>';app.innerHTML=h;window.scrollTo(0,0);return;
   }
   h+='<div class="list">';
-  g.sections.filter(function(x){return !cur||x.l===cur}).forEach(function(s){h+='<button class="sec'+(s.has?'':' soon')+'" data-nav="#/s/'+s.id+'"><span>'+esc(s.title)+(s.has?'':' — قريبًا')+(s.sub?'<small class="sub">'+esc(s.sub)+'</small>':'')+'</span><span class="pn">'+(s.page?'ص '+s.page:'')+'</span></button>'});
+  var row=function(x,kid){return '<button class="sec'+(kid?' kid':'')+(x.has?'':' soon')+'" data-nav="#/s/'+x.id+'"><span>'+esc(x.title)+(x.has?'':' — قريبًا')+(x.sub?'<small class="sub">'+esc(x.sub)+'</small>':'')+'</span><span class="pn">'+(x.page?'ص '+x.page:'')+'</span></button>'};
+  outline(g).forEach(function(e){h+=row(e.s,false);e.kids.forEach(function(k){h+=row(k,true)})});
   h+='</div>';app.innerHTML=h;window.scrollTo(0,0)}
 
 /* routing */
@@ -713,25 +730,40 @@ sh.addEventListener("click",function(e){
 $("#btnSet").addEventListener("click",settings);
 
 /* ---------- الفهرس الجانبي (يُفتح بالسحب من حافة اليمين أو بزر العنوان) ---------- */
-var IXO={},IXQ="";
+var IXO={},IXK={},IXQ="";
 function idxEl(){return document.getElementById("idx")}
+function ixGroup(){
+  var h=location.hash.replace(/^#\/?/,"");
+  if(h.indexOf("s/")===0){var id=h.slice(2).split("?")[0];return BYID[id]?BYID[id].group:null}
+  if(h.indexOf("g/")===0){var gid=h.slice(2);return D.groups.filter(function(x){return x.id===gid})[0]||null}
+  return null}
 function buildIdx(){
-  var ix=idxEl(),h='<div class="ixh"><b>📑 الفهرس</b><span><button data-ixhome="1" aria-label="الرئيسية">⌂</button><button data-ixset="1" aria-label="الإعدادات">⚙</button><button data-ixc="1" aria-label="إغلاق">✕</button></span></div>';
-  h+='<div class="ixm"><span>طريقة القراءة</span><span class="ixmb"><button data-ixm="unit" class="'+(S.rm==="unit"?'on':'')+'">قطعة قطعة</button><button data-ixm="flow" class="'+(S.rm==="flow"?'on':'')+'">متصل</button></span></div><input id="ixq" class="search ixs" placeholder="ابحث عن جزء…" autocomplete="off" value="'+esc(IXQ)+'"><div id="ixl">'+idxList()+'</div>';
+  var ix=idxEl(),g=ixGroup();
+  var h='<div class="ixh"><b>📑 '+(g?esc(g.title):'الأقسام الرئيسية')+'</b><span><button data-ixset="1" aria-label="الإعدادات">⚙</button><button data-ixc="1" aria-label="إغلاق">✕</button></span></div>';
+  if(g)h+='<button class="ixhome" data-ixhome="1">⌂ الصفحة الرئيسية — كل الأقسام الكبرى</button>';
+  if(g&&CUR.id&&BYID[CUR.id]&&BYID[CUR.id].group===g)h+='<div class="ixm"><span>طريقة القراءة</span><span class="ixmb"><button data-ixm="unit" class="'+(S.rm==="unit"?'on':'')+'">قطعة قطعة</button><button data-ixm="flow" class="'+(S.rm==="flow"?'on':'')+'">متصل</button></span></div>';
+  h+='<input id="ixq" class="search ixs" placeholder="'+(g?'ابحث في '+esc(g.title)+'…':'ابحث عن قسم…')+'" autocomplete="off" value="'+esc(IXQ)+'"><div id="ixl">'+idxList()+'</div>';
   ix.innerHTML=h}
 function idxList(){
-  var q=norm(IXQ.trim()),cur=CUR.id,h="";
-  var us=(S.rm==="unit"&&cur)?unitsOf(cur):null;
+  var q=norm(IXQ.trim()),cur=CUR.id,g=ixGroup(),h="";
+  if(!g){
+    D.groups.forEach(function(x){if(q&&norm(x.title).indexOf(q)<0)return;h+='<div class="ie"><button class="isec ihead" data-igg="'+x.id+'"><span>'+(ICONS[x.id]||"☩")+' '+esc(x.title)+'</span><small>'+outline(x).length+'</small></button></div>'});
+    return h||'<p class="hint">لا نتائج.</p>'}
+  var inSec=cur&&BYID[cur]&&BYID[cur].group===g;
+  var us=(inSec&&S.rm==="unit")?unitsOf(cur):null;
   if(us&&!q){var uo=!!IXO.__u;h+='<div class="ixg'+(uo?' open':'')+'"><button class="ixgh" data-ig="__u"><span>قطع هذا الجزء ('+us.length+')</span><span class="ixc">▾</span></button><div class="ixb">';
     us.forEach(function(U,i){h+='<button class="isec'+(i===CUR.u?' cur':'')+'" data-uj="'+i+'"><span>'+(i+1)+'. '+esc(U.head)+'…</span><small>'+esc(U.who||'')+(U.med.length?' · 💭':'')+'</small></button>'});h+='</div></div>'}
-  D.groups.forEach(function(g){
-    var list=g.sections.filter(function(x){return !q||norm(x.title).indexOf(q)>-1});if(!list.length)return;
-    var has=g.sections.some(function(x){return x.id===cur});
-    var open=q?true:!!IXO[g.id];
-    h+='<div class="ixg'+(open?' open':'')+'"><button class="ixgh" data-ig="'+g.id+'"><span>'+esc(g.title)+'</span><span class="ixc">▾</span></button><div class="ixb">';
-    list.forEach(function(x){var b=BYID[x.id];h+='<button class="isec'+(x.id===cur?' cur':'')+(b&&b.has?'':' soon')+'" data-igo="'+x.id+'"><span>'+esc(x.title)+'</span><small>'+(x.page?'ص '+x.page:'')+'</small></button>'});
-    h+='</div></div>'});
-  return h||'<p class="hint">لا نتائج.</p>'}
+  var btn=function(x,kid){var b=BYID[x.id];return '<button class="isec'+(kid?' kid':' ihead')+(x.id===cur?' cur':'')+(b&&b.has?'':' soon')+'" data-igo="'+x.id+'"><span>'+esc(x.title)+'</span><small>'+(x.page?'ص '+x.page:'')+'</small></button>'};
+  var any=false;
+  outline(g).forEach(function(e){
+    var kids=e.kids.filter(function(k){return !q||norm(k.title).indexOf(q)>-1});
+    var headOk=!q||norm(e.s.title).indexOf(q)>-1;
+    if(!headOk&&!kids.length)return;any=true;
+    var hasCur=e.s.id===cur||e.kids.some(function(k){return k.id===cur});
+    var open=q?true:(IXK[e.s.id]===undefined?hasCur:IXK[e.s.id]);
+    h+='<div class="ie">'+btn(e.s,false)+(e.kids.length?'<button class="iex" data-ie="'+e.s.id+'" aria-expanded="'+open+'" aria-label="الأجزاء التفصيلية">'+(open?'▴':'▾')+'</button>':'')+'</div>';
+    if(e.kids.length){h+='<div class="ik'+(open?' open':'')+'">';(q?kids:e.kids).forEach(function(k){h+=btn(k,true)});h+='</div>'}});
+  return any?h:h+'<p class="hint">لا نتائج.</p>'}
 function openIdx(){buildIdx();var ix=idxEl();ix.style.transform="";ix.classList.add("on");sc.classList.add("on");var c=ix.querySelector(".isec.cur");if(c)c.scrollIntoView({block:"center"})}
 function closeIdx(){var ix=idxEl();ix.classList.remove("on");ix.style.transform="";if(!sh.classList.contains("on"))sc.classList.remove("on")}
 document.addEventListener("click",function(e){
@@ -740,6 +772,8 @@ document.addEventListener("click",function(e){
   if(e.target.closest("#idxh")){openIdx();return}
   if(!ix.contains(e.target))return;
   var g=e.target.closest("[data-ig]");if(g){var k=g.getAttribute("data-ig");IXO[k]=!(g.parentNode.classList.contains("open"));g.parentNode.classList.toggle("open",IXO[k]);return}
+  var igg=e.target.closest("[data-igg]");if(igg){closeIdx();location.hash="#/g/"+igg.getAttribute("data-igg");return}
+  var ie=e.target.closest("[data-ie]");if(ie){var kk=ie.getAttribute("data-ie"),box=ie.parentNode.nextElementSibling;var op=!(box&&box.classList.contains("ik")&&box.classList.contains("open"));IXK[kk]=op;if(box&&box.classList.contains("ik"))box.classList.toggle("open",op);ie.setAttribute("aria-expanded",op);ie.textContent=op?"▴":"▾";return}
   var go_=e.target.closest("[data-igo]");if(go_){closeIdx();var id=go_.getAttribute("data-igo");if(BYID[id])location.hash="#/s/"+id;return}
   var uj=e.target.closest("[data-uj]");if(uj){closeIdx();if(!setUnit(+uj.getAttribute("data-uj")))reader(CUR.id,undefined,+uj.getAttribute("data-uj"));return}
   var im=e.target.closest("[data-ixm]");if(im){S.rm=im.getAttribute("data-ixm");save();if(CUR.id)reader(CUR.id);buildIdx();return}

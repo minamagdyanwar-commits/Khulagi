@@ -22,14 +22,15 @@ window.KHULAGI = {
       { id: "raf-reading", title: "قراءة الإنجيل", page: 111 },
       { id: "raf-after-ing", title: "الأواشي بعد الإنجيل", page: 117 },
       { id: "raf-tahalil", title: "التحاليل", page: 135 },
-      { id: "raf-blessing", title: "البركة والتسريح", page: 152 },
+      { id: "raf-blessing", title: "البركة والتسريح", page: 152 } ] },
+    { id: "canons", file: "raf", title: "قوانين لأجل الكنيسة والقداس والقربان", sections: [
       { id: "raf-canons", title: "قوانين لأجل الكنيسة والقداس والقربان", page: 187 } ] },
-    { id: "bas", title: "قداس القديس باسيليوس", sections: [
-      { id: "bas-istid", title: "صلاة الاستعداد", page: 205 },
+    { id: "bas", heads: ["bas-istid","bas-hamal","bas-tazkarat","bas-dawra","bas-shukr","bas-taqdima","bas-tahlil-khuddam","bas-paul","bas-ibraxis","bas-ewash-ing","bas-sir-ing","bas-hijab","bas-after-ing","bas-amana","bas-solh","bas-mustahiq","bas-qudduus","bas-tajassud","bas-qam","bas-taqdis","bas-ewash-before","bas-majma","bas-tarheem","bas-qisma-intro","bas-qisma","bas-after-qisma","bas-itiraf","bas-before-comm","bas-comm","bas-after-comm","bas-blessing","bas-rushum"], title: "قداس القديس باسيليوس", sections: [
+      { id: "bas-istid", title: "صلاة الاستعداد", page: 208 },
       { id: "bas-hamal", title: "تقديم الحمل", page: 214 },
       { id: "bas-tazkarat", title: "تذكارات الحمل", page: 217 },
       { id: "bas-dawra", title: "دورة الحمل", page: 224 },
-      { id: "bas-shukr", title: "صلاة الشكر", page: 231 },
+      { id: "bas-shukr", title: "صلاة الشكر", page: 232 },
       { id: "bas-taqdima", title: "أوشية التقدمة", page: 239 },
       { id: "bas-qiraat-tahlil", title: "قراءة التحليل", page: 243 },
       { id: "bas-tahlil-khuddam", title: "تحليل الخدام", page: 253 },
@@ -52,7 +53,7 @@ window.KHULAGI = {
       { id: "bas-taqdis", title: "التقديس", page: 363 },
       { id: "bas-hulul", title: "سر حلول الروح القدس", page: 372 },
       { id: "bas-ajalna", title: "اجعلنا مستحقين", page: 376 },
-      { id: "bas-ewash-before", title: "أواشي قبل المجمع", page: 377 },
+      { id: "bas-ewash-before", title: "أواشي قبل المجمع", page: 376 },
       { id: "bas-ewash-after", title: "تتمة أواشي المياه والزروع والثمار", page: 386 },
       { id: "bas-majma", title: "المجمع", page: 390 },
       { id: "bas-tarheem", title: "الترحيم", page: 401 },
@@ -77,7 +78,7 @@ window.KHULAGI = {
       { id: "bas-blessing", title: "البركة والتسريح", page: 475 },
       { id: "bas-nihaya", title: "نهاية القداس", page: 485 },
       { id: "bas-rushum", title: "رشومات القداس وإشاراته", page: 489 } ] },
-    { id: "greg", title: "قداس القديس إغريغوريوس", sections: [
+    { id: "greg", heads: ["greg-intro","greg-hijab","greg-solh","greg-mustahiq","greg-qudduus","greg-anta-sayyidi","greg-anta-kain","greg-uqaddim","greg-laannaka","greg-taqdis","greg-talba1","greg-ewash","greg-talba2","greg-majma","greg-tarheem","greg-qisma-intro","greg-qisma","greg-tahalil","greg-itiraf","greg-after-comm","greg-blessing"], title: "قداس القديس إغريغوريوس", sections: [
       { id: "greg-intro", title: "مقدمة القداس الغريغوري", page: 507 },
       { id: "greg-hijab", title: "صلاة الحجاب", page: 508 },
       { id: "greg-hijab2", title: "صلاة ثانية للحجاب", page: 511 },
