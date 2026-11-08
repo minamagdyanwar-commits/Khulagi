@@ -16,7 +16,7 @@ function hscroll(t){
     var o=getComputedStyle(t).overflowX;if((o==="auto"||o==="scroll")&&t.scrollWidth>t.clientWidth+4)return true}
   return false}
 function blocked(t){
-  return !t||!t.closest||!!t.closest("input,textarea,select,[contenteditable],.sheet.on,.scrim.on,#opts,#selw")||hscroll(t)||sel()}
+  return !t||!t.closest||!!t.closest("input,textarea,select,[contenteditable],.sheet.on,.scrim.on,.idx,#opts,#selw")||hscroll(t)||sel()}
 function go(to,from){
   if(to.id===from.id&&K.setUnit(to.u))return;
   K.render(to.id,to.u);if(to.id!==from.id){try{history.pushState(null,"","#/s/"+to.id)}catch(e){location.hash="#/s/"+to.id}}window.scrollTo(0,0)}
@@ -79,7 +79,7 @@ function onEnd(e){if(once(e)){unbind();end(e,false)}}
 function onCancel(e){if(once(e)){unbind();end(e,true)}}
 document.addEventListener("touchstart",function(e){
   unbind();st=null;drag=null;
-  if(busy||!on()||!curId()||e.touches.length!==1||blocked(e.target))return;
+  if(busy||!on()||!curId()||e.touches.length!==1||e.touches[0].clientX>=window.innerWidth-24||blocked(e.target))return;
   st={x:e.touches[0].clientX,y:e.touches[0].clientY,t:Date.now(),h:false,moved:false};
   tgt=e.target;tgt.addEventListener("touchmove",onMove,P);tgt.addEventListener("touchend",onEnd,P);tgt.addEventListener("touchcancel",onCancel,P)},P);
 function moved(e){

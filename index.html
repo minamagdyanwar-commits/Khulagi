@@ -307,6 +307,36 @@ mark{background:rgba(240,138,60,.4);color:inherit;border-radius:3px}
 .unp .medb{display:none}
 .unm{position:relative}.unmi{will-change:auto}
 .cnt{unicode-bidi:isolate;white-space:nowrap}
+
+/* شريط الأدوات المدمج والفهرس الجانبي */
+#selw{display:none!important}
+.opts{justify-content:stretch;gap:6px;padding:6px 10px 4px;flex-wrap:nowrap;direction:rtl}
+.tbb{border:1.5px solid var(--lk);color:var(--lk);background:transparent;border-radius:10px;font:inherit;font-weight:700;cursor:pointer;line-height:1}
+:root[data-theme^=church] .tbb{color:var(--gold-hi);border-color:var(--gold);background:rgba(235,203,126,.10)}
+.tbi{flex:1;min-width:0;display:flex;align-items:center;justify-content:space-between;gap:6px;padding:8px 10px;font-size:.92rem}
+.tbt{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tbc{display:flex;gap:4px;flex:none}
+.tbk{min-width:34px;height:34px;padding:0 6px;font-size:.88rem;display:grid;place-items:center}
+.tbk.on{background:var(--lk);color:var(--card)}
+:root[data-theme^=church] .tbk.on{background:linear-gradient(180deg,var(--gold-hi),var(--gold) 60%,var(--gold-lo));color:#2b1d12;border-color:var(--gold-lo)}
+.idx{position:fixed;top:0;bottom:0;right:0;width:min(300px,88vw);z-index:55;background:var(--card);color:var(--ink);border-inline-start:1px solid var(--line);border-radius:18px 0 0 18px;transform:translateX(105%);transition:transform .3s cubic-bezier(.22,.8,.25,1);overflow:auto;padding:0 10px calc(14px + env(safe-area-inset-bottom));box-shadow:-12px 0 30px -14px rgba(0,0,0,.6);overscroll-behavior:contain}
+.idx.on{transform:none}
+:root[data-theme^=church] .idx{border:1.5px solid var(--gold)}
+.ixh{position:sticky;top:0;z-index:2;background:var(--card);display:flex;align-items:center;justify-content:space-between;padding:10px 2px 8px;font-size:1.05rem}
+.ixh span{display:flex;gap:6px}.ixh button{width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:var(--card2);color:var(--ink);font-size:.95rem}
+.ixs{margin:0 0 8px;padding:8px 12px;font-size:.92rem}
+.ixg{border:1px solid var(--line);border-radius:12px;background:var(--card2);margin:0 0 8px;overflow:hidden}
+.ixgh{display:flex;width:100%;justify-content:space-between;align-items:center;padding:9px 12px;color:var(--ink);font:inherit;font-weight:700;font-size:.92rem;text-align:start}
+div.ixgh{color:var(--lk)}
+.ixc{color:var(--lk);transition:transform .2s}.ixg.open .ixc{transform:rotate(180deg)}
+.ixb{display:none;border-top:1px dashed var(--line)}.ixg.open .ixb{display:block}
+.isec{display:flex;width:100%;justify-content:space-between;align-items:baseline;gap:8px;padding:8px 12px;text-align:start;font:inherit;font-size:.9rem;color:var(--ink);border-bottom:1px solid var(--line)}
+.isec:last-child{border-bottom:0}.isec small{color:var(--mute);white-space:nowrap;font-size:.74rem}
+.isec.cur{background:var(--lk);color:var(--card)}.isec.cur small{color:var(--card);opacity:.85}
+.isec.soon{opacity:.55}
+.idxh{position:fixed;right:0;top:46%;z-index:30;width:20px;height:68px;border-radius:12px 0 0 12px;border:1.5px solid var(--lk);border-inline-end:0;background:var(--card);color:var(--lk);font-size:1.1rem;padding:0;opacity:.85}
+:root[data-theme^=church] .idxh{border-color:var(--gold);color:var(--gold-lo)}
+.idx.on~.idxh{display:none}
 </style>
 </head>
 <body>
@@ -316,6 +346,7 @@ mark{background:rgba(240,138,60,.4);color:inherit;border-radius:3px}
 <main id="app"></main>
 
 <div class="scrim" id="scrim"></div>
+<aside class="idx" id="idx" aria-label="الفهرس"></aside><button class="idxh" id="idxh" aria-label="فتح الفهرس">‹</button>
 <div class="sheet" id="sheet" role="dialog" aria-modal="true"></div>
 <div class="toast" id="toast"></div>
 
@@ -381,12 +412,14 @@ function hl(h,q){if(!q)return h;try{var re=new RegExp("("+q.replace(/[.*+?^${}()
 
 var app=$("#app"),pick=$("#pick");
 function opts(){
-  var d=[["ar","ع","عربي"],["tr","م","معرب"],["cop","ق","قبطي"],["pg","ص.ك","أرقام صفحات الكتاب"]];
-  $("#opts").innerHTML=d.map(function(x){return '<label title="'+x[2]+'"><input type="checkbox" data-o="'+x[0]+'"'+(S[x[0]]?' checked':'')+'><span>'+x[1]+'</span></label>'}).join("")+'<button class="sbtn" id="btnSearch">بحث</button>';
+  var d=[["ar","ع","عربي"],["tr","م","معرب"],["cop","ق","قبطي"],["pg","ص","أرقام صفحات الكتاب"]];
+  var t=CUR&&CUR.id&&BYID[CUR.id]?BYID[CUR.id].title:"الفهرس";
+  $("#opts").innerHTML='<button class="tbb tbi" id="btnIdx" aria-label="فتح الفهرس"><span class="tbt" id="tbt">'+esc(t)+'</span><span>▾</span></button><div class="tbc">'+d.map(function(x){return '<button class="tbb tbk'+(S[x[0]]?' on':'')+'" data-o="'+x[0]+'" aria-pressed="'+(!!S[x[0]])+'" title="'+x[2]+'">'+x[1]+'</button>'}).join("")+'<button class="tbb tbk" data-rm="'+(S.rm==="unit"?"flow":"unit")+'" title="'+(S.rm==="unit"?"عرض متصل":"قطعة قطعة")+'">'+(S.rm==="unit"?"📜":"📖")+'</button></div><button class="tbb tbk" id="btnSearch" aria-label="بحث">🔍</button>';
   $("#btnSearch").addEventListener("click",openSearch);
+  $("#btnIdx").addEventListener("click",openIdx);
 }
-$("#opts").addEventListener("change",function(e){var k=e.target.getAttribute("data-o");if(!k)return;
-  S[k]=e.target.checked;save();route()});
+$("#opts").addEventListener("click",function(e){var o=e.target.closest("[data-o]");if(o){var k=o.getAttribute("data-o");S[k]=!S[k];save();opts();route();return}
+  var rm=e.target.closest("[data-rm]");if(rm){S.rm=rm.getAttribute("data-rm");save();opts();if(CUR.id)reader(CUR.id)}});
 function toast(t){var x=$("#toast");x.textContent=t;x.classList.add("on");setTimeout(function(){x.classList.remove("on")},2200)}
 function fillPick(){
   var h="";D.groups.forEach(function(g){h+='<optgroup label="'+esc(g.title)+'">';g.sections.forEach(function(s){h+='<option value="'+s.id+'">'+esc(s.title)+(s.has?'':' — قريبًا')+'</option>'});h+='</optgroup>'});
@@ -430,7 +463,7 @@ function unitsOf(id){
     u.rub=u.items.filter(function(i){return i.k==="r"});
     var nn={};u.items.forEach(function(i){var t=(i.ar||"")+" "+(i.t||"");t.replace(/\[\^(\d+)\]/g,function(m,n){nn[n]=1})});
     u.notes=Object.keys(nn);
-    var f=u.items.filter(function(i){return i.k==="p"})[0];u.head=f?(f.ar||f.cop||"").split(/\s+/).slice(0,7).join(" "):"";
+    var f=u.items.filter(function(i){return i.k==="p"})[0];u.head=f?plain(f.ar||f.cop||"").split(/\s+/).slice(0,7).join(" "):"";
     var sn={pr:"الكاهن",di:"الشماس",pe:"الشعب"};var ss=[];u.sps.forEach(function(x){if(x&&ss.indexOf(sn[x])<0)ss.push(sn[x])});u.who=ss.join(" · ")});
   UC[id]=out;return out}
 function rowHtml(it,cols,isDox,st,q){
@@ -486,13 +519,12 @@ function setUnit(u,noscroll){
 function fixScroll(){var m=unmEl();if(!m)return;var top=m.getBoundingClientRect().top+window.scrollY-60;if(window.scrollY>top)window.scrollTo(0,Math.max(0,top))}
 function reader(id,q,u){
   var s=BYID[id];if(!s){return}
-  pick.value=id;document.title=s.title+" — الخولاجي";
+  pick.value=id;document.title=s.title+" — الخولاجي";var tt=document.getElementById("tbt");if(tt)tt.textContent=s.title;
   var c=D.content[id],h='';
   var cols=[];if(S.ar)cols.push("ar");if(S.tr)cols.push("tr");if(S.cop)cols.push("cop");
   var us=(S.rm==="unit"&&c&&!q)?unitsOf(id):null;
   if(us){if(u===undefined||u===null){u=umap()[id];if(typeof u!=="number")u=0}if(u<0||u>=us.length)u=u<0?us.length-1:0;CUR={id:id,u:u};usave(id,u)}else CUR={id:id,u:0};
-  h+='<div class="crumb"><button data-nav="#/">⌂ الرئيسية</button><button data-nav="#/g/'+s.group.id+'">‹ '+esc(s.group.title)+'</button>'+(c?'<button data-rm="'+(us?'flow':'unit')+'" class="rmb">'+(us?'📜 عرض متصل':'📖 قطعة قطعة')+'</button>':'')+'</div>';
-  if(window.KS)h+=KS.guide(id,s,c);
+    if(window.KS)h+=KS.guide(id,s,c);
   if(us){lastSet(id);h+=unitView(id,s,c,us,CUR.u,q,cols);app.innerHTML=h;window.scrollTo(0,0);return}
   if(c&&S.med&&c.items.some(function(i){return i.med})){var n=c.items.filter(function(i){return i.med}).length;h+='<div class="medbar"><span>'+n+' تأملًا في هذا القسم</span><button data-medall="open">فتح الكل</button><button data-medall="closed">إغلاق الكل</button></div>'}
   if(!c){h+='<div class="empty"><b>هذا القسم لم يُنقل بعد</b>موضعه في الكتاب المطبوع صفحة '+s.page+'. يُضاف في الدفعات القادمة.</div>'}
@@ -607,7 +639,7 @@ app.addEventListener("click",function(e){
 /* sheets */
 var sh=$("#sheet"),sc=$("#scrim");
 function sheet(html,dr){sh.innerHTML=html;sh.classList.toggle("drawer",!!dr);sh.classList.add("on");sc.classList.add("on")}
-function close(){sh.classList.remove("on");sc.classList.remove("on")}
+function close(){sh.classList.remove("on");sc.classList.remove("on");var ix=document.getElementById("idx");if(ix){ix.classList.remove("on");ix.style.transform=""}}
 sc.addEventListener("click",close);
 document.addEventListener("keydown",function(e){if(e.key==="Escape")close()});
 
@@ -644,6 +676,66 @@ sh.addEventListener("click",function(e){
   var r=e.target.closest("[data-res]");if(r){close();location.hash="#/s/"+r.dataset.res+"?q="+encodeURIComponent(r.dataset.q)}
 });
 $("#btnSet").addEventListener("click",settings);
+
+/* ---------- الفهرس الجانبي (يُفتح بالسحب من حافة اليمين أو بزر العنوان) ---------- */
+var IXO={},IXQ="";
+function idxEl(){return document.getElementById("idx")}
+function buildIdx(){
+  var ix=idxEl(),h='<div class="ixh"><b>📑 الفهرس</b><span><button data-ixhome="1" aria-label="الرئيسية">⌂</button><button data-ixset="1" aria-label="الإعدادات">⚙</button><button data-ixc="1" aria-label="إغلاق">✕</button></span></div>';
+  h+='<input id="ixq" class="search ixs" placeholder="ابحث عن جزء…" autocomplete="off" value="'+esc(IXQ)+'"><div id="ixl">'+idxList()+'</div>';
+  ix.innerHTML=h}
+function idxList(){
+  var q=norm(IXQ.trim()),cur=CUR.id,h="";
+  var us=(S.rm==="unit"&&cur)?unitsOf(cur):null;
+  if(us&&!q){h+='<div class="ixg open"><div class="ixgh">قطع هذا الجزء ('+us.length+')</div><div class="ixb">';
+    us.forEach(function(U,i){h+='<button class="isec'+(i===CUR.u?' cur':'')+'" data-uj="'+i+'"><span>'+(i+1)+'. '+esc(U.head)+'…</span><small>'+esc(U.who||'')+(U.med.length?' · 💭':'')+'</small></button>'});h+='</div></div>'}
+  D.groups.forEach(function(g){
+    var list=g.sections.filter(function(x){return !q||norm(x.title).indexOf(q)>-1});if(!list.length)return;
+    var has=g.sections.some(function(x){return x.id===cur});
+    var open=q?true:(IXO[g.id]===undefined?has:IXO[g.id]);
+    h+='<div class="ixg'+(open?' open':'')+'"><button class="ixgh" data-ig="'+g.id+'"><span>'+esc(g.title)+'</span><span class="ixc">▾</span></button><div class="ixb">';
+    list.forEach(function(x){var b=BYID[x.id];h+='<button class="isec'+(x.id===cur?' cur':'')+(b&&b.has?'':' soon')+'" data-igo="'+x.id+'"><span>'+esc(x.title)+'</span><small>'+(x.page?'ص '+x.page:'')+'</small></button>'});
+    h+='</div></div>'});
+  return h||'<p class="hint">لا نتائج.</p>'}
+function openIdx(){buildIdx();var ix=idxEl();ix.style.transform="";ix.classList.add("on");sc.classList.add("on");var c=ix.querySelector(".isec.cur");if(c)c.scrollIntoView({block:"center"})}
+function closeIdx(){var ix=idxEl();ix.classList.remove("on");ix.style.transform="";if(!sh.classList.contains("on"))sc.classList.remove("on")}
+document.addEventListener("click",function(e){
+  var ix=idxEl();if(!ix)return;
+  if(e.target.closest("#idxh")){openIdx();return}
+  if(!ix.contains(e.target))return;
+  var g=e.target.closest("[data-ig]");if(g){var k=g.getAttribute("data-ig");IXO[k]=!(g.parentNode.classList.contains("open"));g.parentNode.classList.toggle("open",IXO[k]);return}
+  var go_=e.target.closest("[data-igo]");if(go_){closeIdx();var id=go_.getAttribute("data-igo");if(BYID[id])location.hash="#/s/"+id;return}
+  var uj=e.target.closest("[data-uj]");if(uj){closeIdx();if(!setUnit(+uj.getAttribute("data-uj")))reader(CUR.id,undefined,+uj.getAttribute("data-uj"));return}
+  if(e.target.closest("[data-ixhome]")){closeIdx();location.hash="#/";return}
+  if(e.target.closest("[data-ixset]")){closeIdx();settings();return}
+  if(e.target.closest("[data-ixc]")){closeIdx();return}
+});
+document.addEventListener("input",function(e){if(e.target&&e.target.id==="ixq"){IXQ=e.target.value;var l=document.getElementById("ixl");if(l)l.innerHTML=idxList()}});
+document.addEventListener("keydown",function(e){if(e.key==="Escape")closeIdx()});
+/* سحب من حافة اليمين لفتح الفهرس، وسحب لليمين على اللوحة لإغلاقها */
+(function(){
+  var st=null,P={passive:true};
+  function pw(){var ix=idxEl();return ix.offsetWidth||300}
+  document.addEventListener("touchstart",function(e){
+    st=null;if(e.touches.length!==1)return;var ix=idxEl(),x=e.touches[0].clientX,y=e.touches[0].clientY;
+    var openNow=ix.classList.contains("on");
+    if(!openNow&&!sh.classList.contains("on")&&x>=window.innerWidth-22){st={mode:"o",x:x,y:y,t:Date.now(),d:false}}
+    else if(openNow&&ix.contains(e.target)){st={mode:"c",x:x,y:y,t:Date.now(),d:false}}},P);
+  document.addEventListener("touchmove",function(e){
+    if(!st)return;var p=e.touches[0],dx=st.x-p.clientX,dy=p.clientY-st.y,ix=idxEl();
+    if(st.mode==="o"){
+      if(!st.d){if(dx>14&&Math.abs(dy)<dx*.8){st.d=true;buildIdx();ix.style.transition="none";sc.classList.add("on")}else if(Math.abs(dy)>24){st=null;return}}
+      if(st.d)ix.style.transform="translateX("+Math.max(0,pw()-dx)+"px)"}
+    else{
+      if(!st.d){if(-dx>14&&Math.abs(dy)<-dx*.8){st.d=true;ix.style.transition="none"}else if(Math.abs(dy)>16){st=null;return}}
+      if(st.d)ix.style.transform="translateX("+Math.max(0,-dx)+"px)"}},P);
+  function end(e){
+    var s=st;st=null;if(!s||!s.d)return;var ix=idxEl(),p=e.changedTouches&&e.changedTouches[0],dx=p?s.x-p.clientX:0,dt=Math.max(1,Date.now()-s.t),fast=Math.abs(dx)/dt*1000>500&&Math.abs(dx)>40;
+    ix.style.transition="";
+    if(s.mode==="o"){if(dx>pw()*.35||fast){ix.style.transform="";ix.classList.add("on");sc.classList.add("on")}else{closeIdx()}}
+    else{if(-dx>pw()*.3||fast&&dx<0){closeIdx()}else{ix.style.transform=""}}}
+  document.addEventListener("touchend",end,P);document.addEventListener("touchcancel",end,P);
+})();
 
 /* search */
 var IDX=null;
