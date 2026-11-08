@@ -382,6 +382,9 @@ div.ixgh{color:var(--lk)}
 .ik .isec:last-child{border-bottom:0}
 .isec.ihead{font-weight:700}
 .sec.kid{padding-inline-start:30px;font-size:.92rem;background:var(--card2)}
+.msrc{margin:8px 0 2px;padding-top:6px;border-top:1px dashed var(--md-line);font-size:.78rem;line-height:1.7;color:var(--md-mute)}
+.msrc b{color:var(--md-acc)}
+.msrc.bk{font-size:.82rem;color:var(--md-ink);background:color-mix(in srgb,var(--md-acc) 12%,transparent);border:1px solid var(--md-line);border-radius:9px;padding:6px 10px;margin:10px 0 4px}
 </style>
 </head>
 <body>
@@ -479,6 +482,7 @@ function medHtml(it){var m=it.med;if(!m||!S.med)return'';
   if(m.r)h+='<p class="mr_">'+esc(m.r)+'</p>';
   if(m.p)h+='<p class="mp"><b>🙏 صلاة</b>'+esc(m.p)+'</p>';
   if(m.x)h+='<p class="mx"><b>✍ تدريب</b>'+esc(m.x)+'</p>';
+  h+='<div class="msrc'+(m.z?' bk':'')+'"><b>'+(m.z?'📖 المصدر:':'المصدر:')+'</b> '+(m.z?esc(m.z):'الكتاب المقدس ونص الصلاة، بصياغة مسوّدة')+'</div>';
   h+='<small class="ms">'+(m.s==='reviewed'?'مراجَع':'مسوّدة — تحتاج مراجعة كنسية')+'</small></div></div>';return h}
 /* ---------- وضع المتابعة: قطعة قطعة ---------- */
 var CUR={id:null,u:0},UT="a",UC={};
