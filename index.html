@@ -722,12 +722,12 @@ function buildIdx(){
 function idxList(){
   var q=norm(IXQ.trim()),cur=CUR.id,h="";
   var us=(S.rm==="unit"&&cur)?unitsOf(cur):null;
-  if(us&&!q){h+='<div class="ixg open"><div class="ixgh">قطع هذا الجزء ('+us.length+')</div><div class="ixb">';
+  if(us&&!q){var uo=!!IXO.__u;h+='<div class="ixg'+(uo?' open':'')+'"><button class="ixgh" data-ig="__u"><span>قطع هذا الجزء ('+us.length+')</span><span class="ixc">▾</span></button><div class="ixb">';
     us.forEach(function(U,i){h+='<button class="isec'+(i===CUR.u?' cur':'')+'" data-uj="'+i+'"><span>'+(i+1)+'. '+esc(U.head)+'…</span><small>'+esc(U.who||'')+(U.med.length?' · 💭':'')+'</small></button>'});h+='</div></div>'}
   D.groups.forEach(function(g){
     var list=g.sections.filter(function(x){return !q||norm(x.title).indexOf(q)>-1});if(!list.length)return;
     var has=g.sections.some(function(x){return x.id===cur});
-    var open=q?true:(IXO[g.id]===undefined?has:IXO[g.id]);
+    var open=q?true:!!IXO[g.id];
     h+='<div class="ixg'+(open?' open':'')+'"><button class="ixgh" data-ig="'+g.id+'"><span>'+esc(g.title)+'</span><span class="ixc">▾</span></button><div class="ixb">';
     list.forEach(function(x){var b=BYID[x.id];h+='<button class="isec'+(x.id===cur?' cur':'')+(b&&b.has?'':' soon')+'" data-igo="'+x.id+'"><span>'+esc(x.title)+'</span><small>'+(x.page?'ص '+x.page:'')+'</small></button>'});
     h+='</div></div>'});
