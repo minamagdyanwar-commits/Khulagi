@@ -337,10 +337,21 @@ div.ixgh{color:var(--lk)}
 .idxh{position:fixed;right:0;top:46%;z-index:30;width:20px;height:68px;border-radius:12px 0 0 12px;border:1.5px solid var(--lk);border-inline-end:0;background:var(--card);color:var(--lk);font-size:1.1rem;padding:0;opacity:.85}
 :root[data-theme^=church] .idxh{border-color:var(--gold);color:var(--gold-lo)}
 .idx.on~.idxh{display:none}
+
+/* الصف العلوي: التشيك بوكسز كما كانت، والعنوان في الترويسة يفتح الفهرس */
+.opts{justify-content:center;gap:10px;flex-wrap:wrap;padding:6px 10px 2px}
+:root[data-pg=r] .banner h1{cursor:pointer}
+:root[data-pg=r] .banner h1::after{content:" ▾";font-size:.8em;opacity:.8}
+:root[data-pg=r] .banner h1{max-width:calc(100% - 60px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ixm{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 0 8px;font-size:.85rem;color:var(--mute)}
+.ixmb{display:flex;gap:4px}.ixmb button{border:1.5px solid var(--lk);color:var(--lk);border-radius:10px;padding:4px 10px;font:inherit;font-size:.82rem;font-weight:700;background:transparent}
+.ixmb button.on{background:var(--lk);color:var(--card)}
+:root[data-theme^=church] .ixmb button{color:var(--ink);border-color:var(--gold)}
+:root[data-theme^=church] .ixmb button.on{background:linear-gradient(180deg,var(--gold-hi),var(--gold) 60%,var(--gold-lo));color:#2b1d12}
 </style>
 </head>
 <body>
-<div class="banner"><span class="cr l">☩</span><span class="cr r">☩</span><span class="cr">☩</span><button class="burger" id="btnSet" aria-label="الإعدادات">☰</button><h1>الخولاجي المقدس</h1></div>
+<div class="banner"><span class="cr l">☩</span><span class="cr r">☩</span><span class="cr">☩</span><button class="burger" id="btnSet" aria-label="الإعدادات">☰</button><h1 id="btl">الخولاجي المقدس</h1></div>
 <div class="opts" id="opts" style="display:none"></div>
 <div class="selw" id="selw" style="display:none"><select id="pick" aria-label="اختر جزء القداس"></select></div>
 <main id="app"></main>
@@ -412,14 +423,12 @@ function hl(h,q){if(!q)return h;try{var re=new RegExp("("+q.replace(/[.*+?^${}()
 
 var app=$("#app"),pick=$("#pick");
 function opts(){
-  var d=[["ar","ع","عربي"],["tr","م","معرب"],["cop","ق","قبطي"],["pg","ص","أرقام صفحات الكتاب"]];
-  var t=CUR&&CUR.id&&BYID[CUR.id]?BYID[CUR.id].title:"الفهرس";
-  $("#opts").innerHTML='<button class="tbb tbi" id="btnIdx" aria-label="فتح الفهرس"><span class="tbt" id="tbt">'+esc(t)+'</span><span>▾</span></button><div class="tbc">'+d.map(function(x){return '<button class="tbb tbk'+(S[x[0]]?' on':'')+'" data-o="'+x[0]+'" aria-pressed="'+(!!S[x[0]])+'" title="'+x[2]+'">'+x[1]+'</button>'}).join("")+'<button class="tbb tbk" data-rm="'+(S.rm==="unit"?"flow":"unit")+'" title="'+(S.rm==="unit"?"عرض متصل":"قطعة قطعة")+'">'+(S.rm==="unit"?"📜":"📖")+'</button></div><button class="tbb tbk" id="btnSearch" aria-label="بحث">🔍</button>';
+  var d=[["ar","ع","عربي"],["tr","م","معرب"],["cop","ق","قبطي"],["pg","ص.ك","أرقام صفحات الكتاب"]];
+  $("#opts").innerHTML=d.map(function(x){return '<label title="'+x[2]+'"><input type="checkbox" data-o="'+x[0]+'"'+(S[x[0]]?' checked':'')+'><span>'+x[1]+'</span></label>'}).join("")+'<button class="sbtn" id="btnSearch">بحث</button>';
   $("#btnSearch").addEventListener("click",openSearch);
-  $("#btnIdx").addEventListener("click",openIdx);
 }
-$("#opts").addEventListener("click",function(e){var o=e.target.closest("[data-o]");if(o){var k=o.getAttribute("data-o");S[k]=!S[k];save();opts();route();return}
-  var rm=e.target.closest("[data-rm]");if(rm){S.rm=rm.getAttribute("data-rm");save();opts();if(CUR.id)reader(CUR.id)}});
+$("#opts").addEventListener("change",function(e){var k=e.target.getAttribute("data-o");if(!k)return;
+  S[k]=e.target.checked;save();route()});
 function toast(t){var x=$("#toast");x.textContent=t;x.classList.add("on");setTimeout(function(){x.classList.remove("on")},2200)}
 function fillPick(){
   var h="";D.groups.forEach(function(g){h+='<optgroup label="'+esc(g.title)+'">';g.sections.forEach(function(s){h+='<option value="'+s.id+'">'+esc(s.title)+(s.has?'':' — قريبًا')+'</option>'});h+='</optgroup>'});
@@ -519,7 +528,7 @@ function setUnit(u,noscroll){
 function fixScroll(){var m=unmEl();if(!m)return;var top=m.getBoundingClientRect().top+window.scrollY-60;if(window.scrollY>top)window.scrollTo(0,Math.max(0,top))}
 function reader(id,q,u){
   var s=BYID[id];if(!s){return}
-  pick.value=id;document.title=s.title+" — الخولاجي";var tt=document.getElementById("tbt");if(tt)tt.textContent=s.title;
+  pick.value=id;document.title=s.title+" — الخولاجي";var tt=document.getElementById("btl");if(tt)tt.textContent=s.title;
   var c=D.content[id],h='';
   var cols=[];if(S.ar)cols.push("ar");if(S.tr)cols.push("tr");if(S.cop)cols.push("cop");
   var us=(S.rm==="unit"&&c&&!q)?unitsOf(id):null;
@@ -611,7 +620,7 @@ function groupView(gid){
 
 /* routing */
 function route(){
-  var h=location.hash.replace(/^#\/?/,"");document.documentElement.setAttribute("data-pg",h.indexOf("s/")===0?"r":h===""?"h":"l");
+  var h=location.hash.replace(/^#\/?/,"");if(h.indexOf("s/")!==0){var bt=document.getElementById("btl");if(bt)bt.textContent="الخولاجي المقدس"}document.documentElement.setAttribute("data-pg",h.indexOf("s/")===0?"r":h===""?"h":"l");
   if(h.indexOf("s/")===0){var p=h.slice(2).split("?q=");if(!BYID[p[0]])return home();ctl(true);reader(p[0],p[1]?decodeURIComponent(p[1]):"")}
   else if(h==="compare"&&window.KS)KS.compare();
   else if(h==="plan"&&window.KS)KS.plan();
@@ -682,7 +691,7 @@ var IXO={},IXQ="";
 function idxEl(){return document.getElementById("idx")}
 function buildIdx(){
   var ix=idxEl(),h='<div class="ixh"><b>📑 الفهرس</b><span><button data-ixhome="1" aria-label="الرئيسية">⌂</button><button data-ixset="1" aria-label="الإعدادات">⚙</button><button data-ixc="1" aria-label="إغلاق">✕</button></span></div>';
-  h+='<input id="ixq" class="search ixs" placeholder="ابحث عن جزء…" autocomplete="off" value="'+esc(IXQ)+'"><div id="ixl">'+idxList()+'</div>';
+  h+='<div class="ixm"><span>طريقة القراءة</span><span class="ixmb"><button data-ixm="unit" class="'+(S.rm==="unit"?'on':'')+'">قطعة قطعة</button><button data-ixm="flow" class="'+(S.rm==="flow"?'on':'')+'">متصل</button></span></div><input id="ixq" class="search ixs" placeholder="ابحث عن جزء…" autocomplete="off" value="'+esc(IXQ)+'"><div id="ixl">'+idxList()+'</div>';
   ix.innerHTML=h}
 function idxList(){
   var q=norm(IXQ.trim()),cur=CUR.id,h="";
@@ -701,11 +710,13 @@ function openIdx(){buildIdx();var ix=idxEl();ix.style.transform="";ix.classList.
 function closeIdx(){var ix=idxEl();ix.classList.remove("on");ix.style.transform="";if(!sh.classList.contains("on"))sc.classList.remove("on")}
 document.addEventListener("click",function(e){
   var ix=idxEl();if(!ix)return;
+  if(e.target.closest("#btl")&&document.documentElement.getAttribute("data-pg")==="r"){openIdx();return}
   if(e.target.closest("#idxh")){openIdx();return}
   if(!ix.contains(e.target))return;
   var g=e.target.closest("[data-ig]");if(g){var k=g.getAttribute("data-ig");IXO[k]=!(g.parentNode.classList.contains("open"));g.parentNode.classList.toggle("open",IXO[k]);return}
   var go_=e.target.closest("[data-igo]");if(go_){closeIdx();var id=go_.getAttribute("data-igo");if(BYID[id])location.hash="#/s/"+id;return}
   var uj=e.target.closest("[data-uj]");if(uj){closeIdx();if(!setUnit(+uj.getAttribute("data-uj")))reader(CUR.id,undefined,+uj.getAttribute("data-uj"));return}
+  var im=e.target.closest("[data-ixm]");if(im){S.rm=im.getAttribute("data-ixm");save();if(CUR.id)reader(CUR.id);buildIdx();return}
   if(e.target.closest("[data-ixhome]")){closeIdx();location.hash="#/";return}
   if(e.target.closest("[data-ixset]")){closeIdx();settings();return}
   if(e.target.closest("[data-ixc]")){closeIdx();return}
