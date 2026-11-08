@@ -17,13 +17,27 @@ function hscroll(t){
   return false}
 function blocked(t){
   return !t||!t.closest||!!t.closest("input,textarea,select,[contenteditable],.sheet.on,.scrim.on,#opts,#selw")||hscroll(t)||sel()}
-function go(to,from){K.render(to.id,to.u);if(to.id!==from.id){try{history.pushState(null,"","#/s/"+to.id)}catch(e){location.hash="#/s/"+to.id}}window.scrollTo(0,0)}
+function go(to,from){
+  if(to.id===from.id&&K.setUnit(to.u))return;
+  K.render(to.id,to.u);if(to.id!==from.id){try{history.pushState(null,"","#/s/"+to.id)}catch(e){location.hash="#/s/"+to.id}}window.scrollTo(0,0)}
 function clean(app){
   app.style.transition="";app.style.transform="";app.style.willChange="";
   document.documentElement.style.overflowX="";document.body.style.overflowX=""}
+/* وضع الجزء المتغيّر فقط: داخل نفس الجزء يتحرك محتوى القطعة وحده، والباقي (الأعلى والتبويبات والأزرار) ثابت */
+function beginUnit(from,to,sign){
+  var box=K.unm(),cur=document.getElementById("unmi");if(!box||!cur)return null;
+  var W=Math.max(box.clientWidth,200),oldH=box.offsetHeight;
+  var ghost=cur.cloneNode(true);ghost.removeAttribute("id");ghost.className="swg";ghost.setAttribute("aria-hidden","true");
+  ghost.style.cssText="position:absolute;top:0;left:0;width:100%;pointer-events:none;transform:translateX(0)";
+  box.style.overflow="hidden";box.style.height=oldH+"px";
+  document.documentElement.style.overflowX="hidden";document.body.style.overflowX="hidden";
+  K.setUnit(to.u,true);box.appendChild(ghost);cur.style.willChange="transform";
+  var newH=cur.offsetHeight;
+  return {mode:"u",sign:sign,to:to,from:from,ghost:ghost,app:cur,box:box,W:W,oldH:oldH,newH:newH,oldY:window.scrollY,dx:0}}
 function begin(dx){
   if(!curId())return null;var from=K.pos();
   var sign=dx>0,to=nav(sign?1:-1);if(!to)return null;
+  if(to.id===from.id&&K.unm())return beginUnit(from,to,sign);
   var app=K.app,r=app.getBoundingClientRect(),W=Math.max(app.clientWidth,200),oldY=window.scrollY;
   var ghost=document.createElement("div");ghost.className="swg";ghost.setAttribute("aria-hidden","true");ghost.innerHTML=app.innerHTML;
   ghost.style.cssText="position:fixed;z-index:5;pointer-events:none;top:"+r.top+"px;left:"+r.left+"px;width:"+r.width+"px;transform:translateX(0)";
@@ -32,20 +46,30 @@ function begin(dx){
   var r2=app.getBoundingClientRect();
   ghost.style.clipPath="inset("+Math.max(0,r2.top-r.top)+"px 0 0 0)";
   document.body.appendChild(ghost);app.style.willChange="transform";
-  return {sign:sign,to:to,from:from,ghost:ghost,app:app,W:W,oldY:oldY,dx:0}}
+  return {mode:"s",sign:sign,to:to,from:from,ghost:ghost,app:app,W:W,oldY:oldY,dx:0}}
 function move(d,dx){
   dx=d.sign?Math.max(0,dx):Math.min(0,dx);d.dx=dx;
   d.ghost.style.transition="none";d.app.style.transition="none";
   d.ghost.style.transform="translateX("+dx+"px)";
-  d.app.style.transform="translateX("+(dx+(d.sign?-d.W:d.W))+"px)"}
+  d.app.style.transform="translateX("+(dx+(d.sign?-d.W:d.W))+"px)";
+  if(d.mode==="u"){var k=Math.min(1,Math.abs(dx)/d.W);d.box.style.height=(d.oldH+(d.newH-d.oldH)*k)+"px"}}
 function finish(d,commit){
   busy=true;var t="transform "+MS+"ms "+EASE;d.ghost.style.transition=t;d.app.style.transition=t;
+  if(d.mode==="u")d.box.style.transition="height "+MS+"ms "+EASE;
   if(commit){
     d.ghost.style.transform="translateX("+(d.sign?d.W:-d.W)+"px)";d.app.style.transform="translateX(0)";
-    setTimeout(function(){d.ghost.remove();clean(d.app);if(d.to.id!==d.from.id){try{history.pushState(null,"","#/s/"+d.to.id)}catch(e){}}busy=false},MS+20)}
+    if(d.mode==="u")d.box.style.height=d.newH+"px";
+    setTimeout(function(){d.ghost.remove();
+      if(d.mode==="u"){d.box.style.cssText="";clean(d.app);K.fixScroll()}
+      else{clean(d.app);if(d.to.id!==d.from.id){try{history.pushState(null,"","#/s/"+d.to.id)}catch(e){}}}
+      busy=false},MS+20)}
   else{
     d.ghost.style.transform="translateX(0)";d.app.style.transform="translateX("+(d.sign?-d.W:d.W)+"px)";
-    setTimeout(function(){d.ghost.remove();clean(d.app);K.render(d.from.id,d.from.u);window.scrollTo(0,d.oldY);busy=false},MS+20)}}
+    if(d.mode==="u")d.box.style.height=d.oldH+"px";
+    setTimeout(function(){d.ghost.remove();
+      if(d.mode==="u"){d.box.style.cssText="";clean(d.app);K.setUnit(d.from.u,true)}
+      else{clean(d.app);K.render(d.from.id,d.from.u);window.scrollTo(0,d.oldY)}
+      busy=false},MS+20)}}
 var P={passive:true},tgt=null;
 function unbind(){if(tgt){tgt.removeEventListener("touchmove",onMove,P);tgt.removeEventListener("touchend",onEnd,P);tgt.removeEventListener("touchcancel",onCancel,P);tgt=null}}
 /* الحدث يُرسل للعنصر الأصلي حتى بعد أن يُستبدل المحتوى، ولا يصعد إلى document؛ لذلك نسمع عليه مباشرة */
