@@ -423,9 +423,9 @@ div.ixgh{color:var(--lk)}
 .d1h .stg1{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 14px}
 .d1h .sc1{padding:10px 12px;text-align:start;border:1.5px solid color-mix(in srgb,var(--g1) 60%,transparent);border-radius:14px 14px 8px 8px;background:var(--card);color:var(--ink)}.d1h .sc1 b{display:block;font-size:1rem}.d1h .sc1 small{color:var(--mute);font-size:.78rem}
 .d1h .sc1.on{border-color:var(--g1);box-shadow:inset 0 0 0 1px var(--g1)}.d1h .sc1.dn{opacity:.7}.d1h .sc1[disabled]{opacity:.45}
-.d1h .hs1{display:flex;gap:10px;padding:0 14px 90px;overflow-x:auto;scrollbar-width:none}.d1h .hs1::-webkit-scrollbar{display:none}
-.d1h .hs1 button{flex:none;width:108px;padding:12px 8px;border-radius:16px 16px 10px 10px;background:var(--card);border:1px solid color-mix(in srgb,var(--g1) 55%,transparent);font-size:.84rem;text-align:center;color:var(--ink);line-height:1.35}
-.d1h .hs1 i{display:block;font-style:normal;font-size:22px;margin-bottom:4px}.d1h .hs1 small{display:block;color:var(--mute);font-size:.72rem;margin-top:2px}
+.d1h .hs1{display:flex;flex-direction:column;gap:8px;padding:0 14px 90px}
+.d1h .hs1 button{display:flex;align-items:center;gap:12px;width:100%;padding:12px 14px;border-radius:16px 16px 10px 10px;background:var(--card);border:1px solid color-mix(in srgb,var(--g1) 55%,transparent);font-size:1rem;text-align:start;color:var(--ink);line-height:1.35}
+.d1h .hs1 i{flex:none;font-style:normal;font-size:22px;width:30px;text-align:center}.d1h .hs1 small{margin-inline-start:auto;color:var(--mute);font-size:.78rem}
 :root[data-ds=d1] .bnav{border-top:2px solid var(--g1);border-radius:0}
 .dsel{margin:0 0 10px}.dst{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .dst button{padding:10px 6px;border:1.5px solid var(--line);border-radius:14px;background:var(--card2);color:var(--ink);text-align:center;line-height:1.3}.dst i{display:block;font-style:normal;font-size:22px;margin-bottom:4px}.dst b{display:block;font-size:.95rem}.dst small{display:block;color:var(--mute);font-size:.7rem;margin-top:2px}
@@ -889,7 +889,7 @@ function homeD1(){
   h+='<div class="arc"><div class="ring" style="--p:'+pr.p+'"><i>☩</i></div><h1>'+(r?'تابع من حيث وقفت':'الخولاجي المقدس')+'</h1><small>'+(r?esc(r.title)+' · '+esc(LNAME[lit])+' · '+ar9(pr.p)+'٪':'')+'</small>'+(r?'<button class="cta" data-nav="#/s/'+r.id+'">▶ متابعة</button>':'')+'</div>';
   h+='<div class="h2"><span>القداسات</span></div><div class="g3">'+["bas","greg","cyr"].map(function(L){var q=litProg(L);return '<button data-lit="'+L+'" class="'+(L===lit?'on':'')+'"><i>⛪</i>'+LNAME[L]+'<u><b style="width:'+q.p+'%"></b></u></button>'}).join("")+'</div>';
   h+='<div class="h2"><span>مراحل القداس · '+esc(LNAME[lit])+'</span></div><div class="stg1">'+stageCards(lit,"sc1")+'</div>';
-  h+='<div class="h2"><span>الأقسام</span></div><div class="hs1">'+otherGroups().map(function(g){var k=g.sections.length;return '<button data-nav="#/g/'+g.id+'"><i>'+(ICONS[g.id]||"☩")+'</i>'+esc(g.title)+'<small>'+ar9(k)+'</small></button>'}).join("")+'</div>';
+  h+='<div class="h2"><span>الأقسام</span></div><div class="hs1">'+otherGroups().map(function(g){var k=g.sections.length;return '<button data-nav="#/g/'+g.id+'"><i>'+(ICONS[g.id]||"☩")+'</i><span>'+esc(g.title)+'</span><small>'+ar9(k)+'</small></button>'}).join("")+'</div>';
   return h+'</div>'+bnav("home")}
 function homeD4(){
   var lit=S.lit||"bas",r=resumeInfo(),pr=litProg(lit),h='<div class="home hp d4h">';
