@@ -10,7 +10,7 @@ function on(){try{return K.S().swipe!==false}catch(e){return true}}
 function calm(){try{return !!K.S().calm||matchMedia("(prefers-reduced-motion: reduce)").matches}catch(e){return false}}
 function curId(){var m=location.hash.match(/^#\/s\/([^?]+)/);return m?m[1]:null}
 function sel(){try{return String(window.getSelection())!==""}catch(e){return false}}
-function nav(dir){return K.step(dir)}
+function nav(dir){return K.step(dir,true)}
 function hscroll(t){
   for(;t&&t!==document.body&&t.nodeType===1;t=t.parentElement){
     var o=getComputedStyle(t).overflowX;if((o==="auto"||o==="scroll")&&t.scrollWidth>t.clientWidth+4)return true}
