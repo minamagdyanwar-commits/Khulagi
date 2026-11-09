@@ -427,6 +427,10 @@ div.ixgh{color:var(--lk)}
 .d1h .hs1 button{flex:none;width:108px;padding:12px 8px;border-radius:16px 16px 10px 10px;background:var(--card);border:1px solid color-mix(in srgb,var(--g1) 55%,transparent);font-size:.84rem;text-align:center;color:var(--ink);line-height:1.35}
 .d1h .hs1 i{display:block;font-style:normal;font-size:22px;margin-bottom:4px}.d1h .hs1 small{display:block;color:var(--mute);font-size:.72rem;margin-top:2px}
 :root[data-ds=d1] .bnav{border-top:2px solid var(--g1);border-radius:0}
+.dsel{margin:0 0 10px}.dst{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.dst button{padding:10px 6px;border:1.5px solid var(--line);border-radius:14px;background:var(--card2);color:var(--ink);text-align:center;line-height:1.3}.dst i{display:block;font-style:normal;font-size:22px;margin-bottom:4px}.dst b{display:block;font-size:.95rem}.dst small{display:block;color:var(--mute);font-size:.7rem;margin-top:2px}
+.dst button.on{border-color:var(--acc);box-shadow:0 0 0 2px var(--acc)}
+:root[data-theme^=church] .dst button.on{border-color:var(--gold);box-shadow:0 0 0 2px var(--gold)}
 .bmid{display:none}
 :root[data-ds=d1] .bmid{display:grid;place-items:center;flex:none;width:58px;height:58px;margin-top:-34px;border-radius:30px 30px 8px 8px;background:linear-gradient(#EBCB7E,#C9A44C 60%,#8F6F27);border:3px solid var(--bg);color:#2b1d12;font-size:22px;box-shadow:0 6px 14px #0008}
 /* قراءة d1 */
@@ -1001,9 +1005,11 @@ function settings(){
   look+='</div><div class="stl">حجم الخط</div><div class="fsr"><button data-fs="-2" aria-label="تصغير الخط">أ-</button><b>'+S.fs+'</b><button data-fs="2" aria-label="تكبير الخط">أ+</button></div>';
   var rd='';[["rub","الإرشادات الحمراء"],["med","التأملات"],["swipe","التنقل بالسحب بين الأجزاء (يمين = التالي · يسار = السابق)"]].forEach(function(r){rd+='<div class="set"><span>'+r[1]+'</span><button class="tg'+(S[r[0]]?' on':'')+'" data-tg="'+r[0]+'" aria-label="'+r[1]+'"></button></div>'});
   var pill=function(k,opts){var o='<div class="sw">';opts.forEach(function(x){o+='<button data-set="'+k+'" data-v="'+x[0]+'" class="'+(S[k]===x[0]?'on':'')+'">'+x[1]+'</button>'});return o+'</div>'};
-  var lay='<div class="stl">التصميم</div>'+pill("ds",[["d1","المحراب"],["d4","البطاقات"],["d0","الكلاسيكي"]])+'<div class="stl">شكل أقسام الصفحة الرئيسية</div>'+pill("hv",[["p","مسار القداس"],["c","بطاقات مدمجة"],["l","قائمة"],["b","بطاقات كبيرة"]])+'<div class="stl">طريقة القراءة</div>'+pill("rm",[["unit","قطعة قطعة"],["flow","عرض متصل"]])+'<div class="stl">موضع التأمل</div>'+pill("mp",[["sheet","في الدرج السفلي"],["after","بعد النص مباشرة"]])+'<div class="stl">كثافة القراءة</div>'+pill("dn",[["n","عادية"],["c","مدمجة"]])+'<div class="set"><span>ترويسة مصغّرة</span><button class="tg'+(S.slim?' on':'')+'" data-tg="slim" aria-label="ترويسة مصغّرة"></button></div>';
+  var lay='<div class="stl">شكل أقسام الصفحة الرئيسية</div>'+pill("hv",[["p","مسار القداس"],["c","بطاقات مدمجة"],["l","قائمة"],["b","بطاقات كبيرة"]])+'<div class="stl">طريقة القراءة</div>'+pill("rm",[["unit","قطعة قطعة"],["flow","عرض متصل"]])+'<div class="stl">موضع التأمل</div>'+pill("mp",[["sheet","في الدرج السفلي"],["after","بعد النص مباشرة"]])+'<div class="stl">كثافة القراءة</div>'+pill("dn",[["n","عادية"],["c","مدمجة"]])+'<div class="set"><span>ترويسة مصغّرة</span><button class="tg'+(S.slim?' on':'')+'" data-tg="slim" aria-label="ترويسة مصغّرة"></button></div>';
   var G=window.KS?KS.settings():{};
   var h='<div class="sth"><span>⚙ الإعدادات</span><button class="stx" data-x aria-label="إغلاق">✕</button></div>';
+  var DSO=[["d1","المحراب","أقواس ذهبية ولازورد","⛪"],["d4","البطاقات","بطاقات نظيفة وخط كبير","▦"],["d0","الكلاسيكي","الشكل القديم","☰"]];
+  h+='<div class="dsel"><div class="stl" style="margin-top:2px">🎭 تصميم التطبيق</div><div class="dst">'+DSO.map(function(x){return '<button data-set="ds" data-v="'+x[0]+'" class="'+((S.ds||"d1")===x[0]?'on':'')+'" aria-pressed="'+((S.ds||"d1")===x[0])+'"><i>'+x[3]+'</i><b>'+x[1]+'</b><small>'+x[2]+'</small></button>'}).join("")+'</div></div>';
   h+=grp("look","🎨","المظهر والخط",look);
   h+=grp("lay","🧩","التخطيط والكثافة",lay);
   h+=grp("read","📖","القراءة والدراسة",rd+(G.study||""));
