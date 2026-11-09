@@ -433,17 +433,26 @@ div.ixgh{color:var(--lk)}
 :root[data-theme^=church] .hst.done .hdot{background:var(--gold);color:#2b1d12}
 :root[data-theme^=church] .hst.cur .hdot{color:var(--gold-hi)}
 :root[data-theme^=church] .htx small{color:#d8c9a3}:root[data-theme^=church] .hst::before{background:rgba(201,164,76,.45)}
-.hbk{border:1.5px solid var(--line);border-radius:12px;background:var(--card);margin:0 0 10px;overflow:hidden}
-.hbt{padding:7px 12px;font-size:.8rem;color:var(--mute);border-bottom:1px solid var(--line);font-weight:700}
-.hbk button{display:flex;align-items:center;gap:10px;width:100%;padding:11px 12px;border:0;border-top:1px solid var(--line);background:transparent;color:var(--ink);text-align:start}
-.hbk .hbt+button{border-top:0}.hbk .tt{flex:1;font-weight:600}.hbk small{color:var(--mute);font-size:.78rem}
-:root[data-theme^=church] .hbk{border-color:rgba(201,164,76,.5);background:rgba(8,18,48,.55)}:root[data-theme^=church] .hbt{color:var(--gold-hi);border-color:rgba(201,164,76,.35)}
-:root[data-theme^=church] .hbk button{color:var(--cream);border-color:rgba(201,164,76,.25)}
-:root[data-theme=church] .dd label,:root[data-theme=church] .hbk small,:root[data-theme=church] #app>.hint,:root[data-theme=church] .home .hint,:root[data-theme=church] .pending,:root[data-theme=church] .gh small{color:#e3d6b2}
-:root[data-theme=parchment] .banner h1,:root[data-theme=light] .banner h1,:root[data-theme=parchment] .banner .burger,:root[data-theme=light] .banner .burger{text-shadow:0 1px 3px rgba(40,22,6,.75)}
-.hshelf{display:flex;flex-wrap:wrap;gap:6px}
-.hshelf button{padding:6px 12px;border:1.5px solid var(--lk);border-radius:999px;color:var(--lk);font:inherit;font-size:.86rem;background:transparent}
-:root[data-theme^=church] .hshelf button{border-color:var(--gold);color:var(--gold-hi);background:rgba(235,203,126,.08)}
+.hs{border:1.5px solid var(--line);border-radius:16px;background:var(--card);margin:0 0 14px;overflow:hidden;box-shadow:var(--shadow)}
+.hsh{display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1.5px solid var(--line);background:var(--card2)}
+.hsn{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--acc);color:var(--onacc,#fff);font-weight:700;font-size:1.05rem}
+.hst2{flex:1;min-width:0}.hst2 b{display:block;font-size:1.12rem;line-height:1.35;color:var(--ink)}.hst2 small{color:var(--mute);font-size:.8rem}
+.hsgo{padding:5px 12px;border:1.5px solid var(--lk,var(--acc));border-radius:999px;color:var(--lk,var(--acc));font-size:.85rem;white-space:nowrap}
+.hsg{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line)}
+.hsg button{display:flex;align-items:center;gap:8px;padding:10px 10px;background:var(--card);color:var(--ink);text-align:start;font-size:.92rem;line-height:1.4}
+.hsg button i{flex:none;font-style:normal;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:.72rem;border:1px solid var(--mute);color:var(--mute)}
+.hsg button.rd i{background:var(--acc);border-color:var(--acc);color:var(--onacc,#fff)}.hsg button[disabled]{opacity:.5}
+.hsl button{display:flex;align-items:center;gap:10px;width:100%;padding:11px 14px;background:transparent;color:var(--ink);text-align:start;border-top:1px solid var(--line)}
+.hsl button:first-child{border-top:0}.hsl .tt{flex:1;font-weight:600}.hsl small{color:var(--mute);font-size:.78rem}
+.hs .hpl{padding:10px 12px 0}.hs .hpath{padding:6px 12px 12px}
+:root[data-theme=church] .hs .hpl button:not(.on){color:#6b4a00;border-color:var(--gold-lo);background:transparent}
+:root[data-theme=church] .hs .hst{color:var(--ink)}:root[data-theme=church] .hs .htx small{color:var(--mute)}
+:root[data-theme=church] .hs .hdot{background:var(--card);color:var(--gold-lo);border-color:var(--gold-lo)}:root[data-theme=church] .hs .hst.done .hdot{background:var(--gold-lo);color:#fff}
+:root[data-theme^=church] .hs{border-color:rgba(201,164,76,.6)}
+:root[data-theme^=church] .hsn{background:var(--gold);color:#2b1d12}
+:root[data-theme^=church] .hsgo{color:var(--gold-lo);border-color:var(--gold-lo)}
+:root[data-theme=churchnight] .hsgo{color:var(--gold-hi);border-color:var(--gold)}
+:root[data-theme=churchnight] .hsn{background:var(--gold)}
 .bnav{position:fixed;inset:auto 0 0 0;z-index:25;max-width:980px;margin:0 auto;display:flex;justify-content:space-around;background:var(--card);border-top:1.5px solid var(--line);padding:6px 4px calc(7px + env(safe-area-inset-bottom));box-shadow:0 -6px 18px rgba(0,0,0,.25)}
 :root[data-theme^=church] .bnav{border-top:2px solid var(--gold)}
 .bnav button{flex:1;color:var(--mute);font:inherit;font-size:.72rem;font-weight:700;text-align:center;padding:2px 0}
@@ -760,7 +769,8 @@ function homePath(){
   if(window.KS)h+=KS.home();
   if(l&&BYID[l]&&BYID[l].has){var us=unitsOf(l),uu=umap()[l];var sub=us&&typeof uu==="number"&&S.rm==="unit"?'القطعة '+ar9((uu<0?us.length-1:uu)+1)+' من '+ar9(us.length):BYID[l].group.title;
     h+='<button class="hero" data-nav="#/s/'+l+'"><span class="play">▶</span><span><small>تابع من حيث وقفت</small><b>'+esc(BYID[l].title)+'</b><small>'+esc(sub)+'</small></span></button>'}
-  h+='<div class="hpt">مسار القداس</div><div class="hpl">'+["bas","greg","cyr"].map(function(L){return '<button data-lit="'+L+'" class="'+(L===lit?'on':'')+'">'+LN[L]+'</button>'}).join("")+'</div>';
+  var h0=h;h='';
+  h+='<div class="hpl">'+["bas","greg","cyr"].map(function(L){return '<button data-lit="'+L+'" class="'+(L===lit?'on':'')+'">'+LN[L]+'</button>'}).join("")+'</div>';
   h+='<div class="hpath">';
   var stgs=DT.stages||[["الاستعداد",""],["قداس الكلمة",""],["قداس المؤمنين",""],["القسمة والتناول",""]];
   var lastSt=null;if(l&&BYID[l]&&DT.stageOf){var gm=DT.stageOf[BYID[l].group.id];if(gm&&gm[l]!==undefined)lastSt=gm[l]}
@@ -770,20 +780,23 @@ function homePath(){
     var st=n&&done===n?'done':(lastSt===i?'cur':'');
     h+='<button class="hst '+st+'" '+(first?'data-nav="#/s/'+first.id+'"':'disabled')+'><span class="hdot">'+(st==='done'?'✓':ar9(i+1))+'</span><span class="htx"><b>'+esc(sg[0])+'</b><small>'+esc(sg[1]||'')+(n?' · '+ar9(done)+' من '+ar9(n)+' جزءًا':'')+'</small></span></button>'});
   h+='</div>';
+  var PATH=h;h=h0;
   var hid=S.hide||[],GB=function(id){return D.groups.filter(function(x){return x.id===id&&hid.indexOf(id)<0})[0]};
-  /* وصول سريع: ما يُحتاج أثناء القداس فقط — صف واحد ثابت الترتيب */
-  var hot=["dox","taqs","qisam","bless"].map(GB).filter(Boolean);
-  if(hot.length){h+='<div class="hpt">وصول سريع</div><div class="hshelf">';
-    hot.forEach(function(g){h+='<button data-nav="#/g/'+g.id+'"><span>'+(ICONS[g.id]||"☩")+'</span> '+esc(g.title)+'</button>'});h+='</div>'}
-  /* أقسام الكتاب: ثابتة ومرتبة بحسب ترتيب الكتاب، والقداسات الثلاثة في «مسار القداس» أعلاه */
-  var BK=[["قبل القداس",["intro","raf","canons"]],["صلوات خاصة",["qisam","bless","misc"]],["مراجع وملاحق",["dox","taqs","app"]]];
-  h+='<div class="hpt">أقسام الكتاب</div>';
-  BK.forEach(function(b){var gs=b[1].map(GB).filter(Boolean);if(!gs.length)return;
-    h+='<div class="hbk"><div class="hbt">'+b[0]+'</div>';
-    gs.forEach(function(g){var k=g.sections.filter(function(x){return x.has}).length;
+  function head(n,t,sub,go){return '<div class="hsh"><span class="hsn">'+ar9(n)+'</span><span class="hst2"><b>'+t+'</b><small>'+sub+'</small></span>'+(go?'<button class="hsgo" data-nav="'+go+'">فتح ›</button>':'')+'</div>'}
+  var rg=GB("raf"),og=["intro","canons","qisam","bless","misc","dox","taqs","app"].map(GB).filter(Boolean);
+  /* ١ — رفع بخور عشية وباكر: فهرسه الداخلي */
+  if(rg){var rd=rg.sections.filter(function(x){return seen[x.id]}).length;
+    h+='<section class="hs">'+head(1,'رفع بخور عشية وباكر',ar9(rg.sections.length)+' جزءًا'+(rd?' · '+ar9(rd)+' مقروءًا':''),'#/g/raf')+'<div class="hsg">';
+    rg.sections.forEach(function(x,k){h+='<button '+(x.has?'data-nav="#/s/'+x.id+'"':'disabled')+' class="'+(seen[x.id]?'rd':'')+'"><i>'+ar9(k+1)+'</i><span>'+esc(x.title)+'</span></button>'});
+    h+='</div></section>'}
+  /* ٢ — القداس نفسه: مسار المراحل */
+  h+='<section class="hs">'+head(2,'القداس الإلهي','ثلاثة قداسات · اختر القداس ثم المرحلة')+PATH+'</section>';
+  /* ٣ — صلوات أخرى */
+  if(og.length){h+='<section class="hs">'+head(3,'صلوات أخرى','مقدمات وقوانين وقسمة وتبريك وذكصولوجيات ودليل طقس')+'<div class="hsl">';
+    og.forEach(function(g){var k=g.sections.filter(function(x){return x.has}).length;
       h+='<button data-nav="#/g/'+g.id+'"><span class="ic">'+(ICONS[g.id]||"☩")+'</span><span class="tt">'+esc(g.title)+'</span><small>'+ar9(g.sections.length)+(k<g.sections.length?' · '+(k?ar9(k)+' متاح':'قريبًا'):'')+'</small></button>'});
-    h+='</div>'});
-  h+='</div></div>'+bnav("home");
+    h+='</div></section>'}
+  h+='</div>'+bnav("home");
   return h}
 function medView(){
   ctl(false);document.title="تأملاتي — الخولاجي";
