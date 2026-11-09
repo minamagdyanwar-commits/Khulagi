@@ -21,8 +21,8 @@
 @font-face{font-family:"CopticNoto";src:url(noto-sans-coptic-latin-400-normal.woff2) format("woff2");font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F}
 
 :root{--c-ar:var(--ink);--c-tr:#5ad1c9;--c-cop:var(--cop);--bg:#14110c;--card:#1d1812;--card2:#262017;--ink:#f1e6cf;--mute:#b3a688;--acc:#d4a84a;--acc2:#8c1d2b;--rub:#e0786a;--line:#3a3022;--cop:#ffe9a8;--shadow:0 6px 24px rgba(0,0,0,.35)}
-:root[data-theme=parchment]{--bg:#efe4c8;--card:#f7efd9;--card2:#eadcb8;--ink:#2b2013;--mute:#6f5d3d;--acc:#8c1d2b;--acc2:#8c1d2b;--rub:#a3261f;--line:#cdb98a;--cop:#4a1d0e;--shadow:0 6px 20px rgba(80,55,20,.18)}
-:root[data-theme=light]{--c-ar:#111;--c-tr:#0a8f8f;--c-cop:#1a1a8c;--bg:#fff;--card:#fff;--card2:#efeee8;--ink:#000;--mute:#6a6a62;--acc:#a8741a;--acc2:#7a1f2b;--rub:#b3261e;--line:#dcdcd2;--cop:#3a2a08;--shadow:0 6px 20px rgba(0,0,0,.1)}
+:root[data-theme=parchment]{--bg:#efe4c8;--card:#f7efd9;--card2:#eadcb8;--ink:#2b2013;--mute:#6f5d3d;--acc:#8c1d2b;--acc2:#8c1d2b;--rub:#a3261f;--line:#cdb98a;--cop:#4a1d0e;--c-tr:#0b6a6a;--shadow:0 6px 20px rgba(80,55,20,.18)}
+:root[data-theme=light]{--c-ar:#111;--c-tr:#087070;--c-cop:#1a1a8c;--bg:#fff;--card:#fff;--card2:#efeee8;--ink:#000;--mute:#6a6a62;--acc:#a8741a;--acc2:#7a1f2b;--rub:#b3261e;--line:#dcdcd2;--cop:#3a2a08;--shadow:0 6px 20px rgba(0,0,0,.1)}
 :root[data-theme=night]{--bg:#0c1220;--card:#131b2e;--card2:#1b2540;--ink:#e6ecf8;--mute:#93a0bf;--acc:#7fb0ff;--acc2:#5a7fd1;--rub:#ff9a8a;--line:#26324f;--cop:#cfe0ff}
 :root[data-theme=forest]{--bg:#0f1a14;--card:#16241c;--card2:#1e3226;--ink:#e8f1e6;--mute:#9ab5a2;--acc:#8fd18b;--acc2:#3d7a47;--rub:#f0a08a;--line:#2a4234;--cop:#d9f2c9}
 :root[data-theme=royal]{--bg:#1a1022;--card:#241632;--card2:#2f1d41;--ink:#f1e6f7;--mute:#b9a2c9;--acc:#e0b34a;--acc2:#7a2a8a;--rub:#f09aa0;--line:#432a58;--cop:#ffe9b0}
@@ -439,6 +439,8 @@ div.ixgh{color:var(--lk)}
 .hbk .hbt+button{border-top:0}.hbk .tt{flex:1;font-weight:600}.hbk small{color:var(--mute);font-size:.78rem}
 :root[data-theme^=church] .hbk{border-color:rgba(201,164,76,.5);background:rgba(8,18,48,.55)}:root[data-theme^=church] .hbt{color:var(--gold-hi);border-color:rgba(201,164,76,.35)}
 :root[data-theme^=church] .hbk button{color:var(--cream);border-color:rgba(201,164,76,.25)}
+:root[data-theme=church] .dd label,:root[data-theme=church] .hbk small,:root[data-theme=church] #app>.hint,:root[data-theme=church] .home .hint,:root[data-theme=church] .pending,:root[data-theme=church] .gh small{color:#e3d6b2}
+:root[data-theme=parchment] .banner h1,:root[data-theme=light] .banner h1,:root[data-theme=parchment] .banner .burger,:root[data-theme=light] .banner .burger{text-shadow:0 1px 3px rgba(40,22,6,.75)}
 .hshelf{display:flex;flex-wrap:wrap;gap:6px}
 .hshelf button{padding:6px 12px;border:1.5px solid var(--lk);border-radius:999px;color:var(--lk);font:inherit;font-size:.86rem;background:transparent}
 :root[data-theme^=church] .hshelf button{border-color:var(--gold);color:var(--gold-hi);background:rgba(235,203,126,.08)}
