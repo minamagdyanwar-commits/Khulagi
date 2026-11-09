@@ -648,7 +648,7 @@ function unitParts(id,s,c,us,u,q,cols){
   if(U.notes.length)tabs.push(["d","📎 "+cnt(U.notes.length)]);
   if(window.KS)tabs.push(["g","📖 دليل"]);
   var tab=tabs.some(function(t){return t[0]===UT})?UT:"a";
-  var th='<div class="dtabs" id="untabs" role="tablist"><button class="dnav" data-un="1" aria-label="التالي">‹</button>'+tabs.map(function(t){return '<button role="tab" data-ut="'+t[0]+'" class="'+(t[0]===tab?'on':'')+'" aria-selected="'+(t[0]===tab)+'">'+t[1]+'</button>'}).join("")+'<button class="dnav" data-un="-1" aria-label="السابق">›</button></div>';
+  var th='<div class="dtabs" id="untabs" role="tablist">'+tabs.map(function(t){return '<button role="tab" data-ut="'+t[0]+'" class="'+(t[0]===tab?'on':'')+'" aria-selected="'+(t[0]===tab)+'">'+t[1]+'</button>'}).join("")+'</div>';
   var tx='<div class="rd" style="--n:'+Math.max(cols.length,1)+'">';
   U.items.forEach(function(it){
     if(it.k==="pg"){if(S.pg)tx+='<div class="pgm">ص '+it.n+'</div>'}
