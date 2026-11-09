@@ -5,9 +5,6 @@ window.KHULAGI = {
   version: "1.4",
   source: "الخولاجي المقدس — طبعة دير السيدة العذراء برموس (الخامسة 2015)",
   groups: [
-    { id: "intro", title: "المقدمات", sections: [
-      { id: "i1", title: "مقدمة الناشر", page: 11 },
-      { id: "i2", title: "مقدمة الخولاجي", page: 17 } ] },
     { id: "raf", title: "رفع بخور عشية وباكر", sections: [
       { id: "raf-shukr", title: "صلاة الشكر", page: 35 },
       { id: "raf-after", title: "رفع البخور بعد الشكر", page: 43 },

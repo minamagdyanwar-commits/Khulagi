@@ -785,7 +785,7 @@ function homePath(){
   var PATH=h;h=h0;
   var hid=S.hide||[],GB=function(id){return D.groups.filter(function(x){return x.id===id&&hid.indexOf(id)<0})[0]};
   function head(n,t,sub,go){return '<div class="hsh" data-hs="'+n+'" role="button" tabindex="0" aria-expanded="'+(HS===n?'true':'false')+'"><span class="hsn">'+ar9(n)+'</span><span class="hst2"><b>'+t+'</b><small>'+sub+'</small></span>'+(go?'<button class="hsgo" data-nav="'+go+'">فتح ›</button>':'')+'<span class="hsc2">▾</span></div><div class="hsb">'}
-  var rg=GB("raf"),dg=GB("dox"),qg=GB("qisam"),og=["intro","canons","bless","misc","taqs","app"].map(GB).filter(Boolean);
+  var rg=GB("raf"),dg=GB("dox"),qg=GB("qisam"),og=["canons","bless","misc","taqs","app"].map(GB).filter(Boolean);
   /* ١ — رفع بخور عشية وباكر: فهرسه الداخلي */
   if(rg){var rd=rg.sections.filter(function(x){return seen[x.id]}).length;
     h+='<section class="hs'+(HS==1?' open':'')+'">'+head(1,'رفع بخور عشية وباكر',ar9(rg.sections.length)+' جزءًا'+(rd?' · '+ar9(rd)+' مقروءًا':''),'#/g/raf')+'<div class="hsg">';
