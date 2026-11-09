@@ -435,6 +435,19 @@ div.ixgh{color:var(--lk)}
 :root[data-theme^=church] .htx small{color:#d8c9a3}:root[data-theme^=church] .hst::before{background:rgba(201,164,76,.45)}
 .hs{border:1.5px solid var(--line);border-radius:16px;background:var(--card);margin:0 0 14px;overflow:hidden;box-shadow:var(--shadow)}
 .hsh{cursor:pointer;display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1.5px solid var(--line);background:var(--card2)}
+.hs.link .hsh{border-bottom:0}
+.lstrip{display:flex;gap:6px;overflow-x:auto;padding:2px 12px 10px;margin:0 0 6px;-webkit-overflow-scrolling:touch}
+.lstrip button{flex:none;min-width:38px;padding:6px 11px;border:1.5px solid var(--line);border-radius:999px;background:var(--card);color:var(--ink);font-weight:700}
+.lstrip button.on{background:var(--acc);border-color:var(--acc);color:var(--onacc,#fff)}.lstrip .all{font-weight:400;color:var(--mute)}
+.dxl{margin-inline:12px;border:1.5px solid var(--line);border-radius:14px;background:var(--card);overflow:hidden;margin-bottom:14px}
+.dxs{display:flex;align-items:center;gap:10px;width:100%;padding:13px 14px;border-top:1px solid var(--line);text-align:start;color:var(--ink)}
+.dxl>:first-child{border-top:0}.dxs .tt{flex:1;font-weight:600;line-height:1.5}.dxs small{color:var(--mute);font-size:.78rem}
+.dxs.multi{flex-direction:column;align-items:stretch;gap:8px}.dxs .vs{display:flex;flex-wrap:wrap;gap:6px}
+.dxs .vs button{padding:5px 12px;border:1.5px solid var(--lk,var(--acc));border-radius:999px;color:var(--lk,var(--acc));font-size:.88rem}
+.soon{opacity:.55}
+:root[data-theme=church] .lstrip button:not(.on){color:#e3d6b2;background:rgba(8,18,48,.5);border-color:rgba(201,164,76,.5)}
+:root[data-theme=church] .lstrip .on{background:var(--gold);color:#2b1d12;border-color:var(--gold)}
+:root[data-theme=church] .dxs .vs button{color:#6b4a00;border-color:var(--gold-lo)}
 .hsb{display:none}.hs.open .hsb{display:block}.hs:not(.open) .hsh{border-bottom:0}.hsc2{flex:none;color:var(--mute);transition:transform .2s}.hs.open .hsc2{transform:rotate(180deg)}
 .hsn{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--acc);color:var(--onacc,#fff);font-weight:700;font-size:1.05rem}
 .hst2{flex:1;min-width:0}.hst2 b{display:block;font-size:1.12rem;line-height:1.35;color:var(--ink)}.hst2 small{color:var(--mute);font-size:.8rem}
@@ -791,11 +804,8 @@ function homePath(){
     h+='<section class="hs'+(HS==1?' open':'')+'">'+head(1,'رفع بخور عشية وباكر',ar9(rg.sections.length)+' جزءًا'+(rd?' · '+ar9(rd)+' مقروءًا':''),'#/g/raf')+'<div class="hsg">';
     rg.sections.forEach(function(x,k){h+='<button '+(x.has?'data-nav="#/s/'+x.id+'"':'disabled')+' class="'+(seen[x.id]?'rd':'')+'"><i>'+ar9(k+1)+'</i><span>'+esc(x.title.replace(/^[\d٠-٩]+\s*[.\-–]\s*/,''))+'</span></button>'});
     h+='</div></div></section>'}
-  /* ٢ — الذكصولوجيات: جدول بالحروف بنفس شكل بقية الجداول */
-  if(dg){var lc={};dg.sections.forEach(function(x){if(x.l)lc[x.l]=(lc[x.l]||0)+1});
-    h+='<section class="hs'+(HS==2?' open':'')+'">'+head(2,'الذكصولوجيات',ar9(dg.sections.length)+' ذكصولوجية · اختر الحرف الأول من الاسم','#/g/dox')+'<div class="hsg">';
-    LORDER.filter(function(l){return lc[l]}).forEach(function(l){h+='<button data-hlet="'+l+'" data-g="dox"><i>'+l+'</i><span>حرف '+l+' · '+ar9(lc[l])+'</span></button>'});
-    h+='</div></div></section>'}
+  /* ٢ — الذكصولوجيات: بطاقة تفتح صفحتها (الحروف ثم القديس ثم الذكصولوجية) */
+  if(dg){h+='<section class="hs link"><div class="hsh" data-nav="#/g/dox" role="link" tabindex="0"><span class="hsn">'+ar9(2)+'</span><span class="hst2"><b>الذكصولوجيات</b><small>'+ar9(dg.sections.length)+' ذكصولوجية · بحسب الحرف والقديس</small></span><span class="hsc2" style="transform:rotate(90deg)">▾</span></div></section>'}
   /* ٣ — القداس نفسه: مسار المراحل */
   h+='<section class="hs'+(HS==3?' open':'')+'">'+head(3,'القداس الإلهي','ثلاثة قداسات · اختر القداس ثم المرحلة')+PATH+'</div></section>';
   /* ٤ — صلوات القسم */
@@ -846,23 +856,20 @@ function groupView(gid){
   var cur=LET[gid]||"",sn=SAINT[gid]||"",vr=VAR[gid]||"";
   if(useDD){
     var info=g.sections.map(function(x){var m=x.title.match(/^(.*?)\s*\(([^)]*ذكصولوجية[^)]*)\)\s*$/);return {s:x,key:m?m[1].trim():x.title,v:m?m[2].replace(/^ال?ذكصولوجية\s*/,"").trim()||"الرئيسية":"الأولى"}});
-    var letters={};info.forEach(function(i){if(i.s.l)letters[i.s.l]=1});
-    var inL=info.filter(function(i){return !cur||i.s.l===cur});
-    var keys=[];inL.forEach(function(i){if(keys.indexOf(i.key)<0)keys.push(i.key)});
-    if(sn&&keys.indexOf(sn)<0){sn="";SAINT[gid]=""}
-    var vs=info.filter(function(i){return i.key===sn});
-    if(vr&&!vs.some(function(i){return i.v===vr})){vr="";VAR[gid]=""}
-    var opt=function(v,t,sel){return '<option value="'+esc(v)+'"'+(sel?' selected':'')+'>'+esc(t)+'</option>'};
-    h+='<div class="dd">';
-    h+='<label>الحرف<select data-dd="let" data-g="'+gid+'">'+opt("","كل الحروف ("+g.sections.length+")",!cur)+LORDER.concat(["template"]).filter(function(l){return letters[l]}).map(function(l){return opt(l,l==="template"?"قوالب":l,cur===l)}).join("")+'</select></label>';
-    h+='<label>اسم القديس<select data-dd="saint" data-g="'+gid+'">'+opt("","كل الأسماء ("+keys.length+")",!sn)+keys.map(function(k){return opt(k,k,sn===k)}).join("")+'</select></label>';
-    var multi=vs.length>1;
-    h+='<label>الذكصولوجية<select data-dd="var" data-g="'+gid+'"'+(multi?'':' disabled')+'>'+(multi?opt("","كل الذكصولوجيات ("+vs.length+")",!vr)+vs.map(function(i){return opt(i.v,i.v,vr===i.v)}).join(""):opt("",sn?"ذكصولوجية واحدة":"اختر القديس أولًا",true))+'</select></label>';
-    h+='</div>';
-    var shown=inL.filter(function(i){return (!sn||i.key===sn)&&(!vr||i.v===vr)}).map(function(i){return i.s});
-    h+='<div class="list">';
-    shown.forEach(function(s){h+='<button class="sec'+(s.has?'':' soon')+'" data-nav="#/s/'+s.id+'"><span>'+esc(s.title)+(s.has?'':' — قريبًا')+(s.sub?'<small class="sub">'+esc(s.sub)+'</small>':'')+'</span><span class="pn">'+(s.page?'ص '+s.page:'')+'</span></button>'});
-    h+='</div>'+bnav('');app.innerHTML=h;window.scrollTo(0,0);return;
+    var lc={};info.forEach(function(i){if(i.s.l)lc[i.s.l]=(lc[i.s.l]||0)+1});
+    var lets=LORDER.concat(["template"]).filter(function(l){return lc[l]});
+    if(cur&&!lc[cur]){cur="";LET[gid]=""}
+    if(!cur){
+      h+='<p class="hint" style="margin:0 14px 10px">اختر الحرف الأول من اسم القديس.</p><div class="hs" style="margin:0 12px 14px"><div class="hsg">';
+      lets.forEach(function(l){h+='<button data-hlet="'+l+'" data-g="'+gid+'"><i>'+(l==="template"?"ق":l)+'</i><span>'+(l==="template"?"قوالب":"حرف "+l)+' · '+ar9(lc[l])+'</span></button>'});
+      h+='</div></div>'+bnav('');app.innerHTML=h;window.scrollTo(0,0);return}
+    h+='<div class="lstrip"><button data-hlet="" data-g="'+gid+'" class="all">كل الحروف</button>'+lets.map(function(l){return '<button data-hlet="'+l+'" data-g="'+gid+'" class="'+(l===cur?'on':'')+'">'+(l==="template"?"قوالب":l)+'</button>'}).join("")+'</div>';
+    var groups=[],gi={};info.filter(function(i){return i.s.l===cur}).forEach(function(i){if(!(i.key in gi)){gi[i.key]=groups.length;groups.push({key:i.key,items:[]})}groups[gi[i.key]].items.push(i)});
+    h+='<div class="dxl">';
+    groups.forEach(function(g2){
+      if(g2.items.length===1){var i=g2.items[0];h+='<button class="dxs'+(i.s.has?'':' soon')+'" data-nav="#/s/'+i.s.id+'"><span class="tt">'+esc(g2.key)+(i.s.has?'':' — قريبًا')+'</span><small>'+(i.s.page?'ص '+i.s.page:'')+'</small></button>'}
+      else{h+='<div class="dxs multi"><span class="tt">'+esc(g2.key)+'</span><span class="vs">'+g2.items.map(function(i){return '<button class="'+(i.s.has?'':'soon')+'" data-nav="#/s/'+i.s.id+'">'+esc(i.v)+'</button>'}).join("")+'</span></div>'}});
+    h+='</div>'+bnav('');app.innerHTML=h;window.scrollTo(0,0);var on=app.querySelector(".lstrip .on");if(on)on.scrollIntoView({inline:"center",block:"nearest"});return;
   }
   h+='<div class="list">';
   var row=function(x,kid){return '<button class="sec'+(kid?' kid':'')+(x.has?'':' soon')+'" data-nav="#/s/'+x.id+'"><span>'+esc(x.title)+(x.has?'':' — قريبًا')+(x.sub?'<small class="sub">'+esc(x.sub)+'</small>':'')+'</span><span class="pn">'+(x.page?'ص '+x.page:'')+'</span></button>'};
@@ -897,7 +904,7 @@ app.addEventListener("click",function(e){
   var mb=e.target.closest("[data-med]");if(mb){var c=mb.nextElementSibling;c.hidden=!c.hidden;mb.setAttribute("aria-expanded",!c.hidden);mb.querySelector(".mbc").textContent=c.hidden?"▾":"▴";return}
   var nv=e.target.closest("[data-nav]");if(nv){if(nv.getAttribute("data-u0")){var um=nv.getAttribute("data-nav").match(/s\/([^?]+)$/);if(um)usave(um[1],0)}location.hash=nv.getAttribute("data-nav");return}
   var hh=e.target.closest("[data-hs]");if(hh&&!e.target.closest(".hsgo")){var hn=+hh.getAttribute("data-hs");HS=HS===hn?0:hn;document.querySelectorAll(".hs").forEach(function(x){var d=x.querySelector("[data-hs]"),on=+d.getAttribute("data-hs")===HS;x.classList.toggle("open",on);d.setAttribute("aria-expanded",on)});if(HS){var o=document.querySelector(".hs.open");if(o)o.scrollIntoView({block:"nearest",behavior:"smooth"})}return}
-  var hl=e.target.closest("[data-hlet]");if(hl){LET[hl.getAttribute("data-g")]=hl.getAttribute("data-hlet");SAINT[hl.getAttribute("data-g")]="";VAR[hl.getAttribute("data-g")]="";location.hash="#/g/"+hl.getAttribute("data-g");return}
+  var hl=e.target.closest("[data-hlet]");if(hl){LET[hl.getAttribute("data-g")]=hl.getAttribute("data-hlet");SAINT[hl.getAttribute("data-g")]="";VAR[hl.getAttribute("data-g")]="";if(location.hash==="#/g/"+hl.getAttribute("data-g"))groupView(hl.getAttribute("data-g"));else location.hash="#/g/"+hl.getAttribute("data-g");return}
   var lt=e.target.closest("[data-let]");if(lt){LET[lt.getAttribute("data-g")]=lt.getAttribute("data-let");groupView(lt.getAttribute("data-g"));return}
   var g=e.target.closest("[data-go]");if(g){if(g.getAttribute("data-go"))go(g.getAttribute("data-go"));return}
   var f=e.target.closest("sup.fn");if(f){var sid=(location.hash.match(/s\/([^?]+)/)||[])[1]||pick.value;var c=D.content[sid];var t=c&&c.notes&&c.notes[f.dataset.n];sheet('<h3>هامش '+f.dataset.n+'</h3><div class="nt">'+(t?(window.KS?KS.linkRefs(fnify(t)):fnify(t)):"—")+'</div>')}
