@@ -441,9 +441,10 @@ div.ixgh{color:var(--lk)}
 .hsg{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line)}
 .hsg button{display:flex;align-items:center;gap:8px;padding:10px 10px;background:var(--card);color:var(--ink);text-align:start;font-size:.92rem;line-height:1.4}
 .hsg button i{flex:none;font-style:normal;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:.72rem;border:1px solid var(--mute);color:var(--mute)}
-.hsg button.rd i{background:var(--acc);border-color:var(--acc);color:var(--onacc,#fff)}.hsg button[disabled]{opacity:.5}
+.hsg button.rd i{background:var(--acc);border-color:var(--acc);color:var(--onacc,#fff)}.hsg button:last-child:nth-child(odd){grid-column:1/-1}.hsg button[disabled]{opacity:.5}
 .hsl button{display:flex;align-items:center;gap:10px;width:100%;padding:11px 14px;background:transparent;color:var(--ink);text-align:start;border-top:1px solid var(--line)}
 .hsl button:first-child{border-top:0}.hsl .tt{flex:1;font-weight:600}.hsl small{color:var(--mute);font-size:.78rem}
+.hsc{display:flex;flex-wrap:wrap;gap:6px;padding:12px}.hsc button{min-width:46px;padding:6px 8px;border:1.5px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);display:flex;flex-direction:column;align-items:center;line-height:1.2}.hsc b{font-size:1.1rem}.hsc small{font-size:.68rem;color:var(--mute)}
 .hs .hpl{padding:10px 12px 0}.hs .hpath{padding:6px 12px 12px}
 :root[data-theme=church] .hs .hpl button:not(.on){color:#6b4a00;border-color:var(--gold-lo);background:transparent}
 :root[data-theme=church] .hs .hst{color:var(--ink)}:root[data-theme=church] .hs .htx small{color:var(--mute)}
@@ -783,16 +784,26 @@ function homePath(){
   var PATH=h;h=h0;
   var hid=S.hide||[],GB=function(id){return D.groups.filter(function(x){return x.id===id&&hid.indexOf(id)<0})[0]};
   function head(n,t,sub,go){return '<div class="hsh"><span class="hsn">'+ar9(n)+'</span><span class="hst2"><b>'+t+'</b><small>'+sub+'</small></span>'+(go?'<button class="hsgo" data-nav="'+go+'">فتح ›</button>':'')+'</div>'}
-  var rg=GB("raf"),og=["intro","canons","qisam","bless","misc","dox","taqs","app"].map(GB).filter(Boolean);
+  var rg=GB("raf"),dg=GB("dox"),qg=GB("qisam"),og=["intro","canons","bless","misc","taqs","app"].map(GB).filter(Boolean);
   /* ١ — رفع بخور عشية وباكر: فهرسه الداخلي */
   if(rg){var rd=rg.sections.filter(function(x){return seen[x.id]}).length;
     h+='<section class="hs">'+head(1,'رفع بخور عشية وباكر',ar9(rg.sections.length)+' جزءًا'+(rd?' · '+ar9(rd)+' مقروءًا':''),'#/g/raf')+'<div class="hsg">';
-    rg.sections.forEach(function(x,k){h+='<button '+(x.has?'data-nav="#/s/'+x.id+'"':'disabled')+' class="'+(seen[x.id]?'rd':'')+'"><i>'+ar9(k+1)+'</i><span>'+esc(x.title)+'</span></button>'});
+    rg.sections.forEach(function(x,k){h+='<button '+(x.has?'data-nav="#/s/'+x.id+'"':'disabled')+' class="'+(seen[x.id]?'rd':'')+'"><i>'+ar9(k+1)+'</i><span>'+esc(x.title.replace(/^[\d٠-٩]+\s*[.\-–]\s*/,''))+'</span></button>'});
     h+='</div></section>'}
-  /* ٢ — القداس نفسه: مسار المراحل */
-  h+='<section class="hs">'+head(2,'القداس الإلهي','ثلاثة قداسات · اختر القداس ثم المرحلة')+PATH+'</section>';
-  /* ٣ — صلوات أخرى */
-  if(og.length){h+='<section class="hs">'+head(3,'صلوات أخرى','مقدمات وقوانين وقسمة وتبريك وذكصولوجيات ودليل طقس')+'<div class="hsl">';
+  /* ٢ — الذكصولوجيات: فهرس بالحروف */
+  if(dg){var lc={};dg.sections.forEach(function(x){if(x.l)lc[x.l]=(lc[x.l]||0)+1});
+    h+='<section class="hs">'+head(2,'الذكصولوجيات',ar9(dg.sections.length)+' ذكصولوجية · اختر الحرف الأول من الاسم','#/g/dox')+'<div class="hsc">';
+    LORDER.filter(function(l){return lc[l]}).forEach(function(l){h+='<button data-hlet="'+l+'" data-g="dox"><b>'+l+'</b><small>'+ar9(lc[l])+'</small></button>'});
+    h+='</div></section>'}
+  /* ٣ — القداس نفسه: مسار المراحل */
+  h+='<section class="hs">'+head(3,'القداس الإلهي','ثلاثة قداسات · اختر القداس ثم المرحلة')+PATH+'</section>';
+  /* ٤ — صلوات القسم */
+  if(qg){var qd=qg.sections.filter(function(x){return seen[x.id]}).length;
+    h+='<section class="hs">'+head(4,'صلوات القسم',ar9(qg.sections.length)+' صلاة'+(qd?' · '+ar9(qd)+' مقروءة':''),'#/g/qisam')+'<div class="hsg">';
+    qg.sections.forEach(function(x,k){h+='<button '+(x.has?'data-nav="#/s/'+x.id+'"':'disabled')+' class="'+(seen[x.id]?'rd':'')+'"><i>'+ar9(k+1)+'</i><span>'+esc(x.title.replace(/^[\d٠-٩]+\s*[.\-–]\s*/,''))+'</span></button>'});
+    h+='</div></section>'}
+  /* ٥ — صلوات أخرى */
+  if(og.length){h+='<section class="hs">'+head(5,'صلوات أخرى','مقدمات وقوانين وتبريك ومتنوعة ودليل طقس وملحق')+'<div class="hsl">';
     og.forEach(function(g){var k=g.sections.filter(function(x){return x.has}).length;
       h+='<button data-nav="#/g/'+g.id+'"><span class="ic">'+(ICONS[g.id]||"☩")+'</span><span class="tt">'+esc(g.title)+'</span><small>'+ar9(g.sections.length)+(k<g.sections.length?' · '+(k?ar9(k)+' متاح':'قريبًا'):'')+'</small></button>'});
     h+='</div></section>'}
@@ -884,6 +895,7 @@ app.addEventListener("click",function(e){
   var ma=e.target.closest("[data-medall]");if(ma){S.medAll=ma.getAttribute("data-medall");save();var op=S.medAll==="open";app.querySelectorAll(".medc").forEach(function(x){x.hidden=!op});app.querySelectorAll(".medb").forEach(function(x){x.setAttribute("aria-expanded",op);x.querySelector(".mbc").textContent=op?"▴":"▾"});return}
   var mb=e.target.closest("[data-med]");if(mb){var c=mb.nextElementSibling;c.hidden=!c.hidden;mb.setAttribute("aria-expanded",!c.hidden);mb.querySelector(".mbc").textContent=c.hidden?"▾":"▴";return}
   var nv=e.target.closest("[data-nav]");if(nv){if(nv.getAttribute("data-u0")){var um=nv.getAttribute("data-nav").match(/s\/([^?]+)$/);if(um)usave(um[1],0)}location.hash=nv.getAttribute("data-nav");return}
+  var hl=e.target.closest("[data-hlet]");if(hl){LET[hl.getAttribute("data-g")]=hl.getAttribute("data-hlet");SAINT[hl.getAttribute("data-g")]="";VAR[hl.getAttribute("data-g")]="";location.hash="#/g/"+hl.getAttribute("data-g");return}
   var lt=e.target.closest("[data-let]");if(lt){LET[lt.getAttribute("data-g")]=lt.getAttribute("data-let");groupView(lt.getAttribute("data-g"));return}
   var g=e.target.closest("[data-go]");if(g){if(g.getAttribute("data-go"))go(g.getAttribute("data-go"));return}
   var f=e.target.closest("sup.fn");if(f){var sid=(location.hash.match(/s\/([^?]+)/)||[])[1]||pick.value;var c=D.content[sid];var t=c&&c.notes&&c.notes[f.dataset.n];sheet('<h3>هامش '+f.dataset.n+'</h3><div class="nt">'+(t?(window.KS?KS.linkRefs(fnify(t)):fnify(t)):"—")+'</div>')}
