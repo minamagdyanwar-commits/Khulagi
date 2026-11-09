@@ -464,6 +464,13 @@ div.ixgh{color:var(--lk)}
 .lvk button{flex:1;padding:14px 0;border-radius:16px;border:1.5px solid #c9a44c;color:#ebcb7e;font:700 .95rem "Cairo",sans-serif;background:transparent}
 .lvk button.main{flex:1.7;background:linear-gradient(180deg,#ebcb7e,#c9a44c 60%,#8f6f27);color:#1a1204}
 .unhb{display:flex;gap:6px}
+
+/* نص شرحي بلا قبطي: خارج الأعمدة الثلاثة */
+.exp{margin:8px 8px;padding:8px 12px 8px 12px;border:1px solid var(--line);border-inline-start:4px solid var(--acc);border-radius:10px;background:var(--card2);color:var(--ink);font-size:calc(var(--fs)*.9);line-height:2;position:relative}
+:root[data-theme^=church] .exp{border-color:rgba(201,164,76,.6);border-inline-start-color:var(--gold-lo)}
+.exp .expl{display:inline-block;font:700 .66rem "Cairo","Tajawal",sans-serif;padding:0 8px;border-radius:999px;background:var(--lk);color:var(--card);margin-inline-end:8px;vertical-align:1px}
+.rd.art .exp{border:0;background:transparent;border-radius:0;padding:4px 10px;font-size:calc(var(--fs)*.95)}
+.rd.art .exp .expl{display:none}
 </style>
 </head>
 <body>
@@ -582,7 +589,7 @@ function unitsOf(id){
   if(UC[id])return UC[id];var c=D.content[id];if(!c)return null;
   var MIN=80,turns=[],cur=null,pend=[];
   c.items.forEach(function(it){
-    if(it.k!=="p"){pend.push(it);return}
+    if(it.k!=="p"||isExp(it)){pend.push(it);return}
     var key=it.sp||"";
     if(!cur||it.who||key!==cur.sp){cur={sp:key,items:pend.slice(),w:0};pend=[];turns.push(cur)}
     else if(pend.length){pend.forEach(function(x){cur.items.push(x)});pend=[]}
@@ -603,7 +610,10 @@ function unitsOf(id){
     var f=u.items.filter(function(i){return i.k==="p"})[0];u.head=f?plain(f.ar||f.cop||"").split(/\s+/).slice(0,7).join(" "):"";
     var sn={pr:"الكاهن",di:"الشماس",pe:"الشعب"};var ss=[];u.sps.forEach(function(x){if(x&&ss.indexOf(sn[x])<0)ss.push(sn[x])});u.who=ss.join(" · ")});
   UC[id]=out;return out}
+function isExp(it){return it&&it.k==="p"&&!!it.ar&&!it.cop&&!it.tr}
+function expHtml(it,q){return '<div class="exp"><span class="expl">شرح</span>'+fnify(it.ar,q).replace(/ \/ /g,'<br>')+'</div>'}
 function rowHtml(it,cols,isDox,st,q){
+  if(isExp(it))return expHtml(it,q);
   var zc="";if(isDox&&!it.sp){zc=(st.alt++%2)?' zb':' za'}
   var h='<div class="row'+(it.sp?' sp-'+it.sp:'')+zc+'">';
   if(it.who)h+='<div class="who">'+esc(it.who)+'</div>';
@@ -675,12 +685,13 @@ function reader(id,q,u){
   if(c&&S.med&&c.items.some(function(i){return i.med})){var n=c.items.filter(function(i){return i.med}).length;h+='<div class="medbar"><span>'+n+' تأملًا في هذا القسم</span><button data-medall="open">فتح الكل</button><button data-medall="closed">إغلاق الكل</button></div>'}
   if(!c){h+='<div class="empty"><b>هذا القسم لم يُنقل بعد</b>موضعه في الكتاب المطبوع صفحة '+s.page+'. يُضاف في الدفعات القادمة.</div>'}
   else{
-    h+='<div class="rd" style="--n:'+Math.max(cols.length,1)+'">';
+    var art=c.items.every(function(i){return i.k!=="p"||isExp(i)});
+    h+='<div class="rd'+(art?' art':'')+'" style="--n:'+Math.max(cols.length,1)+'">';
     var st={alt:0},isDox=s.group.id==="dox";
     c.items.forEach(function(it){
       if(it.k==="pg"){if(S.pg)h+='<div class="pgm">ص '+it.n+'</div>'}
       else if(it.k==="r"){if(S.rub)h+=(window.KS?KS.rub(it.t,fnify(it.t,q)):'<div class="rub">'+fnify(it.t,q)+'</div>');h+=medHtml(it)}
-      else{if(!cols.length)return;h+=rowHtml(it,cols,isDox,st,q)+medHtml(it)}
+      else{if(!cols.length&&!isExp(it))return;h+=rowHtml(it,cols,isDox,st,q)+medHtml(it)}
     });
     h+='</div><div class="pending">انتهى المنقول من هذا القسم'+(c.range?' — ص '+c.range:'')+' — يُستكمل بقية القسم في الدفعة التالية.</div>';
     lastSet(id);seenSet(id);

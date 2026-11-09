@@ -11,6 +11,7 @@ function load(id){
   c.items.forEach(function(it){
     if(it.k==="r"){pend.push(strip(it.t));return}
     if(it.k!=="p")return;
+    if(it.ar&&!it.cop&&!it.tr){var t=strip(it.ar);pend.push(t.length>220?t.slice(0,220)+"…":t);return}
     out.push({it:it,rub:pend});pend=[]});
   if(!out.length)return false;
   L.id=id;L.items=out;return true}
