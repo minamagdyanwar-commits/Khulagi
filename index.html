@@ -481,6 +481,9 @@ div.ixgh{color:var(--lk)}
 .stp:before{content:attr(data-n);position:absolute;right:-44px;top:8px;width:30px;height:30px;border-radius:50%;background:var(--bg);border:2px solid var(--g1,var(--acc));color:var(--g1,var(--acc));display:grid;place-items:center;font-size:.82rem}
 .stp.d:before{background:var(--g1,var(--acc));color:#2b1d12}.stp.c{box-shadow:0 0 0 2px var(--g1,var(--acc))}.stp.c:before{background:var(--g1,var(--acc));color:#2b1d12;box-shadow:0 0 0 5px color-mix(in srgb,var(--g1,var(--acc)) 30%,transparent)}
 .stp b{display:block;font-size:1rem}.stp small{display:block;color:var(--mute);font-size:.74rem;margin-top:2px}.stp .pr{display:block;height:3px;border-radius:3px;background:color-mix(in srgb,var(--ink) 16%,transparent);margin-top:5px;overflow:hidden}.stp .pr i{display:block;height:100%;background:var(--g1,var(--acc))}
+#topbar{background:var(--bg)}
+:root[data-pg=r] #topbar{position:sticky;top:0;z-index:22;box-shadow:0 6px 14px -10px rgba(0,0,0,.7)}
+html{scroll-padding-top:var(--tbh,0px)}
 .bmid{display:none}
 @media (max-height:480px){.d1h .arc{padding:16px 12px 12px;border-radius:120px 120px 14px 14px}.d1h .ring{width:64px;height:64px}.d1h .ring i{width:54px;height:54px;font-size:22px}.d1h .arc h1{font-size:1.2rem}}
 :root[data-ds=d1] .bmid{display:grid;place-items:center;flex:none;width:58px;height:58px;margin-top:-34px;border-radius:30px 30px 8px 8px;background:linear-gradient(#EBCB7E,#C9A44C 60%,#8F6F27);border:3px solid var(--bg);color:#2b1d12;font-size:22px;box-shadow:0 6px 14px #0008}
@@ -605,9 +608,9 @@ div.ixgh{color:var(--lk)}
 </style>
 </head>
 <body>
-<div class="banner"><span class="cr l">☩</span><span class="cr r">☩</span><span class="cr">☩</span><button class="burger" id="btnSet" aria-label="الإعدادات">☰</button><h1 id="btl">الخولاجي المقدس</h1></div>
+<header id="topbar"><div class="banner"><span class="cr l">☩</span><span class="cr r">☩</span><span class="cr">☩</span><button class="burger" id="btnSet" aria-label="الإعدادات">☰</button><h1 id="btl">الخولاجي المقدس</h1></div>
 <div class="opts" id="opts" style="display:none"></div>
-<div class="selw" id="selw" style="display:none"><select id="pick" aria-label="اختر جزء القداس"></select></div>
+<div class="selw" id="selw" style="display:none"><select id="pick" aria-label="اختر جزء القداس"></select></div></header>
 <main id="app"></main>
 
 <div class="scrim" id="scrim"></div>
@@ -808,7 +811,7 @@ function sheetRefresh(){
   var id=CUR.id,s=BYID[id],c=D.content[id],us=unitsOf(id);if(!s||!c||!us)return;
   var cols=[];if(S.ar)cols.push("ar");if(S.tr)cols.push("tr");if(S.cop)cols.push("cop");
   sheetApply(unitParts(id,s,c,us,CUR.u,"",cols))}
-function fixScroll(){var m=unmEl();if(!m)return;var top=m.getBoundingClientRect().top+window.scrollY-60;if(window.scrollY>top)window.scrollTo(0,Math.max(0,top))}
+function fixScroll(){var m=unmEl();if(!m)return;var th=(document.getElementById("topbar")||{}).offsetHeight||0,top=m.getBoundingClientRect().top+window.scrollY-60-(document.documentElement.getAttribute("data-pg")==="r"?th:0);if(window.scrollY>top)window.scrollTo(0,Math.max(0,top))}
 function reader(id,q,u){
   var s=BYID[id];if(!s){return}
   pick.value=id;document.title=s.title+" — الخولاجي";var tt=document.getElementById("btl");if(tt)tt.textContent=s.title;
@@ -966,6 +969,8 @@ function groupView(gid){
   h+='</div>'+bnav('');app.innerHTML=h;window.scrollTo(0,0)}
 
 /* routing */
+function tbh(){var t=document.getElementById("topbar");document.documentElement.style.setProperty("--tbh",(document.documentElement.getAttribute("data-pg")==="r"&&t?t.offsetHeight+8:0)+"px")}
+window.addEventListener("resize",function(){tbh()});
 function route(){
   var h=location.hash.replace(/^#\/?/,"");if(h.indexOf("s/")!==0){var bt=document.getElementById("btl");if(bt)bt.textContent="الخولاجي المقدس"}document.documentElement.setAttribute("data-pg",h.indexOf("s/")===0?"r":h===""?"h":"l");
   if(h.indexOf("s/")===0){var p=h.slice(2).split("?q=");if(!BYID[p[0]])return home();ctl(true);reader(p[0],p[1]?decodeURIComponent(p[1]):"")}
@@ -975,6 +980,7 @@ function route(){
   else if(h==="med")medView();
   else if(h.indexOf("g/")===0)groupView(h.slice(2));
   else home();
+  tbh();setTimeout(tbh,300)
 }
 function go(id){location.hash="#/s/"+id}
 window.addEventListener("hashchange",route);
