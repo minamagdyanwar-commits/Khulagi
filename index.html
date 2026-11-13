@@ -964,8 +964,8 @@ function groupView(gid){
       h+='</div></div>'+bnav('');app.innerHTML=h;window.scrollTo(0,0);return}
     h+='<div class="lstrip"><button data-hlet="" data-g="'+gid+'" class="all">كل الحروف</button>'+lets.map(function(l){return '<button data-hlet="'+l+'" data-g="'+gid+'" class="'+(l===cur?'on':'')+'">'+(l==="template"?"قوالب":l)+'</button>'}).join("")+'</div>';
     var groups=[],gi={};info.filter(function(i){return i.s.l===cur}).forEach(function(i){if(!(i.key in gi)){gi[i.key]=groups.length;groups.push({key:i.key,items:[]})}groups[gi[i.key]].items.push(i)});
-    var HON=/^(ال)?(قديس[ةون]*|قديسان|قديستان|شهيد[ةون]*|شهيدان|شهيدتان|شهداء|ملاك|ملاكان|ملائكة|قمص|بابا|انبا|أنبا|الأنبا|الأب|العظيم|النبي|الأمير|الأسقف|رئيس|المعلم|المُعلم|الصديق|الراهب|الرسول|الرسل|الآباء|آبائنا|الملك|الملكة|السيد|جماعة|ذكصولوجية|ما|قالب)$/;
-    var nk=function(t){var w=t.replace(/[\u064B-\u0652\u0640]/g,"").split(/\s+/);while(w.length>1&&HON.test(w[0]))w.shift();return w.join(" ").replace(/[أإآ]/g,"ا").replace(/ى/g,"ي").replace(/ة/g,"ه")};
+    var HON=/^(ال)?(قديس[ةون]*|قديسان|قديستان|شهيد[ةون]*|شهيدان|شهيدتان|شهداء|ملاك|ملاكان|ملائكة|قمص|بابا|انبا|أنبا|الأنبا|الأب|أبا|ابا|العظيم|النبي|الأمير|الأسقف|رئيس|المعلم|المُعلم|الصديق|الراهب|الرسول|الرسل|الآباء|آبائنا|الملك|الملكة|السيد|جماعة|ذكصولوجية|ما|قالب)$/;
+    var nk=function(t){var w=t.replace(/[\u064B-\u0652\u0640]/g,"").split(/\s+/);while(w.length>1&&HON.test(w[0]))w.shift();return w.join(" ").replace(/^ال(?=.{3})/,"").replace(/[أإآ]/g,"ا").replace(/ى/g,"ي").replace(/ة/g,"ه")};
     groups.sort(function(a,b){return nk(a.key).localeCompare(nk(b.key),"ar")||a.key.localeCompare(b.key,"ar")});
     h+='<div class="dxl">';
     groups.forEach(function(g2){
