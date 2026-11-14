@@ -650,8 +650,6 @@ html[data-pg="h"]:not(.sheet-open) #dxfab,html[data-pg="h"]:not(.sheet-open) #qf
 .pdm.lg{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;padding:8px}.pdm .lt{height:32px;border-radius:8px;border:1px solid var(--line);color:var(--ink)}.pdm .lt.cur{background:var(--acc);color:var(--onacc,#fff);font-weight:700;border-color:var(--acc)}
 .pdm .o{display:block;width:100%;padding:7px 10px;border-radius:8px;text-align:start;color:var(--ink);line-height:1.4}.pdm .o small{display:block;font-size:.72rem;opacity:.7}.pdm .o.cur{background:var(--acc);color:var(--onacc,#fff);font-weight:700}
 .ddres{display:flex;align-items:center;gap:8px;margin:4px 14px 12px;padding:10px 12px;border-radius:14px;border:1px solid var(--line);background:var(--card)}.ddres .t{flex:1;min-width:0;font-family:var(--fa,serif);font-size:1.05rem;line-height:1.5}.ddres .t small{display:block;font-family:var(--fu,inherit);font-size:.75rem;opacity:.75}.ddres .go{flex:none;padding:8px 14px;border-radius:999px;background:var(--acc);color:var(--onacc,#fff);font-weight:700}
-#btnSet{position:fixed!important;z-index:46;top:calc(8px + env(safe-area-inset-top,0px))!important;inset-inline-end:8px!important;width:40px!important;height:40px!important;font-size:1.7rem!important;background:none!important;border:0!important;box-shadow:none!important;backdrop-filter:none!important;color:#fff;text-shadow:0 1px 5px rgba(0,0,0,.7)}
-html.scrolled #btnSet{color:var(--ink);text-shadow:0 0 6px var(--bg)}
 html[data-pg="h"] #btnSet{display:none!important}
 .dxs.multi{flex-direction:column;align-items:stretch;gap:8px}.dxs .vs{display:flex;flex-wrap:wrap;gap:6px}
 .dxs .vs button{padding:5px 12px;border:1.5px solid var(--lk,var(--acc));border-radius:999px;color:var(--lk,var(--acc));font-size:.88rem}
@@ -1274,7 +1272,6 @@ window.addEventListener("hashchange",route);
     if(!root.classList.contains("sheet-open")){if(dy>60)open(true)}else if(dy<-70&&sh&&sh.scrollTop<=2)open(false)},{passive:true});
   document.body.addEventListener("click",function(e){var b=e.target.closest("[data-sheet]");if(b)open(b.getAttribute("data-sheet")==="open")})})();
 document.addEventListener("change",function(e){if(e.target&&e.target.id==="startsel"){S.startPage=e.target.value;save();toast("تم الحفظ")}});
-window.addEventListener("scroll",function(){document.documentElement.classList.toggle("scrolled",window.scrollY>60)},{passive:true});
 document.body.addEventListener("click",function(e){
   if(e.target.closest("[data-opensettings]")){settings();return}
   var mns=e.target.closest("[data-mnsave]");if(mns){var q2=mns.getAttribute("data-mnsave").split("|"),all=mnGet(),val=mns.getAttribute("data-del")?"":document.getElementById("mnt").value.trim();all[q2[0]]=all[q2[0]]||{};if(val)all[q2[0]][q2[1]]=val;else delete all[q2[0]][q2[1]];mnSet(all);close();reader(CUR.id,undefined,CUR.u);return}
