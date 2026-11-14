@@ -619,6 +619,8 @@ html:not([data-pg="r"]) #idxh{display:none}
 .jin{margin:0 0 8px;line-height:1.9;font-size:.95rem}.jt.hr{box-shadow:0 0 0 2px var(--g1,var(--acc))}.hrb{font-style:normal;font-size:.7rem;padding:1px 8px;border-radius:999px;background:var(--g1,var(--acc));color:var(--on-g1,#fff);margin-inline-start:6px}
 html:has(.sheet.on) #dxfab,html:has(.sheet.on) #qfs{display:none}
 .sceneh{font-weight:700;font-size:.85rem;color:var(--gold,var(--acc));margin:4px 0}
+.sts .stt{flex:none;width:28px;height:24px;border-radius:8px;border:1px solid currentColor;font-size:.8rem;opacity:.85}.sts .stt.big{display:none;margin-inline-start:6px}
+.sts.min .sth,.sts.min .cur{display:none}.sts.min .stt.big{display:inline-block}.sts.min .row{display:flex;align-items:center;cursor:pointer}.sts.min{padding-block:6px}
 .dxs.multi{flex-direction:column;align-items:stretch;gap:8px}.dxs .vs{display:flex;flex-wrap:wrap;gap:6px}
 .dxs .vs button{padding:5px 12px;border:1.5px solid var(--lk,var(--acc));border-radius:999px;color:var(--lk,var(--acc));font-size:.88rem}
 .soon{opacity:.55}
@@ -980,7 +982,7 @@ function storyIdx(id){var sc=BYID[id];if(!sc||!window.KST)return -1;var g=sc.gro
 function stripHtml(i){
   var st=KST.STOPS,nd='';
   st.forEach(function(x,k){nd+='<i class="nd'+(k===i?' c':k<i?' d':'')+'">'+(k<i?'✓':ar9(k+1))+'</i>';if(k<st.length-1)nd+='<b class="ln"></b>'});
-  return '<div class="sts" role="group" aria-label="رحلة المسيح في القداس"><div class="sth"><b>رحلة المسيح في القداس</b><button class="sti" data-story="1">ما هذا؟ ‹</button></div><div class="row">'+nd+'</div><button class="cur" data-story="1"><span>المحطة <b>'+ar9(i+1)+' من '+ar9(st.length)+'</b>: '+esc(st[i].n)+' · '+esc(st[i].place)+'</span><span>الخريطة ‹</span></button></div>'}
+  return '<div class="sts'+(S.stc?' min':'')+'" role="group" aria-label="رحلة المسيح في القداس"><div class="sth"><b>رحلة المسيح في القداس</b><button class="sti" data-story="1">ما هذا؟ ‹</button><button class="stt" data-stc="1" aria-label="تصغير الشريط">▴</button></div><div class="row" data-stc="1" title="اضغط للتصغير أو التكبير">'+nd+'<button class="stt big" data-stc="1" aria-label="تكبير الشريط">▾</button></div><button class="cur" data-story="1"><span>المحطة <b>'+ar9(i+1)+' من '+ar9(st.length)+'</b>: '+esc(st[i].n)+' · '+esc(st[i].place)+'</span><span>الخريطة ‹</span></button></div>'}
 function sceneHtml(i){
   var x=KST.STOPS[i],rd=window.KS?KS.linkRefs(esc(x.read)):esc(x.read);
   return '<div class="sceneh">المحطة '+ar9(i+1)+' من '+ar9(KST.STOPS.length)+' في رحلة المسيح</div><div class="scene"><div><em>'+x.ico+'</em>'+esc(x.n)+'<small>'+esc(x.place)+'</small></div></div><div class="vq">«'+esc(x.verse)+'»<small>'+(window.KS?KS.linkRefs(esc(x.ref)):esc(x.ref))+'</small></div><div class="now"><small>ماذا يحدث الآن في القداس؟</small>'+esc(x.now)+'</div><div class="sread">اقرأ الفصل: '+rd+'</div><div class="msrc"><span class="tag">مسوّدة</span> الربط التفسيري بين أجزاء القداس وحياة المسيح يحتاج مراجعة كنسية</div>'}
@@ -1224,6 +1226,7 @@ app.addEventListener("click",function(e){
   var hm=e.target.closest("[data-hm]");if(hm){S.hm=hm.getAttribute("data-hm");save();home();return}
   var ut=e.target.closest("[data-ut]");if(ut){var kk=ut.getAttribute("data-ut");UT=(kk===UT&&kk!=="a")?"a":kk;sheetRefresh();return}
   if(e.target.closest("#dgrab")){if(UT==="a"){var f1=document.querySelector(".dtabs [data-ut]:not([data-ut=\"a\"])");UT=f1?f1.getAttribute("data-ut"):"a"}else UT="a";sheetRefresh();return}
+  var stc=e.target.closest("[data-stc]");if(stc){S.stc=!S.stc;save();document.querySelectorAll(".sts").forEach(function(x){x.classList.toggle("min",!!S.stc)});return}
   var tp=e.target.closest("[data-tp]");if(tp){TP=tp.getAttribute("data-tp");todayView();return}
   var lt=e.target.closest("[data-lt]");if(lt){S.lit=lt.getAttribute("data-lt");save();if(lt.getAttribute("data-pre"))preView();else litTab();return}
   var dgo=e.target.closest("[data-dmgo]");if(dgo){dmGo(dgo.getAttribute("data-dmgo"));return}
