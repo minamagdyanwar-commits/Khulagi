@@ -1283,7 +1283,7 @@ app.addEventListener("click",function(e){
   var gs=e.target.closest("[data-gs]");if(gs){var ge=document.getElementById(gs.getAttribute("data-gs"));if(ge)ge.scrollIntoView({behavior:"smooth",block:"start"});return}
   if(e.target.closest("[data-gmore]")){document.querySelectorAll(".gn.gx").forEach(function(x){x.classList.remove("gx")});e.target.closest("[data-gmore]").remove();return}
   var stc=e.target.closest("[data-stc]");if(stc){S.stc=!S.stc;save();document.querySelectorAll(".sts").forEach(function(x){x.classList.toggle("min",!!S.stc)});return}
-  var tp=e.target.closest("[data-tp]");if(tp){TP=tp.getAttribute("data-tp");todayView();return}
+  var tp=e.target.closest("[data-tp]");if(tp){TP=tp.getAttribute("data-tp");var ts0=document.getElementById("tsheet"),st0=ts0?ts0.scrollTop:0;OPENHOME=true;todayView();var ts1=document.getElementById("tsheet");if(ts1){ts1.style.transition="none";ts1.scrollTop=st0;requestAnimationFrame(function(){ts1.style.transition=""})}return}
   var lt=e.target.closest("[data-lt]");if(lt){S.lit=lt.getAttribute("data-lt");save();if(lt.getAttribute("data-pre"))preView();else litTab();return}
   var dgo=e.target.closest("[data-dmgo]");if(dgo){dmGo(dgo.getAttribute("data-dmgo"));return}
   if(e.target.closest("[data-postsave]")){var nt=document.getElementById("pnote"),lg=logGet();lg.push({t:Date.now(),n:sessGet().length,ids:sessGet(),note:nt?nt.value.trim():""});try{localStorage.setItem("khulagi.log",JSON.stringify(lg));localStorage.setItem("khulagi.sess","[]")}catch(x){}toast("تم الحفظ في سجلك");postView();return}
