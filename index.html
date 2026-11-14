@@ -628,6 +628,7 @@ html .banner h1::after,html[data-pg=r] .banner h1::after{transform:scaleX(-1)}
 #bsub{margin-top:1px;font-size:.88rem;color:#f3dfb8;cursor:pointer;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-shadow:0 1px 6px rgba(0,0,0,.7)}#bsub::after{content:" ▾";opacity:.85}
 :root:root:root[data-pg=r] .banner,:root:root:root[data-pg=l] .banner{height:80px;padding-top:env(safe-area-inset-top,0px)}
 :root:root:root[data-pg=r] .banner h1,:root:root:root[data-pg=l] .banner h1{font-size:1.2rem}:root:root:root[data-pg=r] .banner h1::before,:root:root:root[data-pg=r] .banner h1::after{width:30px}
+.mn{margin:10px 8px 4px}.mnb{display:block;width:100%;padding:9px;border-radius:12px;border:1.5px dashed var(--gold,var(--acc));color:var(--gold,var(--acc));font-weight:700}.mnt{margin:8px 2px 0;padding:10px 12px;border-radius:12px;background:var(--card2);border-inline-start:3px solid var(--gold,var(--acc));line-height:1.9;white-space:pre-wrap}
 .dxs.multi{flex-direction:column;align-items:stretch;gap:8px}.dxs .vs{display:flex;flex-wrap:wrap;gap:6px}
 .dxs .vs button{padding:5px 12px;border:1.5px solid var(--lk,var(--acc));border-radius:999px;color:var(--lk,var(--acc));font-size:.88rem}
 .soon{opacity:.55}
@@ -878,6 +879,7 @@ function unitParts(id,s,c,us,u,q,cols){
   tx+='</div>';
   if(S.med&&U.med.length&&S.mp==="after"){
     U.med.forEach(function(it){var ctx=(U.med.length===1?U.head:plain(it.ar||"").split(/\s+/).slice(0,9).join(" "));tx+='<div class="unq">'+(U.med.length===1?'تأمل في هذه القطعة':'تأمل في')+': «'+esc(ctx)+'…»</div>'+medHtml(it).replace('<div class="medc" hidden>','<div class="medc">').replace('aria-expanded="false"','aria-expanded="true"').replace('▾','▴')})}
+  tx+=noteHtml(id,u);
   var nsx=nextSecId(id,1);
   if(nsx)tx+='<button class="nsec" data-nsec="'+nsx+'"><small>إلى فقرة</small><b>'+esc(BYID[nsx].title)+'</b><small>التالية ‹</small></button>';
   inner+='<div class="unp" data-up="a">'+tx+'</div>';
@@ -1024,12 +1026,17 @@ function homeD1(){
   else h+='<div class="h2"><span>مراحل القداس · '+esc(LNAME[lit])+'</span></div><div class="stg1">'+stageCards(lit,"sc1")+'</div>';
   h+='<div class="h2"><span>الأقسام</span></div><div class="hs1">'+otherGroups().map(function(g){var k=g.sections.length;return '<button data-nav="#/g/'+g.id+'"><i>'+(ICONS[g.id]||"☩")+'</i><span>'+esc(g.title)+'</span><small>'+ar9(k)+'</small></button>'}).join("")+'</div>';
   return h+'</div>'+bnav("home")}
+function mnGet(){try{return JSON.parse(localStorage.getItem("khulagi.mynotes")||"{}")}catch(e){return{}}}
+function mnSet(o){try{localStorage.setItem("khulagi.mynotes",JSON.stringify(o))}catch(e){}}
+function noteHtml(id,u){var t=(mnGet()[id]||{})[u]||"";return '<div class="mn"><button class="mnb" data-mn="'+id+'|'+u+'">✎ '+(t?'تأملي في هذه القطعة':'أضف تأملك')+'</button>'+(t?'<p class="mnt">'+esc(t)+'</p>':'')+'</div>'}
 function medView(){
   ctl(false);document.title="تأملاتي — الخولاجي";
   var h='<div class="home hp"><div class="hpt">تأملاتي</div><p class="hint" style="margin:0 2px 8px">الأجزاء التي فيها تأملات مكتوبة. اضغط جزءًا لقراءته ثم افتح 💭 من الدرج السفلي.</p><div class="list">';
   var n=0;D.groups.forEach(function(g){g.sections.forEach(function(x){var c=D.content[x.id];if(!c)return;var m=c.items.filter(function(i){return i.med}).length;if(!m)return;n++;h+='<button class="sec" data-nav="#/s/'+x.id+'"><span>'+esc(x.title)+'<small class="sub">'+esc(g.title)+'</small></span><span class="pn">💭 '+ar9(m)+'</span></button>'})});
   if(!n)h+='<p class="hint">لا توجد تأملات بعد.</p>';
-  app.innerHTML=h+'</div></div>'+bnav("med");window.scrollTo(0,0)}
+  h+='</div>';var mn=mnGet(),mk=Object.keys(mn).filter(function(k){return BYID[k]&&Object.keys(mn[k]).some(function(u){return mn[k][u]})});
+  if(mk.length){h+='<div class="hpt" style="margin-top:16px">ما كتبته أنا</div><div class="list">';mk.forEach(function(k){Object.keys(mn[k]).forEach(function(u){if(mn[k][u])h+='<button class="sec" data-nav="#/s/'+k+'" data-u0="1"><span>'+esc(BYID[k].title)+' · القطعة '+ar9(+u+1)+'<small class="sub">'+esc(shortN(mn[k][u],80))+'</small></span><span class="pn">✎</span></button>'})});h+='</div>'}
+  app.innerHTML=h+'</div>'+bnav("med");window.scrollTo(0,0)}
 
 function seasonOf(d,cd){
   var y=d.getFullYear(),t=Date.UTC(y,d.getMonth(),d.getDate()),a=y%4,b=y%7,c=y%19,dd=(19*c+15)%30,e=(2*a+4*b-dd+34)%7,mo=Math.floor((dd+e+114)/31),dy=(dd+e+114)%31+1,E=Date.UTC(y,mo-1,dy+13),off=Math.round((t-E)/864e5),m=cd.m,k=cd.d,out=[];
@@ -1217,6 +1224,7 @@ window.addEventListener("hashchange",route);
     if(!root.classList.contains("sheet-open")){if(dy>60)open(true)}else if(dy<-70&&sh&&sh.scrollTop<=2)open(false)},{passive:true});
   document.body.addEventListener("click",function(e){var b=e.target.closest("[data-sheet]");if(b)open(b.getAttribute("data-sheet")==="open")})})();
 document.body.addEventListener("click",function(e){
+  var mns=e.target.closest("[data-mnsave]");if(mns){var q2=mns.getAttribute("data-mnsave").split("|"),all=mnGet(),val=mns.getAttribute("data-del")?"":document.getElementById("mnt").value.trim();all[q2[0]]=all[q2[0]]||{};if(val)all[q2[0]][q2[1]]=val;else delete all[q2[0]][q2[1]];mnSet(all);close();reader(CUR.id,undefined,CUR.u);return}
   var f=e.target.closest("#dxfab");if(f){var id=f.getAttribute("data-dxadd"),a=dxl(),k=a.indexOf(id);if(k>=0)a.splice(k,1);else a.push(id);dxs(a);dxFab();return}
   var dd=e.target.closest("[data-dm]");if(dd){var k=dd.getAttribute("data-dm"),pp=document.getElementById("dmpanel");if(k==="panel"){pp.hidden=!pp.hidden}else if(k==="qfs"){S.fs=Math.max(14,Math.min(40,S.fs+parseInt(dd.getAttribute("data-v"),10)));save();apply()}else if(k==="end"){dmEnd()}else if(k==="next"||k==="prev"){var np=stepPos(k==="next"?1:-1,false);if(np)goPos(np);else if(k==="next")toast("هذا آخر ما في القائمة")}return}
   var q=e.target.closest("#qfs button");if(q){S.fs=Math.max(14,Math.min(40,S.fs+parseInt(q.getAttribute("data-qfs"),10)));save();apply()}});
@@ -1233,6 +1241,7 @@ app.addEventListener("click",function(e){
   var hm=e.target.closest("[data-hm]");if(hm){S.hm=hm.getAttribute("data-hm");save();home();return}
   var ut=e.target.closest("[data-ut]");if(ut){var kk=ut.getAttribute("data-ut");UT=(kk===UT&&kk!=="a")?"a":kk;sheetRefresh();return}
   if(e.target.closest("#dgrab")){if(UT==="a"){var f1=document.querySelector(".dtabs [data-ut]:not([data-ut=\"a\"])");UT=f1?f1.getAttribute("data-ut"):"a"}else UT="a";sheetRefresh();return}
+  var mnb=e.target.closest("[data-mn]");if(mnb){var mp=mnb.getAttribute("data-mn").split("|"),cur=(mnGet()[mp[0]]||{})[mp[1]]||"";sheet('<h3>✎ تأملي</h3><p class="hint">'+esc(BYID[mp[0]].title)+' · القطعة '+ar9(+mp[1]+1)+'. يُحفظ على جهازك فقط.</p><textarea id="mnt" class="area" style="margin:0 0 10px;width:100%;min-height:130px" placeholder="اكتب ما تأملته في هذه القطعة…">'+esc(cur)+'</textarea><div class="dxbar" style="margin:0"><button class="pri" data-mnsave="'+mp.join("|")+'">حفظ</button>'+(cur?'<button data-mnsave="'+mp.join("|")+'" data-del="1">حذف</button>':'')+'</div>');return}
   var stc=e.target.closest("[data-stc]");if(stc){S.stc=!S.stc;save();document.querySelectorAll(".sts").forEach(function(x){x.classList.toggle("min",!!S.stc)});return}
   var tp=e.target.closest("[data-tp]");if(tp){TP=tp.getAttribute("data-tp");todayView();return}
   var lt=e.target.closest("[data-lt]");if(lt){S.lit=lt.getAttribute("data-lt");save();if(lt.getAttribute("data-pre"))preView();else litTab();return}
