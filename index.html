@@ -639,6 +639,13 @@ html:has(.sheet.on) #dxmenu{display:none}
 html[data-pg="h"]:not(.sheet-open) #dxfab,html[data-pg="h"]:not(.sheet-open) #qfs{bottom:calc(250px + env(safe-area-inset-bottom))}html[data-pg="h"]:not(.sheet-open) #dxmenu{bottom:calc(300px + env(safe-area-inset-bottom))}
 #dxfab,#qfs button{backdrop-filter:blur(6px)}
 .startsel{width:100%;padding:10px;border-radius:12px;border:1.5px solid var(--line);background:var(--card2);color:var(--ink);font:inherit}
+.gbtn{display:block;width:100%;margin:0 0 10px;padding:12px;border-radius:12px;font-weight:700}
+.gtoc{display:flex;gap:6px;overflow-x:auto;padding:0 14px 10px;scrollbar-width:none;position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:blur(8px)}.gtoc::-webkit-scrollbar{display:none}.gtoc button{flex:none;padding:6px 14px;border-radius:999px;border:1.5px solid var(--acc);color:var(--acc);font-weight:700;font-size:.85rem}
+.gs{margin:0 14px 22px;scroll-margin-top:50px}.gs h3{margin:0 0 6px;font-family:var(--fa,serif);font-size:1.3rem}.gsum{margin:0 0 10px;line-height:1.8;opacity:.9}
+.gimg{display:block;width:min(100%,360px);margin:0 auto 12px;border-radius:18px;border:1px solid var(--line);box-shadow:0 8px 22px rgba(0,0,0,.35)}
+.gl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}.gl li{display:flex;gap:10px;align-items:flex-start;padding:9px 10px;border-radius:12px;background:var(--card);border:1px solid var(--line)}.gl i{flex:none;width:26px;height:26px;border-radius:50%;background:#ff5a36;color:#fff;display:grid;place-items:center;font-style:normal;font-weight:700;font-size:.8rem}.gl b{display:block}.gl span{display:block;font-size:.88rem;opacity:.85;line-height:1.7}
+.gnav{margin:10px 0 0;padding:9px 12px;border-radius:12px;border:1px dashed var(--acc);font-size:.9rem}
+.gn{padding:10px 12px;margin-bottom:8px;border-radius:12px;background:var(--card);border:1px solid var(--line)}.gn b{font-size:1rem}.gn small{margin-inline-start:8px;opacity:.6;font-size:.75rem}.gn p{margin:4px 0 0;line-height:1.8;font-size:.92rem}.gn ul{margin:0;padding-inline-start:18px;line-height:1.9;font-size:.92rem}.gn.gx{display:none}.gmore{display:block;width:100%;padding:10px;border-radius:12px;border:1.5px solid var(--acc);color:var(--acc);font-weight:700}
 .dxs.multi{flex-direction:column;align-items:stretch;gap:8px}.dxs .vs{display:flex;flex-wrap:wrap;gap:6px}
 .dxs .vs button{padding:5px 12px;border:1.5px solid var(--lk,var(--acc));border-radius:999px;color:var(--lk,var(--acc));font-size:.88rem}
 .soon{opacity:.55}
@@ -1042,6 +1049,14 @@ function homeD1(){
 function mnGet(){try{return JSON.parse(localStorage.getItem("khulagi.mynotes")||"{}")}catch(e){return{}}}
 function mnSet(o){try{localStorage.setItem("khulagi.mynotes",JSON.stringify(o))}catch(e){}}
 function noteHtml(id,u){var t=(mnGet()[id]||{})[u]||"";return '<div class="mn"><button class="mnb" data-mn="'+id+'|'+u+'">✎ '+(t?'تأملي في هذه القطعة':'أضف تأملك')+'</button>'+(t?'<p class="mnt">'+esc(t)+'</p>':'')+'</div>'}
+function guideView(){
+  ctl(false);document.title="دليل البرنامج — الخولاجي";
+  var N=window.KG_NEWS||[],P=window.KG_PAGES||[];
+  var h='<div class="crumb"><button data-nav="#/">⌂ الرئيسية</button></div><div class="gh"><h2>📘 دليل البرنامج</h2></div><div class="gtoc"><button data-gs="g-new">الجديد</button><button data-gs="g-nav">التنقل</button>'+P.map(function(x){return '<button data-gs="g-'+x.id+'">'+esc(x.title)+'</button>'}).join("")+'</div>';
+  h+='<section class="gs" id="g-new"><h3>الجديد في البرنامج</h3>'+N.map(function(n,i){return '<div class="gn'+(i>4?' gx':'')+'"><b>'+esc(n.t)+'</b><small>'+esc(n.v)+'</small><p>'+esc(n.x)+'</p></div>'}).join("")+(N.length>5?'<button class="gmore" data-gmore="1">عرض كل ما سبق</button>':'')+'</section>';
+  h+='<section class="gs" id="g-nav"><h3>كيف تتنقل بين الصفحات</h3><div class="gn"><ul><li><b>الشريط السفلي</b>: اليوم، القداس، قوائمي، المكتبة. هو الطريق الرئيسي بين الصفحات.</li><li><b>الشاشة الأولى</b>: صورة كاملة بالتاريخ فقط. اسحب لأعلى لتظهر ورقة اليوم، واسحب لتحت لتعود للصورة.</li><li><b>جوه القراءة</b>: «التالي» في آخر الصفحة أو السحب يمين ويسار ينقلانك بين الأجزاء، واسم القسم في البانر يفتح قائمة الأقسام، ومقبض الفهرس على الحافة.</li><li><b>الإعدادات</b>: زر ☰ أعلى الشاشة. فيها المظهر والخط وبداية التطبيق والنسخة الاحتياطية وهذا الدليل.</li><li><b>أزرار تظهر جوه القراءة فقط</b>: ＋ (القوائم) وأ+ أ− (الخط).</li></ul></div></section>';
+  P.forEach(function(x){h+='<section class="gs" id="g-'+x.id+'"><h3>'+esc(x.title)+'</h3><p class="gsum">'+esc(x.summary)+'</p><img class="gimg" loading="lazy" src="'+x.img+'" alt="لقطة شاشة: '+esc(x.title)+'"><ol class="gl">'+x.items.map(function(i){return '<li><i>'+ar9(i[0])+'</i><div><b>'+esc(i[1])+'</b><span>'+esc(i[2])+'</span></div></li>'}).join("")+'</ol>'+(x.nav?'<p class="gnav">↔ '+esc(x.nav)+'</p>':'')+'</section>'});
+  app.innerHTML=h+bnav('');window.scrollTo(0,0)}
 function medView(){
   ctl(false);document.title="تأملاتي — الخولاجي";
   var h='<div class="home hp"><div class="hpt">تأملاتي</div><p class="hint" style="margin:0 2px 8px">الأجزاء التي فيها تأملات مكتوبة. اضغط جزءًا لقراءته ثم افتح 💭 من الدرج السفلي.</p><div class="list">';
@@ -1222,6 +1237,7 @@ function route(){
   else if(h==="lex"&&window.KS)KS.lex();
   else if(h==="med")medView();
   else if(h==="dxlist")dxView();
+  else if(h==="guide")guideView();
   else if(h==="lit")litTab();
   else if(h==="lib")libView();
   else if(h==="pre")preView();
@@ -1264,6 +1280,8 @@ app.addEventListener("click",function(e){
   var ut=e.target.closest("[data-ut]");if(ut){var kk=ut.getAttribute("data-ut");UT=(kk===UT&&kk!=="a")?"a":kk;sheetRefresh();return}
   if(e.target.closest("#dgrab")){if(UT==="a"){var f1=document.querySelector(".dtabs [data-ut]:not([data-ut=\"a\"])");UT=f1?f1.getAttribute("data-ut"):"a"}else UT="a";sheetRefresh();return}
   var mnb=e.target.closest("[data-mn]");if(mnb){var mp=mnb.getAttribute("data-mn").split("|"),cur=(mnGet()[mp[0]]||{})[mp[1]]||"";sheet('<h3>✎ تأملي</h3><p class="hint">'+esc(BYID[mp[0]].title)+' · القطعة '+ar9(+mp[1]+1)+'. يُحفظ على جهازك فقط.</p><textarea id="mnt" class="area" style="margin:0 0 10px;width:100%;min-height:130px" placeholder="اكتب ما تأملته في هذه القطعة…">'+esc(cur)+'</textarea><div class="dxbar" style="margin:0"><button class="pri" data-mnsave="'+mp.join("|")+'">حفظ</button>'+(cur?'<button data-mnsave="'+mp.join("|")+'" data-del="1">حذف</button>':'')+'</div>');return}
+  var gs=e.target.closest("[data-gs]");if(gs){var ge=document.getElementById(gs.getAttribute("data-gs"));if(ge)ge.scrollIntoView({behavior:"smooth",block:"start"});return}
+  if(e.target.closest("[data-gmore]")){document.querySelectorAll(".gn.gx").forEach(function(x){x.classList.remove("gx")});e.target.closest("[data-gmore]").remove();return}
   var stc=e.target.closest("[data-stc]");if(stc){S.stc=!S.stc;save();document.querySelectorAll(".sts").forEach(function(x){x.classList.toggle("min",!!S.stc)});return}
   var tp=e.target.closest("[data-tp]");if(tp){TP=tp.getAttribute("data-tp");todayView();return}
   var lt=e.target.closest("[data-lt]");if(lt){S.lit=lt.getAttribute("data-lt");save();if(lt.getAttribute("data-pre"))preView();else litTab();return}
@@ -1315,7 +1333,7 @@ function settings(){
   var sg='';D.groups.forEach(function(g){if(g.id==="lit")return;sg+='<optgroup label="'+esc(g.title)+'">';g.sections.forEach(function(x){if(BYID[x.id]&&BYID[x.id].has)sg+='<option value="#/s/'+x.id+'"'+(S.startPage==="#/s/"+x.id?' selected':'')+'>'+esc(x.title)+'</option>'});sg+='</optgroup>'});
   var startH='<div class="stl">عند فتح التطبيق</div>'+pill("start",[["home","الصفحة الرئيسية"],["last","آخر صفحة فتحتها"],["page","صفحة أختارها"]])+(S.start==="page"?'<div class="stl">الصفحة</div><select id="startsel" class="startsel"><optgroup label="صفحات">'+so+'</optgroup>'+sg+'</select>':'');
   var G=window.KS?KS.settings():{};
-  var h='<div class="sth"><span>⚙ الإعدادات</span><button class="stx" data-x aria-label="إغلاق">✕</button></div>';
+  var h='<div class="sth"><span>⚙ الإعدادات</span><button class="stx" data-x aria-label="إغلاق">✕</button></div><button class="ksb gbtn" data-nav="#/guide" data-gclose="1">📘 دليل البرنامج وما الجديد</button>';
   h+=grp("look","🎨","المظهر والخط",look);
   h+=grp("start","🚀","بداية التطبيق",startH);
   h+=grp("lay","🧩","التخطيط والكثافة",lay);
@@ -1328,6 +1346,7 @@ function settings(){
   if(window.caches)caches.keys().then(function(k){var m=k.filter(function(x){return x.indexOf("khulagi")===0}).sort().pop();vn(m?m.replace("khulagi-","").replace("-shell",""):"غير مثبّتة")}).catch(function(){vn("غير متاح")});else vn("غير متاح");
 }
 sh.addEventListener("click",function(e){
+  if(e.target.closest("[data-gclose]")){close();location.hash="#/guide";return}
   var uj=e.target.closest("[data-uj]");if(uj){close();if(!setUnit(+uj.getAttribute("data-uj")))reader(CUR.id,undefined,+uj.getAttribute("data-uj"));return}
   var sg=e.target.closest("[data-stg]");if(sg){var k=sg.getAttribute("data-stg");STG[k]=!STG[k];var bx=sg.parentNode;bx.classList.toggle("open",!!STG[k]);sg.setAttribute("aria-expanded",!!STG[k]);return}
   if(e.target.closest("[data-x]")){close();return}
@@ -1468,7 +1487,7 @@ window.KH={trLine:trLine,unitsOf:unitsOf,toast:toast,render:function(id,u){reade
 </script>
 <script src="story.js"></script>
 <script src="study-data.js"></script>
-<script src="study.js"></script><script src="swipe.js"></script><script src="live.js"></script>
+<script src="guide-news.js"></script><script src="guide-pages.js"></script><script src="study.js"></script><script src="swipe.js"></script><script src="live.js"></script>
 <script>if(window.KS){KS.apply();document.addEventListener("click",function(){KS.apply()},{once:true})}</script>
 </body>
 </html>
