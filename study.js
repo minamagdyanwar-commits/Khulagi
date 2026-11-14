@@ -162,7 +162,7 @@ function homeHtml(){
   if(S().today){h+='<div class="hqr"><b>اليوم</b>'+ar(cd.d)+' '+CM[cd.m]+' '+ar(cd.y)+' للشهداء</div>';
     if(dx.length)h+='<div class="hqc">'+dx.map(function(x){return chip('#/s/'+x.id,esc(x.title))}).join("")+'</div>'}
   h+='<div class="hqr"><b>خطتي</b>'+ar(done)+' من '+ar(all.length)+' جزءًا</div><div class="hqc">'+wk.map(function(x){return chip('#/s/'+x.id,esc(x.title))}).join("")+chip('#/plan','فتح الخطة ‹')+'</div>';
-  h+='<div class="hqr"><b>دراسة</b></div><div class="hqc">'+chip('#/compare','مقارنة القداسات')+chip('#/lex','قاموس القبطي المعرَّب')+chip('#/g/taqs','دليل الطقس')+'</div>';
+  h+='<div class="hqr"><b>دراسة</b></div><div class="hqc">'+chip('#/compare','مقارنة القداسات')+chip('#/lex','قاموس القبطي المعرَّب')+chip('#/g/taqs','دليل الطقس')+chip('#/dxlist','📋 قوائمي')+'</div>';
   return h+'</div></details>'}
 document.addEventListener("toggle",function(e){var t=e.target;if(t&&t.classList&&t.classList.contains("hq")){S().hqo=t.open;K.save()}},true);
 
@@ -196,7 +196,7 @@ function compare(){
   h+='</div><p class="hint">المقارنة بين النصوص العربية كما في الخولاجي. الفروق تُلاحَظ بالقراءة؛ لم تُكتب شروح للفروق بعد.</p>';
   K.app.innerHTML=h;window.scrollTo(0,0)}
 /* ---------- إعدادات إضافية ---------- */
-var TOG=[["vref","روابط الآيات (اضغط الآية لقراءتها)"],["guide","دليل كل جزء"],["mov","بطاقات الحركات والإرشادات"],["today","تاريخ اليوم والذكصولوجيات"],["calm","تقليل الحركة"],["wake","إبقاء الشاشة مضاءة"]];
+var TOG=[["resume","العودة تلقائيًا لآخر مكان قرأته عند فتح التطبيق"],["vref","روابط الآيات (اضغط الآية لقراءتها)"],["guide","دليل كل جزء"],["mov","بطاقات الحركات والإرشادات"],["today","تاريخ اليوم والذكصولوجيات"],["calm","تقليل الحركة"],["wake","إبقاء الشاشة مضاءة"]];
 function settingsHtml(){
   var o={study:'',home:'',backup:''};
   TOG.forEach(function(r){o.study+='<div class="set"><span>'+r[1]+'</span><button class="tg'+(S()[r[0]]?' on':'')+'" data-tg="'+r[0]+'" aria-label="'+r[1]+'"></button></div>'});
@@ -233,5 +233,5 @@ document.addEventListener("click",function(e){
   else if(d==="hide"){var s=S(),h=s.hide||[],i=h.indexOf(t.dataset.g);if(i>-1)h.splice(i,1);else h.push(t.dataset.g);s.hide=h;K.save();K.settings();K.route()}
   else if(d==="export")exportAll();
   else if(d==="install"&&deferred){deferred.prompt();deferred=null;K.close()}});
-window.KS={lex:lexView,linkRefs:linkRefs,guide:guideHtml,rub:rubHtml,home:homeHtml,plan:planView,compare:compare,settings:settingsHtml,apply:applyPrefs,scan:scan};
+window.KS={today:function(){var cd=copticOf(new Date());return {cd:cd,dx:todayDox(cd)}},lex:lexView,linkRefs:linkRefs,guide:guideHtml,rub:rubHtml,home:homeHtml,plan:planView,compare:compare,settings:settingsHtml,apply:applyPrefs,scan:scan};
 })();
