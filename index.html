@@ -1152,8 +1152,8 @@ function shortN(t,n){t=String(t);return t.length>n?t.slice(0,n)+"…":t}
 function dxFab(){var h=location.hash.replace(/^#\/?/,""),id=h.indexOf("s/")===0?h.slice(2).split("?")[0]:"",s=BYID[id],f=document.getElementById("dxfab"),q=document.getElementById("qfs");
   if(!f){f=document.createElement("button");f.id="dxfab";document.body.appendChild(f)}
   if(!q){q=document.createElement("div");q.id="qfs";q.innerHTML='<button data-qfs="2" aria-label="تكبير الخط">أ+</button><button data-qfs="-2" aria-label="تصغير الخط">أ−</button>';document.body.appendChild(q)}
+  if(!s){f.hidden=true;q.hidden=true;var m1=document.getElementById("dxmenu");if(m1)m1.hidden=true;return}
   q.hidden=false;
-  if(!s){f.hidden=(h==="dxlist");f.className="";f.setAttribute("data-dxadd","");f.textContent="📋";f.setAttribute("aria-label","قوائمي");var m1=document.getElementById("dxmenu");if(m1&&!m1.hidden)dxMenu("");return}
   var c=dxc(),a=c.items,on=a.indexOf(id)>=0;f.hidden=false;q.hidden=false;f.className=on?"on":"";f.setAttribute("data-dxadd",id);
   f.textContent=on?"✓":"＋";f.setAttribute("aria-label",on?"في «"+c.name+"» — خيارات القائمة":"أضف إلى «"+c.name+"» — خيارات")
   var m=document.getElementById("dxmenu");if(m&&!m.hidden)dxMenu(id)}
