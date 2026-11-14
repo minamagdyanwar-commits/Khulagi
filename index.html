@@ -582,7 +582,8 @@ html[data-dm="1"] body{padding-top:44px}html[data-dm="1"] .dsheet{display:none!i
 html[data-dm="1"] .pager button,html[data-dm="1"] .nsec{min-height:60px;font-size:1.1rem}
 #bgimg{position:fixed;inset:0;z-index:-1;background:#151412 url(dawn.jpg) center 30%/cover no-repeat;transition:filter .5s,transform .5s}
 html[data-pg="r"] #bgimg{display:none}
-html[data-pg="l"] #bgimg,html.sheet-open #bgimg{filter:blur(18px) brightness(.5) saturate(1.1);transform:scale(1.1)}
+#bgimg::after{content:"";position:absolute;inset:0;background:color-mix(in srgb,var(--bg) 80%,transparent);opacity:0;transition:opacity .5s}
+html[data-pg="l"] #bgimg,html.sheet-open #bgimg{filter:blur(18px) saturate(1.1);transform:scale(1.1)}html[data-pg="l"] #bgimg::after,html.sheet-open #bgimg::after{opacity:1}
 html[data-pg="h"] body,html[data-pg="l"] body{background:transparent}
 html[data-pg="h"] #topbar{position:fixed;inset:0 0 auto 0;background:transparent;box-shadow:none;border:0;z-index:30}
 html[data-pg="h"] #topbar .banner{background:none!important;height:58px;box-shadow:none!important;border:0;border-radius:0}
@@ -593,11 +594,19 @@ html[data-pg="h"] .burger{background:rgba(20,14,10,.45);border-radius:12px;backd
 .sgrab{position:absolute;inset-inline:0;bottom:0;pointer-events:auto;display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 0 calc(18px + env(safe-area-inset-bottom));color:#fff;text-shadow:0 1px 8px rgba(0,0,0,.8);font-size:.85rem}
 .sgrab i,.shd i{display:block;width:44px;height:5px;border-radius:5px;background:rgba(255,255,255,.75)}
 html.sheet-open .splash{display:none}
-.tsheet{position:fixed;inset-inline:0;bottom:0;height:90vh;max-width:980px;margin:0 auto;transform:translateY(105%);transition:transform .45s cubic-bezier(.2,.8,.2,1);background:rgba(21,16,12,.42);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-radius:26px 26px 0 0;overflow-y:auto;padding-bottom:110px;z-index:20;border-top:1px solid rgba(235,185,106,.45)}
+.tsheet{position:fixed;inset-inline:0;bottom:0;height:90vh;max-width:980px;margin:0 auto;transform:translateY(105%);transition:transform .45s cubic-bezier(.2,.8,.2,1);background:color-mix(in srgb,var(--bg) 52%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-radius:26px 26px 0 0;overflow-y:auto;padding-bottom:110px;z-index:20;border-top:1px solid rgba(235,185,106,.45)}
 html.sheet-open .tsheet{transform:none}
 .shd{display:flex;justify-content:center;width:100%;padding:12px 0 4px;position:sticky;top:0;z-index:2}.shd i{background:rgba(255,255,255,.5)}
 html[data-pg="h"]:not(.sheet-open) .bnav{display:none}
 html[data-pg="h"] .tsheet .td .hd,html[data-pg="h"] .tsheet .td{color:var(--ink)}
+:root[data-theme=night]{--bg:#11171d;--card:#1a232b;--card2:#242f39;--ink:#e6ebef;--mute:#9fadb8;--acc:#e0b878;--acc2:#6f8794;--rub:#f0a58a;--line:#394651;--cop:#f0e0c0;--c-tr:#9fd3dc;--bnA:#2b3a45;--bnB:#5f7482;--onacc:#14100a}
+:root[data-theme=crimson]{--bg:#1a110e;--card:#271a15;--card2:#33231c;--ink:#f2e4d6;--mute:#b8a08f;--acc:#e8955a;--acc2:#a8573a;--rub:#f2a68a;--line:#5e3d2f;--cop:#ffe0c0;--c-tr:#a9d0d4;--bnA:#6b3a2a;--bnB:#a8573a;--onacc:#1a0d06}
+:root[data-theme=forest]{--bg:#12150f;--card:#1b2018;--card2:#252c21;--ink:#e7ead9;--mute:#a7ae92;--acc:#d8b35e;--acc2:#7d8a5a;--rub:#ee9d7c;--line:#3f4a33;--cop:#f1e3b8;--c-tr:#a9d0c0;--bnA:#3b4630;--bnB:#6c7a4c;--onacc:#16130a}
+:root[data-theme=ash]{--bg:#151616;--card:#202221;--card2:#2b2e2c;--ink:#e9e7e2;--mute:#aaa89f;--acc:#d6b27a;--acc2:#8a8f8a;--rub:#ee9d7c;--line:#43474a;--cop:#efe3c8;--c-tr:#a9cfd6;--bnA:#444b48;--bnB:#767b76;--onacc:#1a1209}
+:root[data-theme=amoled]{--bg:#000;--card:#0e0d0c;--card2:#191715;--ink:#ece6da;--mute:#9d9484;--acc:#ebb96a;--acc2:#a18971;--rub:#ee9d7c;--line:#352c23;--cop:#f3dfb8;--c-tr:#a9cfd6;--bnA:#1a1510;--bnB:#4a3a2a;--onacc:#1d1208}
+:root[data-theme=parchment]{--bg:#f0eadd;--card:#faf6ec;--card2:#e7dec9;--ink:#2a2118;--mute:#6e6250;--acc:#8a5a22;--acc2:#a18971;--rub:#a3361f;--line:#d2c5a9;--cop:#4a2e12;--c-tr:#1f6a73;--bnA:#a18971;--bnB:#705541;--onacc:#fff}
+:root[data-theme=night] .banner,:root[data-theme=forest] .banner,:root[data-theme=parchment] .banner{background:linear-gradient(135deg,var(--bnA),var(--bnB));color:#fff}
+#opts .sbtn{background:var(--card2)!important;color:var(--acc)!important;border:1.5px solid var(--acc)!important;min-width:44px;border-radius:12px;font-size:1.05rem}
 .dxs.multi{flex-direction:column;align-items:stretch;gap:8px}.dxs .vs{display:flex;flex-wrap:wrap;gap:6px}
 .dxs .vs button{padding:5px 12px;border:1.5px solid var(--lk,var(--acc));border-radius:999px;color:var(--lk,var(--acc));font-size:.88rem}
 .soon{opacity:.55}
@@ -760,8 +769,8 @@ function hl(h,q){if(!q)return h;try{var re=new RegExp("("+q.replace(/[.*+?^${}()
 
 var app=$("#app"),pick=$("#pick");
 function opts(){
-  var d=[["ar","ع","عربي"],["tr","م","معرب"],["cop","ق","قبطي"],["pg","ص.ك","أرقام صفحات الكتاب"]];
-  $("#opts").innerHTML=d.map(function(x){return '<label title="'+x[2]+'"><input type="checkbox" data-o="'+x[0]+'"'+(S[x[0]]?' checked':'')+'><span>'+x[1]+'</span></label>'}).join("")+'<button class="sbtn" id="btnSearch">بحث</button>';
+  var d=[["ar","ع","عربي"],["tr","م","معرب"],["cop","ق","قبطي"]];
+  $("#opts").innerHTML=d.map(function(x){return '<label title="'+x[2]+'"><input type="checkbox" data-o="'+x[0]+'"'+(S[x[0]]?' checked':'')+'><span>'+x[1]+'</span></label>'}).join("")+'<button class="sbtn" id="btnSearch" aria-label="بحث">🔎</button>';
   $("#btnSearch").addEventListener("click",openSearch);
 }
 $("#opts").addEventListener("change",function(e){var k=e.target.getAttribute("data-o");if(!k)return;
@@ -928,7 +937,7 @@ function goPos(p){if(!p)return;if(p.id!==CUR.id){location.hash="#/s/"+p.id;usave
 
 /* home & group views */
 var ICONS={intro:"📖",raf:"🕯️",bas:"⛪",greg:"⛪",cyr:"⛪",qisam:"✝",misc:"📜",bless:"🙏",app:"📎",taqs:"🕯",dox:"🌟"};
-function ctl(on){$("#opts").style.display=on?"":"none";$("#selw").style.display=on?"":"none"}
+function ctl(on){$("#opts").style.display=on?"":"none";$("#selw").style.display="none"}
 /* فهرس الكتاب: الفقرات الرئيسية (كما في فهرس الخولاجي ص١٠٣٣) وما تحتها من أجزاء مفصّلة */
 function outline(g){
   var heads=g.heads,out=[];
@@ -1225,7 +1234,7 @@ function close(){sh.classList.remove("on");sc.classList.remove("on");var ix=docu
 sc.addEventListener("click",close);
 document.addEventListener("keydown",function(e){if(e.key==="Escape")close()});
 
-var THEMES=[["dawn","فجر القيامة · ترابي وذهبي"],["church","كنيسة · لازورد وذهب"],["churchnight","كنيسة · ليل بنفسجي"],["dark","ليلي ذهبي"],["parchment","رَقّ"],["light","فاتح"],["night","أزرق ليلي"],["forest","أخضر"],["royal","ملكي"],["amoled","أسود تمامًا"],["ocean","محيط"],["crimson","قرمزي"],["ash","رمادي"],["mint","نعناعي"],["rose","وردي"],["sky","سماوي"],["ivory","عاجي · تباين عالٍ"]];
+var THEMES=[["dawn","فجر · ترابي وذهبي"],["night","غسق · أزرق رمادي"],["crimson","طين · أحمر ترابي"],["forest","زيتوني · أخضر ترابي"],["ash","حجر · رمادي"],["amoled","منتصف الليل · أسود"],["parchment","رمل · فاتح دافئ"]];
 var STG={look:true};
 function grp(id,ic,t,body){var o=!!STG[id];return '<div class="stg'+(o?' open':'')+'"><button class="stgh" data-stg="'+id+'" aria-expanded="'+o+'"><span>'+ic+' '+t+'</span><span class="stgc">▾</span></button><div class="stgb">'+body+'</div></div>'}
 function settings(){
@@ -1382,7 +1391,7 @@ function openSearch(){sheet('<h3>بحث</h3><input id="q" class="search" placeho
 /* PWA */
 if("serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js",{updateViaCache:"none"}).then(function(r){r.update()}).catch(function(){});var had=!!navigator.serviceWorker.controller;navigator.serviceWorker.addEventListener("controllerchange",function(){if(had&&!window.__rl){window.__rl=1;location.reload()}})})}
 
-load();try{if(!localStorage.getItem("khulagi.v15")){S.ds="d1";save();localStorage.setItem("khulagi.v15","1")}}catch(e){}try{if(!localStorage.getItem("khulagi.v12")){S.theme="church";save();localStorage.setItem("khulagi.v12","1")}if(!localStorage.getItem("khulagi.v13")){S.mp="sheet";save();localStorage.setItem("khulagi.v13","1")}if(!localStorage.getItem("khulagi.v16")){S.theme="dawn";save();localStorage.setItem("khulagi.v16","1")}if(!localStorage.getItem("khulagi.v14")){S.hv="p";save();localStorage.setItem("khulagi.v14","1")}}catch(e){}try{if(localStorage.getItem("khulagi.dm")==="1")dmSet(true)}catch(e){}apply();opts();ensureAll().then(function(){SECS.forEach(function(x){x.has=!!D.content[x.id]});fillPick();try{var hh0=location.hash.replace(/^#\/?/,"");if(S.resume!==false&&!hh0){var l0=lastGet(),ts0=+localStorage.getItem("khulagi.lastts");if(l0&&BYID[l0]&&BYID[l0].has&&ts0&&Date.now()-ts0<20*36e5)history.replaceState(null,"","#/s/"+l0)}}catch(e){}route()});
+load();if(!THEMES.some(function(t){return t[0]===S.theme}))S.theme="dawn";try{if(!localStorage.getItem("khulagi.v15")){S.ds="d1";save();localStorage.setItem("khulagi.v15","1")}}catch(e){}try{if(!localStorage.getItem("khulagi.v12")){S.theme="church";save();localStorage.setItem("khulagi.v12","1")}if(!localStorage.getItem("khulagi.v13")){S.mp="sheet";save();localStorage.setItem("khulagi.v13","1")}if(!localStorage.getItem("khulagi.v16")){S.theme="dawn";save();localStorage.setItem("khulagi.v16","1")}if(!localStorage.getItem("khulagi.v14")){S.hv="p";save();localStorage.setItem("khulagi.v14","1")}}catch(e){}try{if(localStorage.getItem("khulagi.dm")==="1")dmSet(true)}catch(e){}apply();opts();ensureAll().then(function(){SECS.forEach(function(x){x.has=!!D.content[x.id]});fillPick();try{var hh0=location.hash.replace(/^#\/?/,"");if(S.resume!==false&&!hh0){var l0=lastGet(),ts0=+localStorage.getItem("khulagi.lastts");if(l0&&BYID[l0]&&BYID[l0].has&&ts0&&Date.now()-ts0<20*36e5)history.replaceState(null,"","#/s/"+l0)}}catch(e){}route()});
 window.KH={trLine:trLine,unitsOf:unitsOf,toast:toast,render:function(id,u){reader(id,undefined,u)},setUnit:setUnit,unm:unmEl,fixScroll:fixScroll,pos:function(){return {id:CUR.id,u:CUR.u}},step:stepPos,nextSec:nextSecId,S:function(){return S},save:save,sheet:sheet,close:close,esc:esc,go:go,ctl:ctl,app:app,route:route,settings:settings,D:D,BYID:BYID};
 })();
 </script>
