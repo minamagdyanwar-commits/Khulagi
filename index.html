@@ -611,6 +611,10 @@ html[data-pg="h"] .tsheet .td .hd,html[data-pg="h"] .tsheet .td{color:var(--ink)
 html:not([data-pg="r"]) #idxh{display:none}
 .sbox{position:absolute;inset-inline:18px;bottom:calc(76px + env(safe-area-inset-bottom));text-align:center;padding:10px 14px;border-radius:16px;background:rgba(12,9,7,.52);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(235,185,106,.6);color:#fff;text-shadow:none}
 .sbox .hd{font-family:var(--fa,serif);font-size:1.9rem;line-height:1.3}.sbox .sub{font-size:.85rem;opacity:.9}.sbox .sse{margin-top:4px;padding-top:5px;border-top:1px solid rgba(235,185,106,.4);color:var(--acc,#ebb96a);font-weight:700;font-size:.95rem}
+.sts .sth{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px}.sts .sth b{font-size:.9rem}.sts .sti{font-size:.78rem;padding:2px 10px;border-radius:999px;border:1px solid currentColor;opacity:.9}
+.jin{margin:0 0 8px;line-height:1.9;font-size:.95rem}.jt.hr{box-shadow:0 0 0 2px var(--g1,var(--acc))}.hrb{font-style:normal;font-size:.7rem;padding:1px 8px;border-radius:999px;background:var(--g1,var(--acc));color:var(--on-g1,#fff);margin-inline-start:6px}
+html:has(.sheet.on) #dxfab,html:has(.sheet.on) #qfs{display:none}
+.sceneh{font-weight:700;font-size:.85rem;color:var(--gold,var(--acc));margin:4px 0}
 .dxs.multi{flex-direction:column;align-items:stretch;gap:8px}.dxs .vs{display:flex;flex-wrap:wrap;gap:6px}
 .dxs .vs button{padding:5px 12px;border:1.5px solid var(--lk,var(--acc));border-radius:999px;color:var(--lk,var(--acc));font-size:.88rem}
 .soon{opacity:.55}
@@ -705,7 +709,7 @@ html:not([data-pg="r"]) #idxh{display:none}
 (function(){
 "use strict";
 var D=window.KHULAGI, $=function(s,e){return (e||document).querySelector(s)};
-var DEF={story:false,resume:true,ml:"line",wh:"strip",story:true,hm:"path",ff:"amiri",vref:true,guide:true,mov:true,today:true,calm:false,wake:false,swipe:true,rm:"unit",mp:"sheet",hide:[],hv:"p",lit:"bas",dn:"n",slim:true,hqo:false,theme:"church",fs:22,cop:true,ar:true,tr:true,pg:false,rub:true,notes:true,med:true,medAll:"closed"};
+var DEF={story:true,resume:true,ml:"line",wh:"strip",story:true,hm:"path",ff:"amiri",vref:true,guide:true,mov:true,today:true,calm:false,wake:false,swipe:true,rm:"unit",mp:"sheet",hide:[],hv:"p",lit:"bas",dn:"n",slim:true,hqo:false,theme:"church",fs:22,cop:true,ar:true,tr:true,pg:false,rub:true,notes:true,med:true,medAll:"closed"};
 var S=Object.assign({},DEF);
 
 var TRM={"ⲁ":"ا","ⲃ":"ڤ","ⲅ":"غ","ⲇ":"د","ⲉ":"ي","ⲍ":"ز","ⲏ":"ي","ⲑ":"ث","ⲓ":"ي","ⲕ":"ك","ⲗ":"ل","ⲙ":"م","ⲛ":"ن","ⲝ":"كس","ⲟ":"و","ⲡ":"ب","ⲣ":"ر","ⲥ":"س","ⲧ":"ت","ⲩ":"ي","ⲫ":"ف","ⲭ":"خ","ⲯ":"بس","ⲱ":"و","ϣ":"ش","ϥ":"ف","ϧ":"خ","ϩ":"ه","ϫ":"ج","ϭ":"تش","ϯ":"تي"};
@@ -849,7 +853,7 @@ function unitParts(id,s,c,us,u,q,cols){
   if(sheetMed)tabs.push(["b","💭 تأمل"+(U.med.length>1?" "+cnt(U.med.length):"")]);
   if(S.rub&&U.rub.length)tabs.push(["c","🕯 "+cnt(U.rub.length)]);
   if(U.notes.length)tabs.push(["d","📎 "+cnt(U.notes.length)]);
-  if(si>=0&&S.story)tabs.push(["s","📖 قصة"]);
+  if(si>=0&&S.story)tabs.push(["s","📖 المحطة"]);
   if(window.KS)tabs.push(["g","📖 دليل"]);
   var tab=tabs.some(function(t){return t[0]===UT})?UT:"a";
   var th='<div class="dtabs" id="untabs" role="tablist">'+tabs.map(function(t){return '<button role="tab" data-ut="'+t[0]+'" class="'+(t[0]===tab?'on':'')+'" aria-selected="'+(t[0]===tab)+'">'+t[1]+'</button>'}).join("")+'</div>';
@@ -972,17 +976,17 @@ function storyIdx(id){var sc=BYID[id];if(!sc||!window.KST)return -1;var g=sc.gro
 function stripHtml(i){
   var st=KST.STOPS,nd='';
   st.forEach(function(x,k){nd+='<i class="nd'+(k===i?' c':k<i?' d':'')+'">'+(k<i?'✓':ar9(k+1))+'</i>';if(k<st.length-1)nd+='<b class="ln"></b>'});
-  return '<div class="sts" role="group" aria-label="أين نحن في القصة"><div class="row">'+nd+'</div><button class="cur" data-story="1"><span>الآن: <b>'+esc(st[i].s)+'</b></span><span>خريطة القصة ‹</span></button></div>'}
+  return '<div class="sts" role="group" aria-label="رحلة المسيح في القداس"><div class="sth"><b>رحلة المسيح في القداس</b><button class="sti" data-story="1">ما هذا؟ ‹</button></div><div class="row">'+nd+'</div><button class="cur" data-story="1"><span>المحطة <b>'+ar9(i+1)+' من '+ar9(st.length)+'</b>: '+esc(st[i].n)+' · '+esc(st[i].place)+'</span><span>الخريطة ‹</span></button></div>'}
 function sceneHtml(i){
   var x=KST.STOPS[i],rd=window.KS?KS.linkRefs(esc(x.read)):esc(x.read);
-  return '<div class="scene"><div><em>'+x.ico+'</em>'+esc(x.n)+'<small>'+esc(x.place)+'</small></div></div><div class="vq">«'+esc(x.verse)+'»<small>'+(window.KS?KS.linkRefs(esc(x.ref)):esc(x.ref))+'</small></div><div class="now"><small>ماذا يحدث الآن في القداس؟</small>'+esc(x.now)+'</div><div class="sread">اقرأ الفصل: '+rd+'</div><div class="msrc"><span class="tag">مسوّدة</span> الربط التفسيري بين أجزاء القداس وحياة المسيح يحتاج مراجعة كنسية</div>'}
+  return '<div class="sceneh">المحطة '+ar9(i+1)+' من '+ar9(KST.STOPS.length)+' في رحلة المسيح</div><div class="scene"><div><em>'+x.ico+'</em>'+esc(x.n)+'<small>'+esc(x.place)+'</small></div></div><div class="vq">«'+esc(x.verse)+'»<small>'+(window.KS?KS.linkRefs(esc(x.ref)):esc(x.ref))+'</small></div><div class="now"><small>ماذا يحدث الآن في القداس؟</small>'+esc(x.now)+'</div><div class="sread">اقرأ الفصل: '+rd+'</div><div class="msrc"><span class="tag">مسوّدة</span> الربط التفسيري بين أجزاء القداس وحياة المسيح يحتاج مراجعة كنسية</div>'}
 function storySecs(lit){var g=D.groups.filter(function(x){return x.id===lit})[0],o=[[],[],[],[],[],[]];if(!g)return o;
   var ord=g.sections.map(function(x){return x.id}),so=(window.KS_DATA||{}).stageOf;
   g.sections.forEach(function(x){var i=KST.idxOf(x.id,lit,ord,so);if(i>=0&&BYID[x.id]&&BYID[x.id].has)o[i].push(x)});return o}
 function journeyHtml(lit){
-  var secs=storySecs(lit),seen=seenGet(),h='<h3>رحلة المسيح في القداس · '+esc(LNAME[lit])+'</h3><p class="hint"><span class="tag">مسوّدة</span> اقتراح تفسيري يحتاج مراجعة كنسية</p>';
+  var secs=storySecs(lit),seen=seenGet(),l0=lastGet(),cu=l0&&BYID[l0]?storyIdx(l0):-1,h='<h3>رحلة المسيح في القداس · '+esc(LNAME[lit])+'</h3><p class="jin">القداس ليس صلوات متتابعة فقط، بل هو <b>إعادة لرحلة المسيح</b> من الميلاد إلى الصعود. كل جزء تقرأه يقابل <b>محطة</b> من حياته، وهذه الخريطة تقول لك: أين أنت من الرحلة الآن، وماذا يحدث في هذه المحطة. اضغط أي محطة لتفتح أول جزء فيها.</p><p class="hint"><span class="tag">مسوّدة</span> الربط التفسيري يحتاج مراجعة كنسية</p>';
   KST.STOPS.forEach(function(x,k){var a=secs[k],d=a.filter(function(y){return seen[y.id]}).length,f=a.filter(function(y){return !seen[y.id]})[0]||a[0];
-    h+='<button class="jt" '+(f?'data-nav="#/s/'+f.id+'"':'disabled')+'><span class="jh"><i>'+ar9(k+1)+'</i><b>'+esc(x.n)+'</b><small>'+esc(x.place)+'</small></span><span class="jm">في القداس: '+esc(x.where)+(a.length?' · '+ar9(d)+' من '+ar9(a.length):'')+'</span></button>'});
+    h+='<button class="jt'+(k===cu?' hr':'')+'" '+(f?'data-nav="#/s/'+f.id+'"':'disabled')+'><span class="jh"><i>'+ar9(k+1)+'</i><b>'+esc(x.n)+(k===cu?' <em class="hrb">أنت هنا</em>':'')+'</b><small>'+esc(x.place)+'</small></span><span class="jm">يقابل في القداس: '+esc(x.where)+(a.length?' · '+ar9(d)+' من '+ar9(a.length):'')+'</span></button>'});
   return h}
 function leadOf(t){t=String(t||"");var m=t.match(/^[^.؟!]*[.؟!][^.؟!]*[.؟!]/);var r=m?m[0]:t.slice(0,220);return r.length>260?r.slice(0,260)+"…":r}
 function whHtml(it,few){var m=it.med;if(!m||!S.med||S.wh==="off"||!few)return'';var t=m.w||m.p;if(!t)return'';
@@ -1260,7 +1264,7 @@ function settings(){
   var sy=sh.scrollTop;var look='<div class="stl">الثيم</div><div class="sw">';
   THEMES.forEach(function(t){look+='<button data-th="'+t[0]+'" class="'+(S.theme===t[0]?'on':'')+'">'+t[1]+'</button>'});
   look+='</div><div class="stl">نوع الخط</div><div class="ffs">'+[["amiri","أميري"],["noto","نسخ"],["sch","شهرزاد"],["lat","لطيف"],["mark","مركزي"],["mes","المسيري"],["cairo","القاهرة"],["taj","تجوّل"],["kufi","ريم كوفي"]].map(function(x){return '<button data-set="ff" data-v="'+x[0]+'" data-fk="'+x[0]+'" class="'+((S.ff||"amiri")===x[0]?'on':'')+'">'+x[1]+'</button>'}).join("")+'</div><div class="stl">حجم الخط</div><div class="fsr"><button data-fs="-2" aria-label="تصغير الخط">أ-</button><b>'+S.fs+'</b><button data-fs="2" aria-label="تكبير الخط">أ+</button></div>';
-  var rd='';[["rub","الإرشادات الحمراء"],["med","التأملات"],["story","ربط الأجزاء بمشاهد حياة المسيح (قصة الخلاص، اختياري)"],["swipe","التنقل بالسحب بين الأجزاء (يمين = التالي · يسار = السابق)"]].forEach(function(r){rd+='<div class="set"><span>'+r[1]+'</span><button class="tg'+(S[r[0]]?' on':'')+'" data-tg="'+r[0]+'" aria-label="'+r[1]+'"></button></div>'});
+  var rd='';[["rub","الإرشادات الحمراء"],["med","التأملات"],["story","رحلة المسيح في القداس (محطة كل جزء من حياة المسيح)"],["swipe","التنقل بالسحب بين الأجزاء (يمين = التالي · يسار = السابق)"]].forEach(function(r){rd+='<div class="set"><span>'+r[1]+'</span><button class="tg'+(S[r[0]]?' on':'')+'" data-tg="'+r[0]+'" aria-label="'+r[1]+'"></button></div>'});
   var pill=function(k,opts){var o='<div class="sw">';opts.forEach(function(x){o+='<button data-set="'+k+'" data-v="'+x[0]+'" class="'+(S[k]===x[0]?'on':'')+'">'+x[1]+'</button>'});return o+'</div>'};
   var lay='<div class="stl">طريقة القراءة</div>'+pill("rm",[["unit","قطعة قطعة"],["flow","عرض متصل"]])+'<div class="stl">التأمل داخل القراءة</div>'+pill("ml",[["off","مخفي"],["line","سطر"],["para","فقرة"]])+'<div class="stl">همسات الصلاة (من وحي القطعة)</div>'+pill("wh",[["off","مخفية"],["strip","شريط"],["open","مفتوحة"]])+'<div class="stl">موضع التأمل الكامل</div>'+pill("mp",[["sheet","في الدرج السفلي"],["after","بعد النص مباشرة"]])+'<div class="stl">كثافة القراءة</div>'+pill("dn",[["n","عادية"],["c","مدمجة"]])+'<div class="set"><span>ترويسة مصغّرة</span><button class="tg'+(S.slim?' on':'')+'" data-tg="slim" aria-label="ترويسة مصغّرة"></button></div>';
   var G=window.KS?KS.settings():{};
@@ -1410,7 +1414,7 @@ function openSearch(){sheet('<h3>بحث</h3><input id="q" class="search" placeho
 /* PWA */
 if("serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js",{updateViaCache:"none"}).then(function(r){r.update()}).catch(function(){});var had=!!navigator.serviceWorker.controller;navigator.serviceWorker.addEventListener("controllerchange",function(){if(had&&!window.__rl){window.__rl=1;location.reload()}})})}
 
-load();if(!THEMES.some(function(t){return t[0]===S.theme}))S.theme="dawn";try{if(!localStorage.getItem("khulagi.v15")){S.ds="d1";save();localStorage.setItem("khulagi.v15","1")}}catch(e){}try{if(!localStorage.getItem("khulagi.v12")){S.theme="church";save();localStorage.setItem("khulagi.v12","1")}if(!localStorage.getItem("khulagi.v13")){S.mp="sheet";save();localStorage.setItem("khulagi.v13","1")}if(!localStorage.getItem("khulagi.v17")){S.story=false;save();localStorage.setItem("khulagi.v17","1")}if(!localStorage.getItem("khulagi.v16")){S.theme="dawn";save();localStorage.setItem("khulagi.v16","1")}if(!localStorage.getItem("khulagi.v14")){S.hv="p";save();localStorage.setItem("khulagi.v14","1")}}catch(e){}try{if(localStorage.getItem("khulagi.dm")==="1")dmSet(true)}catch(e){}apply();opts();ensureAll().then(function(){SECS.forEach(function(x){x.has=!!D.content[x.id]});fillPick();try{var hh0=location.hash.replace(/^#\/?/,"");if(S.resume!==false&&!hh0){var l0=lastGet(),ts0=+localStorage.getItem("khulagi.lastts");if(l0&&BYID[l0]&&BYID[l0].has&&ts0&&Date.now()-ts0<20*36e5)history.replaceState(null,"","#/s/"+l0)}}catch(e){}route()});
+load();if(!THEMES.some(function(t){return t[0]===S.theme}))S.theme="dawn";try{if(!localStorage.getItem("khulagi.v15")){S.ds="d1";save();localStorage.setItem("khulagi.v15","1")}}catch(e){}try{if(!localStorage.getItem("khulagi.v12")){S.theme="church";save();localStorage.setItem("khulagi.v12","1")}if(!localStorage.getItem("khulagi.v13")){S.mp="sheet";save();localStorage.setItem("khulagi.v13","1")}if(!localStorage.getItem("khulagi.v18")){S.story=true;save();localStorage.setItem("khulagi.v18","1")}if(!localStorage.getItem("khulagi.v16")){S.theme="dawn";save();localStorage.setItem("khulagi.v16","1")}if(!localStorage.getItem("khulagi.v14")){S.hv="p";save();localStorage.setItem("khulagi.v14","1")}}catch(e){}try{if(localStorage.getItem("khulagi.dm")==="1")dmSet(true)}catch(e){}apply();opts();ensureAll().then(function(){SECS.forEach(function(x){x.has=!!D.content[x.id]});fillPick();try{var hh0=location.hash.replace(/^#\/?/,"");if(S.resume!==false&&!hh0){var l0=lastGet(),ts0=+localStorage.getItem("khulagi.lastts");if(l0&&BYID[l0]&&BYID[l0].has&&ts0&&Date.now()-ts0<20*36e5)history.replaceState(null,"","#/s/"+l0)}}catch(e){}route()});
 window.KH={trLine:trLine,unitsOf:unitsOf,toast:toast,render:function(id,u){reader(id,undefined,u)},setUnit:setUnit,unm:unmEl,fixScroll:fixScroll,pos:function(){return {id:CUR.id,u:CUR.u}},step:stepPos,nextSec:nextSecId,S:function(){return S},save:save,sheet:sheet,close:close,esc:esc,go:go,ctl:ctl,app:app,route:route,settings:settings,D:D,BYID:BYID};
 })();
 </script>
