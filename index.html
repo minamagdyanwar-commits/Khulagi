@@ -587,7 +587,11 @@ html[data-pg="l"] #bgimg,html.sheet-open #bgimg{filter:blur(18px) saturate(1.1);
 html[data-pg="h"] body,html[data-pg="l"] body{background:transparent}
 html[data-pg="h"] #topbar{position:fixed;inset:0 0 auto 0;background:transparent;box-shadow:none;border:0;z-index:30}
 html[data-pg="h"] #topbar .banner{background:none!important;height:58px;box-shadow:none!important;border:0;border-radius:0}
-html[data-pg="h"] #topbar .banner h1,html[data-pg="h"] #topbar .banner .cr{display:none}
+html[data-pg="h"] #topbar .banner .cr{display:none}
+html[data-pg="h"] #topbar .banner{background:linear-gradient(180deg,rgba(10,8,6,.6),transparent)!important;height:84px;justify-content:center;align-items:center;padding-top:env(safe-area-inset-top,0px)}
+html[data-pg="h"] #topbar .banner h1{position:static;margin:0;flex:none;text-align:center;font-family:var(--fa,serif);font-size:1.75rem;font-weight:700;color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.75);display:flex;flex-direction:column;align-items:center;line-height:1.2}
+html[data-pg="h"] #topbar .banner h1::before{content:"☩";font-size:.95rem;color:var(--acc,#ebb96a);margin-bottom:2px}
+html[data-pg="h"] #topbar .banner .burger{position:absolute;inset-inline-end:12px;top:calc(18px + env(safe-area-inset-top,0px))}
 html[data-pg="h"] .burger{background:rgba(20,14,10,.45);border-radius:12px;backdrop-filter:blur(6px)}
 .splash{position:fixed;inset:0;z-index:5;pointer-events:none;background:linear-gradient(180deg,rgba(10,8,6,.55),transparent 28%,transparent 72%,rgba(10,8,6,.6))}
 .sd{position:absolute;inset-inline:0;top:70px;text-align:center;color:#fff;text-shadow:0 2px 14px rgba(0,0,0,.7)}.sd .sub{font-size:.95rem;opacity:.95}.sd .hd{font-family:var(--fa,serif);font-size:2.6rem;line-height:1.3}
