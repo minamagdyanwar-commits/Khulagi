@@ -635,6 +635,8 @@ html .banner h1::after,html[data-pg=r] .banner h1::after{transform:scaleX(-1)}
 #dxmenu{position:fixed;inset-inline-start:12px;bottom:134px;z-index:61;width:min(260px,calc(100vw - 24px));padding:10px;border-radius:16px;background:var(--card);color:var(--ink);border:1.5px solid var(--g1,var(--acc));box-shadow:0 10px 26px rgba(0,0,0,.4);display:flex;flex-direction:column;gap:6px}#dxmenu[hidden]{display:none}#dxmenu>b{font-size:.85rem;opacity:.8}
 #dxmenu button{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:12px;border:1px solid var(--line);text-align:start;color:var(--ink)}#dxmenu button i{flex:none;width:26px;height:26px;border-radius:50%;border:1.5px solid var(--g1,var(--acc));display:grid;place-items:center;font-style:normal;font-weight:700}#dxmenu button.on i{background:var(--g1,var(--acc));color:var(--on-g1,#fff)}#dxmenu small{display:block;opacity:.7;font-size:.72rem}#dxmenu .dxo{justify-content:center;border-style:dashed;font-weight:700}
 html:has(.sheet.on) #dxmenu{display:none}
+html[data-pg="h"]:not(.sheet-open) #dxfab,html[data-pg="h"]:not(.sheet-open) #qfs{bottom:calc(250px + env(safe-area-inset-bottom))}html[data-pg="h"]:not(.sheet-open) #dxmenu{bottom:calc(300px + env(safe-area-inset-bottom))}
+#dxfab,#qfs button{backdrop-filter:blur(6px)}
 .dxs.multi{flex-direction:column;align-items:stretch;gap:8px}.dxs .vs{display:flex;flex-wrap:wrap;gap:6px}
 .dxs .vs button{padding:5px 12px;border:1.5px solid var(--lk,var(--acc));border-radius:999px;color:var(--lk,var(--acc));font-size:.88rem}
 .soon{opacity:.55}
@@ -1148,14 +1150,16 @@ function dxBtn(id){var on=dxl().indexOf(id)>=0;return '<button class="dxp'+(on?'
 function dxNb(id,dir){var a=dxl().filter(function(x){return BYID[x]&&BYID[x].has}),i=a.indexOf(id);if(i<0)return null;return a[i+dir]||null}
 function shortN(t,n){t=String(t);return t.length>n?t.slice(0,n)+"…":t}
 function dxFab(){var h=location.hash.replace(/^#\/?/,""),id=h.indexOf("s/")===0?h.slice(2).split("?")[0]:"",s=BYID[id],f=document.getElementById("dxfab"),q=document.getElementById("qfs");
-  if(!s){if(f)f.hidden=true;if(q)q.hidden=true;return}
   if(!f){f=document.createElement("button");f.id="dxfab";document.body.appendChild(f)}
   if(!q){q=document.createElement("div");q.id="qfs";q.innerHTML='<button data-qfs="2" aria-label="تكبير الخط">أ+</button><button data-qfs="-2" aria-label="تصغير الخط">أ−</button>';document.body.appendChild(q)}
+  q.hidden=false;
+  if(!s){f.hidden=(h==="dxlist");f.className="";f.setAttribute("data-dxadd","");f.textContent="📋";f.setAttribute("aria-label","قوائمي");var m1=document.getElementById("dxmenu");if(m1&&!m1.hidden)dxMenu("");return}
   var c=dxc(),a=c.items,on=a.indexOf(id)>=0;f.hidden=false;q.hidden=false;f.className=on?"on":"";f.setAttribute("data-dxadd",id);
   f.textContent=on?"✓":"＋";f.setAttribute("aria-label",on?"في «"+c.name+"» — خيارات القائمة":"أضف إلى «"+c.name+"» — خيارات")
   var m=document.getElementById("dxmenu");if(m&&!m.hidden)dxMenu(id)}
 function dxMenu(id){var m=document.getElementById("dxmenu");if(!m){m=document.createElement("div");m.id="dxmenu";document.body.appendChild(m)}
   var d=dxd();m.hidden=false;
+  if(!id){m.innerHTML='<b>القائمة التي تضيف إليها</b>'+d.lists.map(function(l){var on=l.id===d.cur;return '<button data-dxm="'+l.id+'" class="'+(on?'on':'')+'"><i>'+(on?'✓':'')+'</i><span>'+esc(l.name)+'<small>'+ar9(l.items.length)+' أقسام'+(on?' · الحالية':'')+'</small></span></button>'}).join("")+'<button class="dxo" data-dxm-open="1">📋 فتح قوائمي ‹</button>';return}
   m.innerHTML='<b>قوائمي</b>'+d.lists.map(function(l){var on=l.items.indexOf(id)>=0;return '<button data-dxm="'+l.id+'" class="'+(on?'on':'')+'"><i>'+(on?'✓':'＋')+'</i><span>'+esc(l.name)+'<small>'+(on?'في القائمة · اضغط للإزالة':'اضغط للإضافة')+'</small></span></button>'}).join("")+'<button class="dxo" data-dxm-open="1">📋 فتح قوائمي ‹</button>'}
 function dxToday(){try{if(window.KS&&KS.today){var t=KS.today();return {cd:t.cd,dx:t.dx.filter(function(x){return BYID[x.id]&&BYID[x.id].has})}}}catch(e){}return {cd:null,dx:[]}}
 function dxView(){
@@ -1237,7 +1241,7 @@ window.addEventListener("hashchange",route);
   document.body.addEventListener("click",function(e){var b=e.target.closest("[data-sheet]");if(b)open(b.getAttribute("data-sheet")==="open")})})();
 document.body.addEventListener("click",function(e){
   var mns=e.target.closest("[data-mnsave]");if(mns){var q2=mns.getAttribute("data-mnsave").split("|"),all=mnGet(),val=mns.getAttribute("data-del")?"":document.getElementById("mnt").value.trim();all[q2[0]]=all[q2[0]]||{};if(val)all[q2[0]][q2[1]]=val;else delete all[q2[0]][q2[1]];mnSet(all);close();reader(CUR.id,undefined,CUR.u);return}
-  var dm=e.target.closest("[data-dxm]");if(dm){var id9=document.getElementById("dxfab").getAttribute("data-dxadd"),d9=dxd();d9.lists.forEach(function(l){if(l.id===dm.getAttribute("data-dxm")){var k9=l.items.indexOf(id9);if(k9>=0)l.items.splice(k9,1);else l.items.push(id9)}});dxw(d9);dxFab();return}
+  var dm=e.target.closest("[data-dxm]");if(dm){var id9=document.getElementById("dxfab").getAttribute("data-dxadd"),d9=dxd();if(!id9){d9.cur=dm.getAttribute("data-dxm");dxw(d9);dxMenu("");return}d9.lists.forEach(function(l){if(l.id===dm.getAttribute("data-dxm")){var k9=l.items.indexOf(id9);if(k9>=0)l.items.splice(k9,1);else l.items.push(id9)}});dxw(d9);dxFab();return}
   if(e.target.closest("[data-dxm-open]")){var m0=document.getElementById("dxmenu");if(m0)m0.hidden=true;location.hash="#/dxlist";return}
   var f=e.target.closest("#dxfab");if(f){var mm=document.getElementById("dxmenu");if(mm&&!mm.hidden){mm.hidden=true}else dxMenu(f.getAttribute("data-dxadd"));return}
   var mo=document.getElementById("dxmenu");if(mo&&!mo.hidden&&!e.target.closest("#dxmenu"))mo.hidden=true;
