@@ -9,6 +9,7 @@
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
 <style>
+@font-face{font-family:"Reem Kufi";font-weight:700;src:url(reemkufi-arabic-700-normal.woff2) format("woff2");font-display:swap}
 @font-face{font-family:"Amiri";font-weight:400;src:url(amiri-arabic-400-normal.woff2) format("woff2");font-display:swap}
 @font-face{font-family:"Amiri";font-weight:700;src:url(amiri-arabic-700-normal.woff2) format("woff2");font-display:swap}
 @font-face{font-family:"Amiri";font-weight:400;src:url(amiri-latin-400-normal.woff2) format("woff2");font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122,U+2212,U+2215}
@@ -589,8 +590,6 @@ html[data-pg="h"] #topbar{position:fixed;inset:0 0 auto 0;background:transparent
 html[data-pg="h"] #topbar .banner{background:none!important;height:58px;box-shadow:none!important;border:0;border-radius:0}
 html[data-pg="h"] #topbar .banner .cr{display:none}
 html[data-pg="h"] #topbar .banner{background:linear-gradient(180deg,rgba(10,8,6,.6),transparent)!important;height:84px;justify-content:center;align-items:center;padding-top:env(safe-area-inset-top,0px)}
-html[data-pg="h"] #topbar .banner h1{position:static;margin:0;flex:none;text-align:center;font-family:var(--fa,serif);font-size:1.75rem;font-weight:700;color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.75);display:flex;flex-direction:column;align-items:center;line-height:1.2}
-html[data-pg="h"] #topbar .banner h1::before{content:"☩";font-size:.95rem;color:var(--acc,#ebb96a);margin-bottom:2px}
 html[data-pg="h"] #topbar .banner .burger{position:absolute;inset-inline-end:12px;top:calc(18px + env(safe-area-inset-top,0px))}
 html[data-pg="h"] .burger{background:rgba(20,14,10,.45);border-radius:12px;backdrop-filter:blur(6px)}
 .splash{position:fixed;inset:0;z-index:5;pointer-events:none;background:linear-gradient(180deg,rgba(10,8,6,.55),transparent 28%,transparent 72%,rgba(10,8,6,.6))}
@@ -621,6 +620,14 @@ html:has(.sheet.on) #dxfab,html:has(.sheet.on) #qfs{display:none}
 .sceneh{font-weight:700;font-size:.85rem;color:var(--gold,var(--acc));margin:4px 0}
 .sts .stt{flex:none;width:28px;height:24px;border-radius:8px;border:1px solid currentColor;font-size:.8rem;opacity:.85}.sts .stt.big{display:none;margin-inline-start:6px}
 .sts.min .sth,.sts.min .cur{display:none}.sts.min .stt.big{display:inline-block}.sts.min .row{display:flex;align-items:center;cursor:pointer}.sts.min{padding-block:6px}
+.banner .bt{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding-inline:58px;pointer-events:none;z-index:1}.banner .bt>*{pointer-events:auto}
+html .banner h1,html[data-pg] .banner h1{position:static;font-family:"Reem Kufi","Amiri",serif;font-weight:700;padding:0;margin:0;font-size:1.65rem;line-height:1.3;display:flex;align-items:center;gap:12px;color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.7);cursor:default;max-width:none;overflow:visible;white-space:nowrap}
+html .banner h1::before,html .banner h1::after,html[data-pg=r] .banner h1::after{content:"";display:block;width:44px;height:1.5px;background:linear-gradient(90deg,transparent,#ebb96a);opacity:1;font-size:0}
+html .banner h1::after,html[data-pg=r] .banner h1::after{transform:scaleX(-1)}
+:root:root:root[data-pg=r] .banner h1::after,:root:root:root[data-pg=l] .banner h1::after{content:"";font-size:0;opacity:1;width:30px;height:1.5px;background:linear-gradient(90deg,transparent,#ebb96a);transform:scaleX(-1)}
+#bsub{margin-top:1px;font-size:.88rem;color:#f3dfb8;cursor:pointer;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-shadow:0 1px 6px rgba(0,0,0,.7)}#bsub::after{content:" ▾";opacity:.85}
+:root:root:root[data-pg=r] .banner,:root:root:root[data-pg=l] .banner{height:80px;padding-top:env(safe-area-inset-top,0px)}
+:root:root:root[data-pg=r] .banner h1,:root:root:root[data-pg=l] .banner h1{font-size:1.2rem}:root:root:root[data-pg=r] .banner h1::before,:root:root:root[data-pg=r] .banner h1::after{width:30px}
 .dxs.multi{flex-direction:column;align-items:stretch;gap:8px}.dxs .vs{display:flex;flex-wrap:wrap;gap:6px}
 .dxs .vs button{padding:5px 12px;border:1.5px solid var(--lk,var(--acc));border-radius:999px;color:var(--lk,var(--acc));font-size:.88rem}
 .soon{opacity:.55}
@@ -700,7 +707,7 @@ html:has(.sheet.on) #dxfab,html:has(.sheet.on) #qfs{display:none}
 </head>
 <body>
 <div id="bgimg" aria-hidden="true"></div>
-<header id="topbar"><div class="banner"><span class="cr l">☩</span><span class="cr r">☩</span><span class="cr">☩</span><button class="burger" id="btnSet" aria-label="الإعدادات">☰</button><h1 id="btl">الخولاجي المقدس</h1></div>
+<header id="topbar"><div class="banner"><span class="cr l">☩</span><span class="cr r">☩</span><span class="cr">☩</span><button class="burger" id="btnSet" aria-label="الإعدادات">☰</button><div class="bt"><h1 id="btl">الخولاجي المقدس</h1><div id="bsub" hidden></div></div></div>
 <div class="opts" id="opts" style="display:none"></div>
 <div class="selw" id="selw" style="display:none"><select id="pick" aria-label="اختر جزء القداس"></select></div></header>
 <main id="app"></main>
@@ -906,7 +913,7 @@ function sheetRefresh(){
 function fixScroll(){var m=unmEl();if(!m)return;var th=(document.getElementById("topbar")||{}).offsetHeight||0,top=m.getBoundingClientRect().top+window.scrollY-60-(document.documentElement.getAttribute("data-pg")==="r"?th:0);if(window.scrollY>top)window.scrollTo(0,Math.max(0,top))}
 function reader(id,q,u){
   var s=BYID[id];if(!s){return}
-  pick.value=id;document.title=s.title+" — الخولاجي";var tt=document.getElementById("btl");if(tt)tt.textContent=s.title;
+  pick.value=id;document.title=s.title+" — الخولاجي";var tt=document.getElementById("bsub");if(tt){tt.textContent=s.title;tt.hidden=false}
   var c=D.content[id],h='';
   var cols=[];if(S.ar)cols.push("ar");if(S.tr)cols.push("tr");if(S.cop)cols.push("cop");
   var us=(S.rm==="unit"&&c&&!q)?unitsOf(id):null;
@@ -1183,7 +1190,7 @@ function groupView(gid){
 function tbh(){var t=document.getElementById("topbar");document.documentElement.style.setProperty("--tbh",(document.documentElement.getAttribute("data-pg")==="r"&&t?t.offsetHeight+8:0)+"px")}
 window.addEventListener("resize",function(){tbh()});
 function route(){
-  var h=location.hash.replace(/^#\/?/,"");if(h.indexOf("s/")!==0){var bt=document.getElementById("btl");if(bt)bt.textContent="الخولاجي المقدس"}document.documentElement.setAttribute("data-pg",h.indexOf("s/")===0?"r":h===""?"h":"l");
+  var h=location.hash.replace(/^#\/?/,"");if(h.indexOf("s/")!==0){var bt=document.getElementById("bsub");if(bt)bt.hidden=true}document.documentElement.setAttribute("data-pg",h.indexOf("s/")===0?"r":h===""?"h":"l");
   if(h.indexOf("s/")===0){var p=h.slice(2).split("?q=");if(!BYID[p[0]])return home();ctl(true);reader(p[0],p[1]?decodeURIComponent(p[1]):"")}
   else if(h==="compare"&&window.KS)KS.compare();
   else if(h==="plan"&&window.KS)KS.plan();
@@ -1337,7 +1344,7 @@ function openIdx(){buildIdx();var ix=idxEl();ix.style.transform="";ix.classList.
 function closeIdx(){var ix=idxEl();ix.classList.remove("on");ix.style.transform="";if(!sh.classList.contains("on"))sc.classList.remove("on")}
 document.addEventListener("click",function(e){
   var ix=idxEl();if(!ix)return;
-  if(e.target.closest("#btl")&&document.documentElement.getAttribute("data-pg")==="r"){toggleDD();return}
+  if(e.target.closest("#bsub")&&document.documentElement.getAttribute("data-pg")==="r"){toggleDD();return}
   var ddi=e.target.closest("[data-dd2]");if(ddi){closeDD();var did=ddi.getAttribute("data-dd2");usave(did,0);location.hash="#/s/"+did;return}
   if(e.target.closest("[data-ddmap]")){closeDD();openIdx();return}
   if(document.getElementById("ddm")&&!e.target.closest("#ddm"))closeDD();
