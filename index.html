@@ -775,7 +775,7 @@ function lastSet(v){try{localStorage.setItem("khulagi.last",v);localStorage.setI
 function seenGet(){try{return JSON.parse(localStorage.getItem("khulagi.seen")||"{}")}catch(e){return {}}}
 function seenSet(id){try{var m=seenGet();if(!m[id]){m[id]=1;localStorage.setItem("khulagi.seen",JSON.stringify(m))}}catch(e){}}
 function effMode(){var m=S.mode||"auto";if(DMon())return"dark";if(m==="auto")m=(window.matchMedia&&matchMedia("(prefers-color-scheme: light)").matches)?"light":"dark";return m}
-function DMon(){return typeof DM!=="undefined"&&DM}
+function DMon(){return false}
 function effTheme(){return effMode()==="light"?(S.tl||"parchment"):(S.td||"dawn")}
 function apply(){var r=document.documentElement;S.theme=effTheme();r.setAttribute("data-theme",S.theme);r.setAttribute("data-mode",effMode());r.style.colorScheme=effMode();r.style.setProperty("--fs",S.fs+"px");r.setAttribute("data-hv",S.hv);r.setAttribute("data-ds","d1");S.ff&&S.ff!=="amiri"?r.setAttribute("data-ff",S.ff):r.removeAttribute("data-ff");r.setAttribute("data-dn",S.dn);r.setAttribute("data-slim",S.slim?"true":"false");
   var m=document.querySelector('meta[name=theme-color]');if(m){var c=getComputedStyle(r).getPropertyValue("--bg").trim();if(c)m.content=c}}
@@ -1116,7 +1116,7 @@ function libView(){
   h+='</div><div class="tdl">أدوات</div><div class="chips"><button data-bn="map">☰ الفهرس</button><button data-bn="med">💭 تأملاتي</button><button data-bn="study">🔎 دراسة</button><button data-opensettings="1">⚙ الإعدادات</button></div>'+bnav('lib');
   app.innerHTML=h;window.scrollTo(0,0)}
 var DM=false;
-function dmSet(on){DM=on;document.documentElement.setAttribute("data-dm",on?"1":"0");try{localStorage.setItem("khulagi.dm",on?"1":"")}catch(e){}if(!on){var b=document.getElementById("dmbar"),p=document.getElementById("dmpanel");if(b)b.hidden=true;if(p)p.hidden=true}}
+function dmSet(on){DM=on;try{localStorage.setItem("khulagi.dm",on?"1":"")}catch(e){}if(!on){var b=document.getElementById("dmbar"),p=document.getElementById("dmpanel");if(b)b.hidden=true;if(p)p.hidden=true}}
 function sessGet(){try{return JSON.parse(localStorage.getItem("khulagi.sess")||"[]")}catch(e){return[]}}
 function sessAdd(id){if(!DM)return;var a=sessGet();if(a.indexOf(id)<0){a.push(id);try{localStorage.setItem("khulagi.sess",JSON.stringify(a))}catch(e){}}}
 function preView(){
@@ -1145,7 +1145,7 @@ function postView(){
   h+='<div class="tdl">أصلي من أجل</div><textarea id="pnote" class="area" placeholder="اكتب سطرًا واحدًا يبقى في سجلك…"></textarea><button class="tdstart" data-postsave="1">حفظ في سجلي</button>';
   if(lg.length)h+='<div class="tdl">آخر ما سجّلت</div><div class="lst" style="margin:0 14px">'+lg.slice(-6).reverse().map(function(x){var d=new Date(x.t);return '<div class="chk"><div><b>'+ar9(d.getDate())+'/'+ar9(d.getMonth()+1)+' · '+ar9(x.n)+' أقسام</b>'+(x.note?'<small>'+esc(x.note)+'</small>':'')+'</div></div>'}).join("")+'</div>';
   h+=bnav('home');app.innerHTML=h;window.scrollTo(0,0)}
-function dmBar(){var id=(location.hash.match(/^#\/s\/([^?]+)/)||[])[1],b=document.getElementById("dmbar"),p=document.getElementById("dmpanel");
+function dmBar(){var DM=false,id=(location.hash.match(/^#\/s\/([^?]+)/)||[])[1],b=document.getElementById("dmbar"),p=document.getElementById("dmpanel");
   var nv0=document.getElementById("dmnav");
   if(!DM||!id||!BYID[id]){if(b)b.hidden=true;if(p)p.hidden=true;if(nv0)nv0.hidden=true;return}
   if(!b){b=document.createElement("div");b.id="dmbar";document.body.appendChild(b);p=document.createElement("div");p.id="dmpanel";p.hidden=true;var nv=document.createElement("div");nv.id="dmnav";nv.innerHTML='<button class="pv" data-dm="prev">السابق</button><button class="nx" data-dm="next">التالي ‹</button>';document.body.appendChild(nv);p.innerHTML='<div class="dmr"><button data-dm="col" data-v="ar">ع</button><button data-dm="col" data-v="tr">م</button><button data-dm="col" data-v="cop">ق</button></div><div class="dmr"><button data-dm="qfs" data-v="-2">أ−</button><button data-dm="qfs" data-v="2">أ+</button><button data-dm="settings">⚙ الإعدادات</button></div><div class="dmr"><button class="dmend" data-dm="end">إنهاء القداس</button></div>';document.body.appendChild(p)}
