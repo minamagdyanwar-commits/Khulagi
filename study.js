@@ -284,4 +284,5 @@ document.addEventListener("click",function(e){
   else if(d==="export")exportAll();
   else if(d==="install"&&deferred){deferred.prompt();deferred=null;K.close()}});
 window.KS={today:function(){var cd=copticOf(new Date());return {cd:cd,dx:todayDox(cd)}},lex:lexView,linkRefs:linkRefs,guide:guideHtml,rub:rubHtml,home:homeHtml,plan:planView,compare:compare,settings:settingsHtml,apply:applyPrefs,scan:scan,sync:syncSheet,syncOthers:syncOthers,lshort:LSHORT,lname:LNAME,syncN:function(id){return syncTargets(id).length}};
+try{var P0=K.pos&&K.pos();if(P0&&P0.id&&/^#\/s\//.test(location.hash))K.render(P0.id,P0.u)}catch(e){}
 })();
