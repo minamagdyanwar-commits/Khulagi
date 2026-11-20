@@ -82,14 +82,45 @@ function openVerse(b,c,v,full){
 function stageOf(s){var m=DT.stageOf&&DT.stageOf[s.group.id];return m&&m[s.id]!==undefined?m[s.id]:null}
 function speakers(c){var o={pr:0,di:0,pe:0};c.items.forEach(function(i){if(i.k==="p"&&i.sp)o[i.sp]++});return o}
 function refsOf(c){var seen={},list=[];Object.keys(c.notes||{}).forEach(function(k){scan(c.notes[k]).forEach(function(r){var key=r.b+r.c+":"+r.v;if(seen[key])return;seen[key]=1;list.push(r)})});return list}
-var SYNC=[["bas-hijab","greg-hijab","cyr-hijab"],["bas-solh","greg-solh","cyr-solh"],["bas-anaphora","greg-anaphora",null],["bas-mustahiq","greg-mustahiq","cyr-mustahiq"],["bas-ewash-before","greg-ewash","cyr-ewash1"],["bas-qudduus","greg-qudduus","cyr-qudduus"],["bas-taqdis","greg-laannaka","cyr-rushum1"],["bas-hulul","greg-taqdis","cyr-holool"],["bas-ewash-after","greg-talba2","cyr-ewash2"],["bas-majma","greg-majma","cyr-majma"],["bas-tarheem","greg-tarheem","cyr-tarheem"],["bas-qisma-intro","greg-qisma-intro","cyr-qisma-intro"],["bas-qisma","greg-qisma","cyr-qisma"],["bas-after-qisma",null,"cyr-after-qisma"],["bas-itiraf","greg-itiraf","cyr-itiraf"],["bas-before-comm",null,"cyr-before-comm"],["bas-after-comm","greg-after-comm","cyr-after-comm"],["bas-blessing","greg-blessing","cyr-blessing"]];
-var SALT={"greg-hijab2":"greg-hijab","greg-solh2":"greg-solh"};
+/* مقابلات أجزاء القداسات الثلاثة (باسيلي · غريغوري · كيرلسي): كل خلية معرّف أو مصفوفة (الأول هو الأساسي).
+   التقسيم في الكتاب بحسب الصفحات، فالمقابلة تقريبية بحسب المعنى والموضع من الأنافورا. */
+var SYNC=[
+ [["bas-hijab"],["greg-hijab","greg-hijab2"],["cyr-hijab"]],
+ [["bas-solh","bas-aspasmos"],["greg-solh","greg-solh2"],["cyr-solh"]],
+ [["bas-anaphora"],["greg-anaphora"],null],
+ [["bas-mustahiq"],["greg-mustahiq","greg-feto"],["cyr-mustahiq"]],
+ [["bas-qudduus"],["greg-qudduus","greg-ntok"],["cyr-qudduus","cyr-laanka"]],
+ [["bas-tajassud","bas-qam"],["greg-anta-sayyidi","greg-anta-kain","greg-uqaddim"],null],
+ [["bas-taqdis"],["greg-laannaka"],["cyr-rushum1"]],
+ [["bas-hulul"],["greg-taqdis"],["cyr-holool","cyr-shabak","cyr-rushum2"]],
+ [["bas-ajalna"],["greg-talba1"],["cyr-talba"]],
+ [["bas-ewash-before"],["greg-ewash"],["cyr-ewash1"]],
+ [["bas-ewash-after"],["greg-talba2"],["cyr-ewash2"]],
+ [["bas-majma"],["greg-majma"],["cyr-majma"]],
+ [["bas-tarheem","bas-euxes","bas-pinishti","bas-raqdeen","bas-nhmen"],["greg-tarheem"],["cyr-tarheem"]],
+ [["bas-qisma-intro","bas-tartib"],["greg-qisma-intro"],["cyr-qisma-intro"]],
+ [["bas-qisma"],["greg-qisma"],["cyr-qisma"]],
+ [["bas-after-qisma","bas-khudu","bas-tahlil-ab","bas-tazkar-ab"],["greg-tahalil"],["cyr-after-qisma"]],
+ [["bas-qabl-itiraf","bas-itiraf"],["greg-itiraf"],["cyr-itiraf"]],
+ [["bas-before-comm"],null,["cyr-before-comm"]],
+ [["bas-after-comm","bas-wad-yad","bas-tasrih"],["greg-after-comm"],["cyr-after-comm"]],
+ [["bas-blessing","bas-nihaya"],["greg-blessing"],["cyr-blessing"]]];
 var LNAME=["القداس الباسيلي","القداس الغريغوري","القداس الكيرلسي"];
+function syncTargets(id){
+  var row=null;SYNC.forEach(function(r){if(!row&&r.some(function(c){return c&&c.indexOf(id)>-1}))row=r});if(!row)return[];
+  var me=-1;row.forEach(function(c,i){if(c&&c.indexOf(id)>-1)me=i});
+  var out=[];row.forEach(function(c,i){if(i===me||!c)return;c.forEach(function(t,k){if(K.BYID[t]&&K.BYID[t].has)out.push({lit:i,id:t,primary:k===0,title:K.BYID[t].title})})});
+  return out}
 function syncBar(id){
-  id=SALT[id]||id;var row=null;SYNC.forEach(function(r){if(!row&&r.indexOf(id)>-1)row=r});if(!row)return"";
-  var me=row.indexOf(id),b="";
-  row.forEach(function(t,i){if(i===me||!t||!K.BYID[t]||!K.BYID[t].has)return;b+='<button class="lsb" data-u0="1" data-nav="#/s/'+t+'">↔ '+LNAME[i]+'</button>'});
-  return b?'<div class="lsw"><small>نفس الجزء في:</small>'+b+'</div>':""}
+  var tg=syncTargets(id).filter(function(x){return x.primary});if(!tg.length)return"";
+  var b="";tg.forEach(function(x){b+='<button class="lsb" data-u0="1" data-nav="#/s/'+x.id+'">↔ '+LNAME[x.lit]+'</button>'});
+  return '<div class="lsw"><small>نفس الجزء في:</small>'+b+'</div>'}
+function syncSheet(id){
+  var tg=syncTargets(id);if(!tg.length)return"";
+  var h='<h3>المقابل في القداسات الأخرى</h3><p class="hint">تقسيم الكتاب بالصفحات، فالمقابلة تقريبية بحسب المعنى وموضعه من الأنافورا.</p>';
+  [0,1,2].forEach(function(l){var a=tg.filter(function(x){return x.lit===l});if(!a.length)return;
+    h+='<div class="hpt">'+LNAME[l]+'</div><div class="list">';a.forEach(function(x){h+='<button class="sec" data-snav="'+x.id+'"><span>'+esc(x.title)+'</span><small>'+(x.primary?'المقابل الأساسي':'جزء مرتبط')+'</small></button>'});h+='</div>'});
+  return h}
 function guideHtml(id,s,c){
   var sb=syncBar(id);
   return sb+(guideInner(id,s,c)||"")}
@@ -233,5 +264,5 @@ document.addEventListener("click",function(e){
   else if(d==="hide"){var s=S(),h=s.hide||[],i=h.indexOf(t.dataset.g);if(i>-1)h.splice(i,1);else h.push(t.dataset.g);s.hide=h;K.save();K.settings();K.route()}
   else if(d==="export")exportAll();
   else if(d==="install"&&deferred){deferred.prompt();deferred=null;K.close()}});
-window.KS={today:function(){var cd=copticOf(new Date());return {cd:cd,dx:todayDox(cd)}},lex:lexView,linkRefs:linkRefs,guide:guideHtml,rub:rubHtml,home:homeHtml,plan:planView,compare:compare,settings:settingsHtml,apply:applyPrefs,scan:scan};
+window.KS={today:function(){var cd=copticOf(new Date());return {cd:cd,dx:todayDox(cd)}},lex:lexView,linkRefs:linkRefs,guide:guideHtml,rub:rubHtml,home:homeHtml,plan:planView,compare:compare,settings:settingsHtml,apply:applyPrefs,scan:scan,sync:syncSheet,syncN:function(id){return syncTargets(id).length}};
 })();
