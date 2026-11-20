@@ -745,9 +745,10 @@ html[data-mode="light"]{--md-bg:color-mix(in srgb,#2fa6bd 20%,var(--card));--md-
 .exb{display:flex;align-items:center;gap:8px;width:100%;padding:7px 12px;text-align:start;color:var(--ink);font-size:.88rem}
 .exb .ext{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;opacity:.85}.exb .exc{color:var(--ex-acc,var(--mute))}
 .exbody{padding:2px 12px 10px;line-height:1.9}.exbody[hidden]{display:none}
-.ixqj{position:sticky;bottom:0;z-index:2;display:grid;grid-template-columns:repeat(3,1fr);gap:5px;padding:8px 10px calc(8px + env(safe-area-inset-bottom));margin:8px -10px 0;background:var(--card);border-top:1px solid var(--line)}
-.ixqj button{white-space:nowrap;padding:5px 4px;border-radius:10px;border:1px solid var(--line);background:var(--card2);color:var(--ink);font-size:.76rem;overflow:hidden;text-overflow:ellipsis}
-.ixqj button.on{background:var(--acc);color:var(--onacc,#fff);border-color:transparent}
+.ixqj{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;padding:6px;margin:2px 0 10px;border-radius:16px;background:color-mix(in srgb,var(--acc) 14%,var(--card));border:1.5px solid color-mix(in srgb,var(--acc) 55%,transparent)}
+.ixqj button{display:flex;flex-direction:column;align-items:center;gap:1px;padding:5px 2px;border:0;border-radius:11px;background:transparent;color:var(--ink);line-height:1.2}
+.ixqj button i{font-style:normal;font-size:1.15rem}.ixqj button span{font-size:.66rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.ixqj button.on{background:var(--acc);color:var(--onacc,#fff)}
 .exm{display:inline-block;margin:6px 8px;padding:3px 12px;border-radius:999px;background:var(--ex-bg,var(--card2));border:1.5px solid var(--ex-line,var(--line));color:var(--ink);font-size:.82rem}
 #untabs{touch-action:pan-x}
 html.ix-open #dxfab,html.ix-open #qfs{display:none!important}
@@ -1419,10 +1420,11 @@ var IXSN={raf:"البخور",canons:"القوانين",bas:"باسيلي",greg:"
 function buildIdx(){
   var ix=idxEl(),g=ixGroup();
   var h='<div class="ixh"><b>📑 '+(g?esc(g.title):'الأقسام الرئيسية')+'</b><span><button data-live="1" aria-label="وضع الكنيسة">🕯</button><button data-ixset="1" aria-label="الإعدادات">⚙</button><button data-ixc="1" aria-label="إغلاق">✕</button></span></div>';
+  if(g){h+='<div class="ixqj" aria-label="انتقال سريع للأقسام">';D.groups.forEach(function(x){h+='<button data-igg="'+x.id+'" class="'+(x===g?'on':'')+'"><i>'+(ICONS[x.id]||"☩")+'</i><span>'+esc(IXSN[x.id]||shortN(x.title,8))+'</span></button>'});h+='</div>'}
   if(g)h+='<button class="ixhome" data-ixhome="1">⌂ الصفحة الرئيسية — كل الأقسام الكبرى</button>';
   if(g&&CUR.id&&BYID[CUR.id]&&BYID[CUR.id].group===g)h+='<div class="ixm"><span>طريقة القراءة</span><span class="ixmb"><button data-ixm="unit" class="'+(S.rm==="unit"?'on':'')+'">قطعة قطعة</button><button data-ixm="flow" class="'+(S.rm==="flow"?'on':'')+'">متصل</button></span></div>';
   h+='<input id="ixq" class="search ixs" placeholder="'+(g?'ابحث في '+esc(g.title)+'…':'ابحث عن قسم…')+'" autocomplete="off" value="'+esc(IXQ)+'"><div id="ixl">'+idxList()+'</div>';
-  if(g){h+='<div class="ixqj" aria-label="انتقال سريع للأقسام">';D.groups.forEach(function(x){h+='<button data-igg="'+x.id+'" class="'+(x===g?'on':'')+'">'+(ICONS[x.id]||"☩")+' '+esc(IXSN[x.id]||shortN(x.title,8))+'</button>'});h+='</div>'}
+
   ix.innerHTML=h}
 function idxList(){
   var q=norm(IXQ.trim()),cur=CUR.id,g=ixGroup(),h="";
