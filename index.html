@@ -745,11 +745,12 @@ html[data-mode="light"]{--md-bg:color-mix(in srgb,#2fa6bd 20%,var(--card));--md-
 .exb{display:flex;align-items:center;gap:8px;width:100%;padding:7px 12px;text-align:start;color:var(--ink);font-size:.88rem}
 .exb .ext{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;opacity:.85}.exb .exc{color:var(--ex-acc,var(--mute))}
 .exbody{padding:2px 12px 10px;line-height:1.9}.exbody[hidden]{display:none}
-.ixqj{display:flex;gap:6px;overflow-x:auto;padding:4px 2px 8px;margin:0 0 4px;scrollbar-width:thin}
-.ixqj button{flex:none;white-space:nowrap;padding:5px 11px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--ink);font-size:.78rem}
+.ixqj{position:sticky;bottom:0;z-index:2;display:grid;grid-template-columns:repeat(3,1fr);gap:5px;padding:8px 10px calc(8px + env(safe-area-inset-bottom));margin:8px -10px 0;background:var(--card);border-top:1px solid var(--line)}
+.ixqj button{white-space:nowrap;padding:5px 4px;border-radius:10px;border:1px solid var(--line);background:var(--card2);color:var(--ink);font-size:.76rem;overflow:hidden;text-overflow:ellipsis}
 .ixqj button.on{background:var(--acc);color:var(--onacc,#fff);border-color:transparent}
 .exm{display:inline-block;margin:6px 8px;padding:3px 12px;border-radius:999px;background:var(--ex-bg,var(--card2));border:1.5px solid var(--ex-line,var(--line));color:var(--ink);font-size:.82rem}
 #untabs{touch-action:pan-x}
+html.ix-open #dxfab,html.ix-open #qfs{display:none!important}
 </style>
 </head>
 <body>
@@ -1414,12 +1415,14 @@ function ixGroup(){
   if(h.indexOf("s/")===0){var id=h.slice(2).split("?")[0];return BYID[id]?BYID[id].group:null}
   if(h.indexOf("g/")===0){var gid=h.slice(2);return D.groups.filter(function(x){return x.id===gid})[0]||null}
   return null}
+var IXSN={raf:"البخور",canons:"القوانين",bas:"باسيلي",greg:"غريغوري",cyr:"كيرلسي",qisam:"القسمة",misc:"متنوعة",dox:"ذكصولوجيات",bless:"التبريك",taqs:"الطقس",app:"الملحق"};
 function buildIdx(){
   var ix=idxEl(),g=ixGroup();
   var h='<div class="ixh"><b>📑 '+(g?esc(g.title):'الأقسام الرئيسية')+'</b><span><button data-live="1" aria-label="وضع الكنيسة">🕯</button><button data-ixset="1" aria-label="الإعدادات">⚙</button><button data-ixc="1" aria-label="إغلاق">✕</button></span></div>';
-  if(g){h+='<div class="ixqj" aria-label="انتقال سريع للأقسام">';D.groups.forEach(function(x){h+='<button data-igg="'+x.id+'" class="'+(x===g?'on':'')+'">'+(ICONS[x.id]||"☩")+' '+esc(shortN(x.title,16))+'</button>'});h+='</div><button class="ixhome" data-ixhome="1">⌂ الصفحة الرئيسية — كل الأقسام الكبرى</button>'}
+  if(g)h+='<button class="ixhome" data-ixhome="1">⌂ الصفحة الرئيسية — كل الأقسام الكبرى</button>';
   if(g&&CUR.id&&BYID[CUR.id]&&BYID[CUR.id].group===g)h+='<div class="ixm"><span>طريقة القراءة</span><span class="ixmb"><button data-ixm="unit" class="'+(S.rm==="unit"?'on':'')+'">قطعة قطعة</button><button data-ixm="flow" class="'+(S.rm==="flow"?'on':'')+'">متصل</button></span></div>';
   h+='<input id="ixq" class="search ixs" placeholder="'+(g?'ابحث في '+esc(g.title)+'…':'ابحث عن قسم…')+'" autocomplete="off" value="'+esc(IXQ)+'"><div id="ixl">'+idxList()+'</div>';
+  if(g){h+='<div class="ixqj" aria-label="انتقال سريع للأقسام">';D.groups.forEach(function(x){h+='<button data-igg="'+x.id+'" class="'+(x===g?'on':'')+'">'+(ICONS[x.id]||"☩")+' '+esc(IXSN[x.id]||shortN(x.title,8))+'</button>'});h+='</div>'}
   ix.innerHTML=h}
 function idxList(){
   var q=norm(IXQ.trim()),cur=CUR.id,g=ixGroup(),h="";
@@ -1441,8 +1444,8 @@ function idxList(){
     h+='<div class="ie">'+btn(e.s,false)+(e.kids.length?'<button class="iex" data-ie="'+e.s.id+'" aria-expanded="'+open+'" aria-label="الأجزاء التفصيلية">'+(open?'▴':'▾')+'</button>':'')+'</div>';
     if(e.kids.length){h+='<div class="ik'+(open?' open':'')+'">';(q?kids:e.kids).forEach(function(k){h+=btn(k,true)});h+='</div>'}});
   return any?h:h+'<p class="hint">لا نتائج.</p>'}
-function openIdx(){buildIdx();var ix=idxEl();ix.style.transform="";ix.classList.add("on");sc.classList.add("on");var c=ix.querySelector(".isec.cur");if(c)c.scrollIntoView({block:"center"})}
-function closeIdx(){var ix=idxEl();ix.classList.remove("on");ix.style.transform="";if(!sh.classList.contains("on"))sc.classList.remove("on")}
+function openIdx(){buildIdx();var ix=idxEl();document.documentElement.classList.add("ix-open");ix.style.transform="";ix.classList.add("on");sc.classList.add("on");var c=ix.querySelector(".isec.cur");if(c)c.scrollIntoView({block:"center"})}
+function closeIdx(){var ix=idxEl();document.documentElement.classList.remove("ix-open");ix.classList.remove("on");ix.style.transform="";if(!sh.classList.contains("on"))sc.classList.remove("on")}
 document.addEventListener("click",function(e){
   var ix=idxEl();if(!ix)return;
   if(e.target.closest("#bsub")&&document.documentElement.getAttribute("data-pg")==="r"){toggleDD();return}
@@ -1483,7 +1486,7 @@ document.addEventListener("keydown",function(e){if(e.key==="Escape")closeIdx()})
   function end(e){
     var s=st;st=null;if(!s||!s.d)return;var ix=idxEl(),p=e.changedTouches&&e.changedTouches[0],dx=p?s.x-p.clientX:0,dt=Math.max(1,Date.now()-s.t),fast=Math.abs(dx)/dt*1000>500&&Math.abs(dx)>40;
     ix.style.transition="";
-    if(s.mode==="o"){if(dx>pw()*.35||fast){ix.style.transform="";ix.classList.add("on");sc.classList.add("on")}else{closeIdx()}}
+    if(s.mode==="o"){if(dx>pw()*.35||fast){ix.style.transform="";ix.classList.add("on");document.documentElement.classList.add("ix-open");sc.classList.add("on")}else{closeIdx()}}
     else{if(-dx>pw()*.3||fast&&dx<0){closeIdx()}else{ix.style.transform=""}}}
   document.addEventListener("touchend",end,P);document.addEventListener("touchcancel",end,P);
 })();
