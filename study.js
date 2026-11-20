@@ -122,6 +122,27 @@ function syncTargets(id){
   if(id==="cyr-solh"){add(0,"bas-anaphora",false,"افتتاح الأنافورا يقع في آخر هذه الصلاة");add(1,"greg-anaphora",false,"افتتاح الأنافورا يقع في آخر هذه الصلاة")}
   if(id==="greg-solh"||id==="greg-solh2"||id==="cyr-solh")COM_B.forEach(function(t){add(0,t,false,"مشترك قبل الصلح (في الباسيلي)")});
   return out}
+/* القفزة بضغطة واحدة: من القداس الحالي إلى مقابله في القداس التالي (باسيلي ← غريغوري ← كيرلسي ← باسيلي) */
+var LSHORT=["باسيلي","غريغوري","كيرلسي"];
+function litOf(id){return id.indexOf("bas-")===0?0:id.indexOf("greg-")===0?1:id.indexOf("cyr-")===0?2:-1}
+function secondUnit(id){var us=K.unitsOf?K.unitsOf(id):null;if(!us)return -1;
+  for(var i=0;i<us.length;i++){var it=us[i].items||[];for(var j=0;j<it.length;j++){if(it[j].k==="r"){var t=String(it[j].t||"").replace(/[\u064B-\u0652\u0670]/g,"");if(/الصلح الثانية|صلح أخرى|صلح اخرى/.test(t))return i}}}
+  return -1}
+function solhPrayer(id,u){
+  if(id==="greg-solh2")return 2;if(id==="greg-solh")return 1;
+  if(id==="bas-solh"||id==="cyr-solh"){var m=secondUnit(id);return(m>=0&&typeof u==="number"&&u>=m)?2:1}
+  return 0}
+function solhTarget(L,p){
+  if(L===1)return {id:p===2?"greg-solh2":"greg-solh",u:0};
+  var id=L===0?"bas-solh":"cyr-solh";return {id:id,u:p===2?Math.max(0,secondUnit(id)):0}}
+function syncNext(id,u){
+  var l0=litOf(id);if(l0<0)return null;
+  var p=solhPrayer(id,u),tg=null;
+  if(p){var order=[(l0+1)%3,(l0+2)%3];for(var k=0;k<2&&!tg;k++){var t=solhTarget(order[k],p);if(K.BYID[t.id]&&K.BYID[t.id].has)tg={lit:order[k],id:t.id,u:t.u,p:p}}}
+  else{var cand=syncTargets(id).filter(function(x){return x.primary});
+    for(var d=1;d<3&&!tg;d++){var L=(l0+d)%3;for(var q=0;q<cand.length;q++)if(cand[q].lit===L){tg={lit:L,id:cand[q].id,u:0};break}}}
+  if(tg)tg.title=K.BYID[tg.id].title;
+  return tg}
 function syncBar(id){
   var tg=syncTargets(id).filter(function(x){return x.primary&&!x.note});if(!tg.length)return"";
   var b="";tg.forEach(function(x){b+='<button class="lsb" data-u0="1" data-nav="#/s/'+x.id+'">↔ '+LNAME[x.lit]+'</button>'});
@@ -275,5 +296,5 @@ document.addEventListener("click",function(e){
   else if(d==="hide"){var s=S(),h=s.hide||[],i=h.indexOf(t.dataset.g);if(i>-1)h.splice(i,1);else h.push(t.dataset.g);s.hide=h;K.save();K.settings();K.route()}
   else if(d==="export")exportAll();
   else if(d==="install"&&deferred){deferred.prompt();deferred=null;K.close()}});
-window.KS={today:function(){var cd=copticOf(new Date());return {cd:cd,dx:todayDox(cd)}},lex:lexView,linkRefs:linkRefs,guide:guideHtml,rub:rubHtml,home:homeHtml,plan:planView,compare:compare,settings:settingsHtml,apply:applyPrefs,scan:scan,sync:syncSheet,syncN:function(id){return syncTargets(id).length}};
+window.KS={today:function(){var cd=copticOf(new Date());return {cd:cd,dx:todayDox(cd)}},lex:lexView,linkRefs:linkRefs,guide:guideHtml,rub:rubHtml,home:homeHtml,plan:planView,compare:compare,settings:settingsHtml,apply:applyPrefs,scan:scan,sync:syncSheet,syncNext:syncNext,lshort:LSHORT,lname:LNAME,syncN:function(id){return syncTargets(id).length}};
 })();
