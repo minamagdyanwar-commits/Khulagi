@@ -752,6 +752,7 @@ html[data-mode="light"]{--md-bg:color-mix(in srgb,#16a9c8 36%,var(--card));--md-
 .exm{display:inline-block;margin:6px 8px;padding:3px 12px;border-radius:999px;background:var(--ex-bg,var(--card2));border:1.5px solid var(--ex-line,var(--line));color:var(--ink);font-size:.82rem}
 #untabs{touch-action:pan-x}
 html.ix-open #dxfab,html.ix-open #qfs{display:none!important}
+.exm.mm{background:var(--md-bg);border-color:var(--md-line)}.exm.mw{background:var(--wh-bg);border-color:var(--wh-line)}.nref{color:var(--acc);margin-inline-end:6px}
 </style>
 </head>
 <body>
@@ -932,7 +933,7 @@ function unitParts(id,s,c,us,u,q,cols){
   U.items.forEach(function(it){
     if(it.k==="pg"){if(S.pg)tx+='<div class="pgm">ص '+it.n+'</div>'}
     else if(it.k==="r"){if(S.rub)tx+='<button class="rubi" data-ut="c" title="اضغط لمعنى الحركة">'+esc(plain(it.t))+'</button>'}
-    else{tx+=rowHtml(it,cols,isDox,st,q)+(it.med?layersHtml(it,few,sheetMed):'')}});
+    else{tx+=rowHtml(it,cols,isDox,st,q)+(it.med?layersHtml(it,few,sheetMed,st):'')}});
   tx+='</div>';
   if(S.med&&U.med.length&&S.mp==="after"&&S.ml!=="drawer"){
     U.med.forEach(function(it){var ctx=(U.med.length===1?U.head:plain(it.ar||"").split(/\s+/).slice(0,9).join(" "));tx+='<div class="unq">'+(U.med.length===1?'تأمل في هذه القطعة':'تأمل في')+': «'+esc(ctx)+'…»</div>'+medHtml(it).replace('<div class="medc" hidden>','<div class="medc">').replace('aria-expanded="false"','aria-expanded="true"').replace('▾','▴')})}
@@ -941,9 +942,9 @@ function unitParts(id,s,c,us,u,q,cols){
   if(nsx)tx+='<button class="nsec" data-nsec="'+nsx+'"><small>إلى فقرة</small><b>'+esc(BYID[nsx].title)+'</b><small>التالية ‹</small></button>';
   inner+='<div class="unp" data-up="a">'+tx+'</div>';
   var body='';
-  if(tab==="b"){U.med.forEach(function(it){var ctx=plain(it.ar||"").split(/\s+/).slice(0,10).join(" ");body+='<div class="unq">«'+esc(U.med.length===1?U.head:ctx)+'…»</div>'+medHtml(it).replace('<div class="medc" hidden>','<div class="medc">').replace('aria-expanded="false"','aria-expanded="true"').replace('▾','▴')})}
+  if(tab==="b"){U.med.forEach(function(it,mi){var ctx=plain(it.ar||"").split(/\s+/).slice(0,10).join(" ");body+='<div class="unq"><b class="nref">تأمل '+ar9(mi+1)+'</b> «'+esc(U.med.length===1?U.head:ctx)+'…»</div>'+medHtml(it).replace('<div class="medc" hidden>','<div class="medc">').replace('aria-expanded="false"','aria-expanded="true"').replace('▾','▴')})}
   else if(tab==="e"){var en=0;U.items.forEach(function(it){if(isExp(it)){en++;body+='<div class="exp" id="exn'+en+'"><span class="expl">شرح '+ar9(en)+'</span>'+fnify(it.ar,q).replace(/ \/ /g,'<br>')+'</div>'}})}
-  else if(tab==="w"){whs.forEach(function(it,k){var t=it.med.w||it.med.p,sm=it.med.s==='reviewed'?'مراجَعة':'مسوّدة';body+='<div class="unq">«'+esc(plain(it.ar||it.cop||"").split(/\s+/).slice(0,9).join(" "))+'…»</div><div class="wh"><p>'+esc(t)+'</p><small>صلاة شخصية من وحي القطعة — ليست من نص القداس · '+sm+'</small></div>'})}
+  else if(tab==="w"){whs.forEach(function(it,k){var t=it.med.w||it.med.p,sm=it.med.s==='reviewed'?'مراجَعة':'مسوّدة';body+='<div class="unq"><b class="nref">همسة '+ar9(k+1)+'</b> «'+esc(plain(it.ar||it.cop||"").split(/\s+/).slice(0,9).join(" "))+'…»</div><div class="wh"><p>'+esc(t)+'</p><small>صلاة شخصية من وحي القطعة — ليست من نص القداس · '+sm+'</small></div>'})}
   else if(tab==="c"){U.rub.forEach(function(it){body+=(window.KS?KS.rub(it.t,fnify(it.t,q)):'<div class="rub">'+fnify(it.t,q)+'</div>')})}
   else if(tab==="d"){body='<div class="unn">';U.notes.forEach(function(k){if(c.notes[k])body+='<p><sup class="fn" data-n="'+k+'">'+k+'</sup> '+(window.KS?KS.linkRefs(esc(c.notes[k])):esc(c.notes[k]))+'</p>'});body+='</div>'}
   else if(tab==="s"&&si>=0){body=sceneHtml(si)}
@@ -1066,7 +1067,10 @@ function leadOf(t){t=String(t||"");var m=t.match(/^[^.؟!]*[.؟!][^.؟!]*[.؟!]/
 function whHtml(it,few,inUnit){var m=it.med;if(!m||!S.med||S.wh==="off"||!few||(inUnit&&S.wh==="drawer"))return'';var t=m.w||m.p;if(!t)return'';
   var op=S.wh==="open";
   return '<button class="whc" data-wh="1" aria-expanded="'+op+'"><span>🕊 همسة '+(op?'▴':'▾')+'</span></button><div class="wh"'+(op?'':' hidden')+'><p>'+esc(t)+'</p><small>صلاة شخصية من وحي القطعة — ليست من نص القداس · '+(m.s==='reviewed'?'مراجَعة':'مسوّدة')+'</small></div>'}
-function layersHtml(it,few,sheetMed){var m=it.med;if(!m||!S.med)return'';var h='';
+function layersHtml(it,few,sheetMed,st){var m=it.med;if(!m||!S.med)return'';var h='';
+  if(st){st.mn=(st.mn||0)+1;var hasW=!!(m.w||m.p);if(hasW)st.wn=(st.wn||0)+1;
+    if(S.ml==="drawer"&&sheetMed)h+='<button class="exm mm" data-ut="b" aria-label="تأمل '+ar9(st.mn)+' في الدرج السفلي">💭 تأمل '+ar9(st.mn)+'</button>';
+    if(S.wh==="drawer"&&hasW)h+='<button class="exm mw" data-ut="w" aria-label="همسة '+ar9(st.wn)+' في الدرج السفلي">🕊 همسة '+ar9(st.wn)+'</button>'}
   if(few&&S.ml!=="off"&&S.ml!=="drawer"&&S.mp!=="after"){var op=S.ml==="para";
     h+='<div class="m1"><button class="m1t" data-m1="1" aria-expanded="'+op+'"><span>💭</span><b>'+esc(m.t||"تأمل")+'</b><span class="ch">'+(op?'▴':'▾')+'</span></button><div class="m1b"'+(op?'':' hidden')+'>'+(m.r?'<p>'+esc(leadOf(m.r))+'</p>':'')+'<div class="m1r">'+(sheetMed?'<button class="m1g" data-ut="b">تأمل أعمق ›</button>':'')+'<span class="tag">'+(m.s==='reviewed'?'مراجَع':'مسوّدة')+'</span></div></div></div>'}
   return h+whHtml(it,few,true)}
