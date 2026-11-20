@@ -87,7 +87,7 @@ function refsOf(c){var seen={},list=[];Object.keys(c.notes||{}).forEach(function
 var SYNC=[
  [["bas-hijab"],["greg-hijab","greg-hijab2"],["cyr-hijab"]],
  [["bas-solh","bas-aspasmos"],["greg-solh","greg-solh2"],["cyr-solh"]],
- [["bas-anaphora"],["greg-anaphora"],null],
+ [["bas-anaphora"],["greg-anaphora"],["cyr-solh"]],
  [["bas-mustahiq"],["greg-mustahiq","greg-feto"],["cyr-mustahiq"]],
  [["bas-qudduus"],["greg-qudduus","greg-ntok"],["cyr-qudduus","cyr-laanka"]],
  [["bas-tajassud","bas-qam"],["greg-anta-sayyidi","greg-anta-kain","greg-uqaddim"],null],
@@ -101,25 +101,36 @@ var SYNC=[
  [["bas-qisma-intro","bas-tartib"],["greg-qisma-intro"],["cyr-qisma-intro"]],
  [["bas-qisma"],["greg-qisma"],["cyr-qisma"]],
  [["bas-after-qisma","bas-khudu","bas-tahlil-ab","bas-tazkar-ab"],["greg-tahalil"],["cyr-after-qisma"]],
- [["bas-qabl-itiraf","bas-itiraf"],["greg-itiraf"],["cyr-itiraf"]],
+ [["bas-qabl-itiraf","bas-itiraf","bas-comm"],["greg-itiraf"],["cyr-itiraf"]],
  [["bas-before-comm"],null,["cyr-before-comm"]],
  [["bas-after-comm","bas-wad-yad","bas-tasrih"],["greg-after-comm"],["cyr-after-comm"]],
  [["bas-blessing","bas-nihaya"],["greg-blessing"],["cyr-blessing"]]];
 var LNAME=["القداس الباسيلي","القداس الغريغوري","القداس الكيرلسي"];
+/* أجزاء الاستعداد والكلمة مشتركة بين القداسات الثلاثة، وموجودة في الكتاب ضمن القداس الباسيلي فقط */
+var COM_A=["bas-istid","bas-hamal","bas-tazkarat","bas-dawra","bas-shukr","bas-taqdima","bas-qiraat-tahlil","bas-tahlil-khuddam","bas-paul","bas-kathulikon","bas-ibraxis","bas-qadasat","bas-ewash-ing","bas-sir-ing"];
+var COM_B=["bas-after-ing","bas-amana"];
+var COM_PICK_A=["bas-istid","bas-shukr","bas-taqdima","bas-paul","bas-sir-ing"];
 function syncTargets(id){
-  var row=null;SYNC.forEach(function(r){if(!row&&r.some(function(c){return c&&c.indexOf(id)>-1}))row=r});if(!row)return[];
-  var me=-1;row.forEach(function(c,i){if(c&&c.indexOf(id)>-1)me=i});
-  var out=[];row.forEach(function(c,i){if(i===me||!c)return;c.forEach(function(t,k){if(K.BYID[t]&&K.BYID[t].has)out.push({lit:i,id:t,primary:k===0,title:K.BYID[t].title})})});
+  var out=[],row=null;SYNC.forEach(function(r){if(!row&&r.some(function(c){return c&&c.indexOf(id)>-1}))row=r});
+  if(row){var me=-1;row.forEach(function(c,i){if(c&&c.indexOf(id)>-1)me=i});
+    row.forEach(function(c,i){if(i===me||!c)return;c.forEach(function(t,k){if(K.BYID[t]&&K.BYID[t].has)out.push({lit:i,id:t,primary:k===0,title:K.BYID[t].title})})})}
+  var add=function(lit,t,primary,note){if(K.BYID[t]&&K.BYID[t].has&&!out.some(function(x){return x.id===t}))out.push({lit:lit,id:t,primary:primary,note:note,title:K.BYID[t].title})};
+  var nx=null;if(COM_A.indexOf(id)>-1)nx=["greg-hijab","cyr-hijab"];else if(COM_B.indexOf(id)>-1)nx=["greg-solh","cyr-solh"];
+  if(nx){add(1,nx[0],true,"يتبع هذا الجزء في هذا القداس");add(2,nx[1],true,"يتبع هذا الجزء في هذا القداس")}
+  if(id==="greg-intro")add(0,"bas-istid",true,"البداية مشتركة (في الباسيلي)");
+  if(id==="greg-hijab"||id==="greg-hijab2"||id==="cyr-hijab")COM_PICK_A.forEach(function(t){add(0,t,false,"مشترك قبل الحجاب (في الباسيلي)")});
+  if(id==="cyr-solh"){add(0,"bas-anaphora",false,"افتتاح الأنافورا يقع في آخر هذه الصلاة");add(1,"greg-anaphora",false,"افتتاح الأنافورا يقع في آخر هذه الصلاة")}
+  if(id==="greg-solh"||id==="greg-solh2"||id==="cyr-solh")COM_B.forEach(function(t){add(0,t,false,"مشترك قبل الصلح (في الباسيلي)")});
   return out}
 function syncBar(id){
-  var tg=syncTargets(id).filter(function(x){return x.primary});if(!tg.length)return"";
+  var tg=syncTargets(id).filter(function(x){return x.primary&&!x.note});if(!tg.length)return"";
   var b="";tg.forEach(function(x){b+='<button class="lsb" data-u0="1" data-nav="#/s/'+x.id+'">↔ '+LNAME[x.lit]+'</button>'});
   return '<div class="lsw"><small>نفس الجزء في:</small>'+b+'</div>'}
 function syncSheet(id){
   var tg=syncTargets(id);if(!tg.length)return"";
   var h='<h3>المقابل في القداسات الأخرى</h3><p class="hint">تقسيم الكتاب بالصفحات، فالمقابلة تقريبية بحسب المعنى وموضعه من الأنافورا.</p>';
   [0,1,2].forEach(function(l){var a=tg.filter(function(x){return x.lit===l});if(!a.length)return;
-    h+='<div class="hpt">'+LNAME[l]+'</div><div class="list">';a.forEach(function(x){h+='<button class="sec" data-snav="'+x.id+'"><span>'+esc(x.title)+'</span><small>'+(x.primary?'المقابل الأساسي':'جزء مرتبط')+'</small></button>'});h+='</div>'});
+    h+='<div class="hpt">'+LNAME[l]+'</div><div class="list">';a.forEach(function(x){h+='<button class="sec" data-snav="'+x.id+'"><span>'+esc(x.title)+'</span><small>'+(x.note||(x.primary?'المقابل الأساسي':'جزء مرتبط'))+'</small></button>'});h+='</div>'});
   return h}
 function guideHtml(id,s,c){
   var sb=syncBar(id);
