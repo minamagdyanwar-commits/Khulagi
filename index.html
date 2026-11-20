@@ -764,7 +764,8 @@ html.ix-open #dxfab,html.ix-open #qfs{display:none!important}
 :root:root .wh{font-family:var(--ff-wh,"Tajawal","Cairo",sans-serif)}
 .ffr{display:grid;grid-template-columns:7.5em 1fr;gap:4px 10px;align-items:center;margin:8px 0}.ffr span{font-size:.9rem;color:var(--mute)}.ffr select{padding:8px;border:1.5px solid var(--line);border-radius:10px;background:var(--card2);color:var(--ink);font-family:inherit}.ffr em{grid-column:1/-1;font-style:normal;font-size:1.1rem;opacity:.9}
 .syb{color:var(--acc);font-weight:700}
-.unh .unhb{gap:6px}.unh .unhb button{height:34px;min-width:34px;padding:0 9px;font-size:1rem;border:1px solid var(--line);border-radius:10px;background:var(--card2);color:var(--ink);display:inline-flex;align-items:center;justify-content:center;gap:4px}.unh .unhb .whb{width:34px;padding:0;font-size:1rem}.unh .unhb .syb{font-size:.78rem;font-weight:700;color:var(--acc);border-color:var(--acc)}
+.unh .unhb{gap:6px}.unh .unhb button{height:34px;min-width:34px;padding:0 9px;font-size:1rem;border:1px solid var(--line);border-radius:10px;background:var(--card2);color:var(--ink);display:inline-flex;align-items:center;justify-content:center;gap:4px}.unh .unhb .whb{width:34px;padding:0;font-size:1rem}/*x*/.unh .unhb .syb{font-size:.78rem;font-weight:700;color:var(--acc);border-color:var(--acc)}
+.unh{flex-wrap:wrap}.unh .unhb{margin-inline-start:auto}.unh .unhb .syb.off{opacity:.45;border-color:var(--line);color:var(--mute)}.pch{display:flex;align-items:center;gap:6px;margin:6px 12px 0;font-size:.82rem;color:var(--mute)}.pch button{padding:3px 14px;border-radius:999px;border:1.5px solid var(--acc);color:var(--acc);background:transparent;font:inherit;font-size:.82rem}.pch button.on{background:var(--acc);color:var(--onacc,#fff)}
 </style>
 </head>
 <body>
@@ -932,8 +933,8 @@ function plain(t){return String(t).replace(/<[^>]*>/g,"").replace(/\[\^\d+\]/g,"
 function unitParts(id,s,c,us,u,q,cols){
   var U=us[u],n=us.length,isDox=s.group.id==="dox",st={alt:0,dr:S.ex==="drawer"},pct=Math.round((u+1)/n*100);
   var si=(S.story!==false&&window.KST)?storyIdx(id):-1,few=U.med.length<=2;
-  var syn=window.KS?KS.syncNext(id,u):null,syb=syn?'<button data-syncj="1" class="syb" aria-label="انتقل إلى المقابل في القداس '+KS.lshort[syn.lit]+'" title="اضغط للانتقال، واضغط مطولا لكل المقابلات">⇄ '+KS.lshort[syn.lit]+'</button>':'';
-  var inner=(si>=0?stripHtml(si):'')+'<div class="unh"><span>القطعة '+ar9(u+1)+' من '+ar9(n)+(U.who?' · '+esc(U.who):'')+'</span><span class="unhb"><button data-whc="1" class="whb'+(S.wh!=="off"?' on':'')+'" aria-label="همسات الصلاة">🕊</button><button data-live="1" aria-label="وضع الكنيسة">🕯</button>'+syb+'<button data-uidx="1" aria-label="فهرس القطع" title="فهرس القطع">☰</button></span></div><div class="unb"><i style="width:'+pct+'%"></i></div>';
+  var syo=window.KS?KS.syncOthers(id):null,syb=syo?syo.map(function(x){return x.id?'<button data-syncgo="'+x.id+'" data-sl="'+x.lit+'" class="syb" aria-label="انتقل إلى '+KS.lname[x.lit]+'" title="'+esc(x.title)+' — اضغط مطولا لكل المقابلات">⇄ '+KS.lshort[x.lit]+'</button>':'<button class="syb off" disabled aria-label="لا مقابل في '+KS.lname[x.lit]+'">⇄ '+KS.lshort[x.lit]+'</button>'}).join(""):'';
+  var inner=(si>=0?stripHtml(si):'')+'<div class="unh"><span>القطعة '+ar9(u+1)+' من '+ar9(n)+(U.who?' · '+esc(U.who):'')+'</span><span class="unhb"><button data-whc="1" class="whb'+(S.wh!=="off"?' on':'')+'" aria-label="همسات الصلاة">🕊</button><button data-live="1" aria-label="وضع الكنيسة">🕯</button>'+syb+'<button data-uidx="1" aria-label="فهرس القطع" title="فهرس القطع">☰</button></span></div><div class="unb"><i style="width:'+pct+'%"></i></div>'+(window.KS?KS.solhChooser(id,u):'');
   var sheetMed=S.med&&U.med.length&&(S.mp!=="after"||S.ml==="drawer");
   var tabs=[],exs=S.ex==="drawer"?U.items.filter(isExp):[];
   if(sheetMed)tabs.push(["b","💭","تأمل"+(U.med.length>1?" ("+ar9(U.med.length)+")":"")]);
@@ -1344,7 +1345,8 @@ app.addEventListener("click",function(e){
   var lt=e.target.closest("[data-lit]");if(lt){S.lit=lt.getAttribute("data-lit");save();home();return}
   var bn=e.target.closest("[data-bn]");if(bn){var k2=bn.getAttribute("data-bn");if(k2==="home"){OPENHOME=true;if(location.hash==="#/"||location.hash===""||location.hash==="#"){todayView()}else location.hash="#/"}else if(k2==="lit")location.hash="#/lit";else if(k2==="lists")location.hash="#/dxlist";else if(k2==="lib")location.hash="#/lib";else if(k2==="search")openSearch();else if(k2==="map")openIdx();else if(k2==="med")location.hash="#/med";else if(k2==="study"){sheet('<h3>دراسة</h3><div class="list"><button class="sec" data-nav="#/compare"><span>مقارنة بين القداسات الثلاثة</span><span class="pn">‹</span></button><button class="sec" data-nav="#/lex"><span>قاموس القبطي المعرَّب</span><span class="pn">‹</span></button><button class="sec" data-nav="#/g/taqs"><span>دليل طقس القداس</span><span class="pn">‹</span></button><button class="sec" data-nav="#/plan"><span>خطتي</span><span class="pn">‹</span></button></div>')}return}
   var m1=e.target.closest("[data-m1]");if(m1){var b1=m1.nextElementSibling,o1=b1.hasAttribute("hidden");o1?b1.removeAttribute("hidden"):b1.setAttribute("hidden","");m1.setAttribute("aria-expanded",o1);var c1=m1.querySelector(".ch");if(c1)c1.textContent=o1?"▴":"▾";return}
-  if(e.target.closest("[data-syncj]")){if(window.__lp){window.__lp=false;return}var sn2=window.KS&&KS.syncNext(CUR.id,CUR.u);if(sn2){usave(sn2.id,sn2.u||0);PL=false;toast("↔ "+KS.lname[sn2.lit]+(sn2.p?" · صلاة الصلح "+(sn2.p===2?"الثانية":"الأولى"):""));location.hash="#/s/"+sn2.id}return}
+  var sgo=e.target.closest("[data-syncgo]");if(sgo){if(window.__lp){window.__lp=false;return}var gid=sgo.getAttribute("data-syncgo"),gl=+sgo.getAttribute("data-sl");if(BYID[gid]){usave(gid,0);PL=false;toast("↔ "+KS.lname[gl]+" · "+BYID[gid].title);location.hash="#/s/"+gid}return}
+  var pr=e.target.closest("[data-pr]");if(pr&&window.KS){var pt=KS.solhGo(CUR.id,+pr.getAttribute("data-pr"));if(pt&&BYID[pt.id]){if(pt.id===CUR.id){if(!setUnit(pt.u))reader(CUR.id,undefined,pt.u)}else{usave(pt.id,0);PL=false;location.hash="#/s/"+pt.id}}return}
   var ex=e.target.closest("[data-exp]");if(ex){var eb=ex.nextElementSibling,eo=eb.hasAttribute("hidden");eo?eb.removeAttribute("hidden"):eb.setAttribute("hidden","");ex.setAttribute("aria-expanded",eo);ex.querySelector(".exc").textContent=eo?"▴":"▾";return}
   var wh=e.target.closest("[data-wh]");if(wh){var b2=wh.nextElementSibling,o2=b2.hasAttribute("hidden");o2?b2.removeAttribute("hidden"):b2.setAttribute("hidden","");wh.setAttribute("aria-expanded",o2);wh.firstChild.textContent="🕊 همسة "+(o2?"▴":"▾");return}
   var whc=e.target.closest("[data-whc]");if(whc){var ord=["off","strip","open","drawer"],nx=ord[(ord.indexOf(S.wh)+1)%4];S.wh=nx;save();toast("همسات الصلاة: "+({off:"مخفية",strip:"مطوية",open:"مفتوحة",drawer:"في الدرج السفلي"})[nx]);route();return}
@@ -1498,9 +1500,9 @@ document.addEventListener("change",function(e){var t=e.target;if(t&&t.getAttribu
 document.addEventListener("input",function(e){if(e.target&&e.target.id==="ixq"){IXQ=e.target.value;var l=document.getElementById("ixl");if(l)l.innerHTML=idxList()}});
 document.addEventListener("keydown",function(e){if(e.key==="Escape")closeIdx()});
 (function(){var tm=null;function clr(){if(tm){clearTimeout(tm);tm=null}}
-  document.addEventListener("pointerdown",function(e){var b=e.target.closest&&e.target.closest("[data-syncj]");if(!b)return;window.__lp=false;clr();tm=setTimeout(function(){tm=null;window.__lp=true;var h=window.KS&&KS.sync(CUR.id);if(h)sheet(h)},550)});
+  document.addEventListener("pointerdown",function(e){var b=e.target.closest&&e.target.closest("[data-syncgo]");if(!b)return;window.__lp=false;clr();tm=setTimeout(function(){tm=null;window.__lp=true;var h=window.KS&&KS.sync(CUR.id);if(h)sheet(h)},550)});
   ["pointerup","pointercancel","pointerleave","scroll"].forEach(function(t){document.addEventListener(t,clr,true)});
-  document.addEventListener("contextmenu",function(e){if(e.target.closest&&e.target.closest("[data-syncj]"))e.preventDefault()})})();
+  document.addEventListener("contextmenu",function(e){if(e.target.closest&&e.target.closest("[data-syncgo]"))e.preventDefault()})})();
 /* سحب من حافة اليمين لفتح الفهرس، وسحب لليمين على اللوحة لإغلاقها */
 (function(){
   var st=null,P={passive:true};
