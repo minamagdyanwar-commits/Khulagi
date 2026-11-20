@@ -125,35 +125,20 @@ function syncTargets(id){
 /* القفزة بضغطة واحدة: من القداس الحالي إلى مقابله في القداس التالي (باسيلي ← غريغوري ← كيرلسي ← باسيلي) */
 var LSHORT=["باسيلي","غريغوري","كيرلسي"];
 function litOf(id){return id.indexOf("bas-")===0?0:id.indexOf("greg-")===0?1:id.indexOf("cyr-")===0?2:-1}
-function secondUnit(id){var us=K.unitsOf?K.unitsOf(id):null;if(!us)return -1;
-  for(var i=0;i<us.length;i++){var it=us[i].items||[];for(var j=0;j<it.length;j++){if(it[j].k==="r"){var t=String(it[j].t||"").replace(/[\u064B-\u0652\u0670]/g,"");if(/الصلح الثانية|صلح أخرى|صلح اخرى/.test(t))return i}}}
-  return -1}
-function solhPrayer(id,u){
-  if(id==="greg-solh2")return 2;if(id==="greg-solh")return 1;
-  if(id==="bas-solh"||id==="cyr-solh"){var m=secondUnit(id);return(m>=0&&typeof u==="number"&&u>=m)?2:1}
-  return 0}
-function solhTarget(L,p){
-  if(L===1)return {id:p===2?"greg-solh2":"greg-solh",u:0};
-  var id=L===0?"bas-solh":"cyr-solh";return {id:id,u:p===2?Math.max(0,secondUnit(id)):0}}
 function syncOthers(id){
   var l0=litOf(id);if(l0<0)return null;var cand=syncTargets(id).filter(function(x){return x.primary});
   var out=[];[0,1,2].forEach(function(L){if(L===l0)return;var c=null;for(var q=0;q<cand.length;q++)if(cand[q].lit===L){c=cand[q];break}
     out.push({lit:L,id:c?c.id:null,title:c?c.title:""})});
   return out.some(function(x){return x.id})?out:null}
-function solhChooser(id,u){
-  if(["bas-solh","cyr-solh","greg-solh","greg-solh2"].indexOf(id)<0)return"";
-  var p=solhPrayer(id,u);
-  return '<div class="pch"><span>صلاة الصلح:</span><button data-pr="1" class="'+(p===1?'on':'')+'">الأولى</button><button data-pr="2" class="'+(p===2?'on':'')+'">الثانية</button></div>'}
-function solhGo(id,p){var L=litOf(id);return solhTarget(L,p)}
 function syncBar(id){
   var tg=syncTargets(id).filter(function(x){return x.primary&&!x.note});if(!tg.length)return"";
   var b="";tg.forEach(function(x){b+='<button class="lsb" data-u0="1" data-nav="#/s/'+x.id+'">↔ '+LNAME[x.lit]+'</button>'});
   return '<div class="lsw"><small>نفس الجزء في:</small>'+b+'</div>'}
 function syncSheet(id){
   var tg=syncTargets(id);if(!tg.length)return"";
-  var h='<h3>المقابل في القداسات الأخرى</h3><p class="hint">تقسيم الكتاب بالصفحات، فالمقابلة تقريبية بحسب المعنى وموضعه من الأنافورا.</p>';
+  var h='<h3>المقابل في القداسات الأخرى</h3><p class="hint">يفتح القسم من أوله، وتتحرك أنت فيه للمكان الذي تريده.</p>';
   [0,1,2].forEach(function(l){var a=tg.filter(function(x){return x.lit===l});if(!a.length)return;
-    h+='<div class="hpt">'+LNAME[l]+'</div><div class="list">';a.forEach(function(x){h+='<button class="sec" data-snav="'+x.id+'"><span>'+esc(x.title)+'</span><small>'+(x.note||(x.primary?'المقابل الأساسي':'جزء مرتبط'))+'</small></button>'});h+='</div>'});
+    h+='<div class="hpt">'+LNAME[l]+'</div><div class="list">';a.forEach(function(x){h+='<button class="sec" data-snav="'+x.id+'"><span>'+esc(x.title)+'</span><small>'+(x.note||'')+'</small></button>'});h+='</div>'});
   return h}
 function guideHtml(id,s,c){
   var sb=syncBar(id);
@@ -298,5 +283,5 @@ document.addEventListener("click",function(e){
   else if(d==="hide"){var s=S(),h=s.hide||[],i=h.indexOf(t.dataset.g);if(i>-1)h.splice(i,1);else h.push(t.dataset.g);s.hide=h;K.save();K.settings();K.route()}
   else if(d==="export")exportAll();
   else if(d==="install"&&deferred){deferred.prompt();deferred=null;K.close()}});
-window.KS={today:function(){var cd=copticOf(new Date());return {cd:cd,dx:todayDox(cd)}},lex:lexView,linkRefs:linkRefs,guide:guideHtml,rub:rubHtml,home:homeHtml,plan:planView,compare:compare,settings:settingsHtml,apply:applyPrefs,scan:scan,sync:syncSheet,syncOthers:syncOthers,solhChooser:solhChooser,solhGo:solhGo,lshort:LSHORT,lname:LNAME,syncN:function(id){return syncTargets(id).length}};
+window.KS={today:function(){var cd=copticOf(new Date());return {cd:cd,dx:todayDox(cd)}},lex:lexView,linkRefs:linkRefs,guide:guideHtml,rub:rubHtml,home:homeHtml,plan:planView,compare:compare,settings:settingsHtml,apply:applyPrefs,scan:scan,sync:syncSheet,syncOthers:syncOthers,lshort:LSHORT,lname:LNAME,syncN:function(id){return syncTargets(id).length}};
 })();
