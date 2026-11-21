@@ -779,6 +779,15 @@ input[type=checkbox]:focus-visible{outline-offset:3px}
 html[data-mode="dark"] :root:root .exp .expl,html[data-mode="dark"] .exp .expl{color:#1a1405!important}
 .exp sup.fn{color:var(--ex-acc,var(--acc))}.med sup.fn{color:var(--md-acc,var(--acc))}
 .idxh{color:var(--ink)}
+
+/* بعد القداس: لحظة الذروة والنهاية */
+.fin{margin:4px 14px 8px;text-align:center}.fin svg{width:72px;height:72px;display:block;margin:6px auto 12px;fill:none;stroke:var(--acc);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 6px 14px color-mix(in srgb,var(--acc) 40%,transparent))}
+.fin svg circle{stroke-dasharray:145;stroke-dashoffset:145;animation:findraw .7s ease-out forwards}.fin svg path{stroke-dasharray:44;stroke-dashoffset:44;animation:findraw .45s .55s ease-out forwards}
+@keyframes findraw{to{stroke-dashoffset:0}}
+.fin .sum{margin:0}
+.fin0{padding:24px 16px;border:1.5px dashed var(--line);border-radius:18px;background:var(--card)}.fin0 i{display:block;font-style:normal;font-size:2.4rem;margin-bottom:8px}.fin0 b{display:block;font-size:1.2rem;margin-bottom:4px}.fin0 small{color:var(--mute);line-height:1.8}
+.pend{margin:18px 14px 8px;text-align:center;color:var(--mute);font-size:.88rem}
+@media (prefers-reduced-motion:reduce){.fin svg circle,.fin svg path{animation:none;stroke-dashoffset:0}}
 </style>
 </head>
 <body>
@@ -947,7 +956,7 @@ function unitParts(id,s,c,us,u,q,cols){
   var U=us[u],n=us.length,isDox=s.group.id==="dox",st={alt:0,dr:S.ex==="drawer"},pct=Math.round((u+1)/n*100);
   var si=(S.story!==false&&window.KST)?storyIdx(id):-1,few=U.med.length<=2;
   var syo=window.KS?KS.syncOthers(id):null,syb=syo?syo.map(function(x){return x.id?'<button data-syncgo="'+x.id+'" data-sl="'+x.lit+'" class="syb" aria-label="انتقل إلى '+KS.lname[x.lit]+'" title="'+esc(x.title)+' — اضغط مطولا لكل المقابلات">⇄ '+KS.lshort[x.lit]+'</button>':'<button class="syb off" disabled aria-label="لا مقابل في '+KS.lname[x.lit]+'">⇄ '+KS.lshort[x.lit]+'</button>'}).join(""):'';
-  var inner=(si>=0?stripHtml(si):'')+'<div class="unh"><span>القطعة '+ar9(u+1)+' من '+ar9(n)+(U.who?' · '+esc(U.who):'')+'</span><span class="unhb"><button data-whc="1" class="whb'+(S.wh!=="off"?' on':'')+'" aria-label="همسات الصلاة">🕊</button><button data-live="1" aria-label="وضع الكنيسة">🕯</button>'+syb+'<button data-uidx="1" aria-label="فهرس القطع" title="فهرس القطع">☰</button></span></div><div class="unb"><i style="width:'+pct+'%"></i></div>';
+  var inner=(si>=0?stripHtml(si):'')+'<div class="unh"><span>القطعة '+ar9(u+1)+' من '+ar9(n)+(U.who?' · '+esc(U.who):'')+'</span><span class="unhb"><button data-more="1" aria-label="خيارات القراءة" title="الهمسات ووضع الكنيسة">⋯</button>'+syb+'<button data-uidx="1" aria-label="فهرس القطع" title="فهرس القطع">☰</button></span></div><div class="unb"><i style="width:'+pct+'%"></i></div>';
   var sheetMed=S.med&&U.med.length&&(S.mp!=="after"||S.ml==="drawer");
   var tabs=[],exs=S.ex==="drawer"?U.items.filter(isExp):[];
   if(sheetMed)tabs.push(["b","💭","تأمل"+(U.med.length>1?" ("+ar9(U.med.length)+")":"")]);
@@ -1209,10 +1218,12 @@ function dmEnd(){
 function logGet(){try{return JSON.parse(localStorage.getItem("khulagi.log")||"[]")}catch(e){return[]}}
 function postView(){
   ctl(false);document.title="بعد القداس — الخولاجي";var ids=sessGet().filter(function(x){return BYID[x]}),lg=logGet();
-  var h='<div class="sub" style="padding:6px 14px 0">بعد القداس</div><div class="hd" style="padding:0 14px 10px">بارك الله صلاتك</div><div class="sum"><div><b>'+ar9(ids.length)+'</b><small>أقسام صليتها</small></div><div><b>'+ar9(lg.length)+'</b><small>قداسات في سجلك</small></div></div>';
+  var h='<div class="sub" style="padding:6px 14px 0">بعد القداس</div><div class="hd" style="padding:0 14px 10px">بارك الله صلاتك</div>';
+  h+=ids.length?'<div class="fin"><svg viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="23"/><path d="M15 27l8 8 15-17"/></svg><div class="sum"><div><b>'+ar9(ids.length)+'</b><small>أقسام صليتها اليوم</small></div><div><b>'+ar9(lg.length)+'</b><small>قداسات في سجلك</small></div></div></div>':'<div class="fin fin0"><i>🕊</i><b>سلامٌ لك</b><small>صلِّ أي قسم من القداس ثم ارجع إلى هنا لترى ملخصك.</small></div>';
   if(ids.length)h+='<div class="lst" style="margin:10px 14px">'+ids.map(function(id){return '<div class="chk"><div class="c ok">✓</div><div><b>'+esc(BYID[id].title)+'</b></div></div>'}).join("")+'</div>';
   h+='<div class="tdl">أصلي من أجل</div><textarea id="pnote" class="area" placeholder="اكتب سطرًا واحدًا يبقى في سجلك…"></textarea><button class="tdstart" data-postsave="1">حفظ في سجلي</button>';
   if(lg.length)h+='<div class="tdl">آخر ما سجّلت</div><div class="lst" style="margin:0 14px">'+lg.slice(-6).reverse().map(function(x){var d=new Date(x.t);return '<div class="chk"><div><b>'+ar9(d.getDate())+'/'+ar9(d.getMonth()+1)+' · '+ar9(x.n)+' أقسام</b>'+(x.note?'<small>'+esc(x.note)+'</small>':'')+'</div></div>'}).join("")+'</div>';
+  h+='<p class="pend">الربُّ معكم · إلى لقاءٍ قريب</p>';
   h+=bnav('home');app.innerHTML=h;window.scrollTo(0,0)}
 function dmBar(){var DM=false,id=(location.hash.match(/^#\/s\/([^?]+)/)||[])[1],b=document.getElementById("dmbar"),p=document.getElementById("dmpanel");
   var nv0=document.getElementById("dmnav");
@@ -1358,6 +1369,7 @@ app.addEventListener("click",function(e){
   var lt=e.target.closest("[data-lit]");if(lt){S.lit=lt.getAttribute("data-lit");save();home();return}
   var bn=e.target.closest("[data-bn]");if(bn){var k2=bn.getAttribute("data-bn");if(k2==="home"){OPENHOME=true;if(location.hash==="#/"||location.hash===""||location.hash==="#"){todayView()}else location.hash="#/"}else if(k2==="lit")location.hash="#/lit";else if(k2==="lists")location.hash="#/dxlist";else if(k2==="lib")location.hash="#/lib";else if(k2==="search")openSearch();else if(k2==="map")openIdx();else if(k2==="med")location.hash="#/med";else if(k2==="study"){sheet('<h3>دراسة</h3><div class="list"><button class="sec" data-nav="#/compare"><span>مقارنة بين القداسات الثلاثة</span><span class="pn">‹</span></button><button class="sec" data-nav="#/lex"><span>قاموس القبطي المعرَّب</span><span class="pn">‹</span></button><button class="sec" data-nav="#/g/taqs"><span>دليل طقس القداس</span><span class="pn">‹</span></button><button class="sec" data-nav="#/plan"><span>خطتي</span><span class="pn">‹</span></button></div>')}return}
   var m1=e.target.closest("[data-m1]");if(m1){var b1=m1.nextElementSibling,o1=b1.hasAttribute("hidden");o1?b1.removeAttribute("hidden"):b1.setAttribute("hidden","");m1.setAttribute("aria-expanded",o1);var c1=m1.querySelector(".ch");if(c1)c1.textContent=o1?"▴":"▾";return}
+  if(e.target.closest("[data-more]")){var wl={off:"مخفية",strip:"مطوية",open:"مفتوحة",drawer:"في الدرج السفلي"}[S.wh]||"";sheet('<h3>خيارات القراءة</h3><div class="list"><button class="sec" data-live="1" data-gclose2="1"><span>🕯 وضع الكنيسة</span><small>نص كبير داكن للقراءة في الكنيسة</small></button><button class="sec" data-mowh="1"><span>🕊 همسات الصلاة</span><small>الحالة: '+wl+' · اضغط لتغيير الحالة</small></button></div>');return}
   var sgo=e.target.closest("[data-syncgo]");if(sgo){if(window.__lp){window.__lp=false;return}var gid=sgo.getAttribute("data-syncgo"),gl=+sgo.getAttribute("data-sl");if(BYID[gid]){usave(gid,0);PL=false;toast("↔ "+KS.lname[gl]+" · "+BYID[gid].title);location.hash="#/s/"+gid}return}
   var ex=e.target.closest("[data-exp]");if(ex){var eb=ex.nextElementSibling,eo=eb.hasAttribute("hidden");eo?eb.removeAttribute("hidden"):eb.setAttribute("hidden","");ex.setAttribute("aria-expanded",eo);ex.querySelector(".exc").textContent=eo?"▴":"▾";return}
   var wh=e.target.closest("[data-wh]");if(wh){var b2=wh.nextElementSibling,o2=b2.hasAttribute("hidden");o2?b2.removeAttribute("hidden"):b2.setAttribute("hidden","");wh.setAttribute("aria-expanded",o2);wh.firstChild.textContent="🕊 همسة "+(o2?"▴":"▾");return}
@@ -1438,6 +1450,8 @@ function settings(){
 }
 sh.addEventListener("click",function(e){
   if(e.target.closest("[data-gclose]")){close();location.hash="#/guide";return}
+  if(e.target.closest("[data-mowh]")){var ord2=["off","strip","open","drawer"],nx2=ord2[(ord2.indexOf(S.wh)+1)%4];S.wh=nx2;save();close();toast("همسات الصلاة: "+({off:"مخفية",strip:"مطوية",open:"مفتوحة",drawer:"في الدرج السفلي"})[nx2]);route();return}
+  if(e.target.closest("[data-gclose2]")){close();return}
   var snv=e.target.closest("[data-snav]");if(snv){var sid=snv.getAttribute("data-snav");close();if(BYID[sid]){usave(sid,0);PL=false;location.hash="#/s/"+sid}return}
   var uj=e.target.closest("[data-uj]");if(uj){close();if(!setUnit(+uj.getAttribute("data-uj")))reader(CUR.id,undefined,+uj.getAttribute("data-uj"));return}
   var sg=e.target.closest("[data-stg]");if(sg){var k=sg.getAttribute("data-stg");STG[k]=!STG[k];var bx=sg.parentNode;bx.classList.toggle("open",!!STG[k]);sg.setAttribute("aria-expanded",!!STG[k]);return}
