@@ -26,6 +26,8 @@ async function page(b,settings,hash,opts){
     const sw=fs.readFileSync(path.join(ROOT,'sw.js'),'utf8');const files=(sw.match(/const FILES=\[([^\]]*)\]/)||[,''])[1].match(/'([^']+)'/g)||[];
     const missing=files.map(x=>x.replace(/'/g,'')).filter(f=>f!=='./'&&!fs.existsSync(path.join(ROOT,f)));ok('كل ملفات sw.js موجودة',!missing.length,missing);
 
+    console.log('سلامة المحتوى');
+    {const cp=require('child_process').spawnSync('node',[path.join(__dirname,'check-content.js'),'--strict'],{encoding:'utf8'});ok('ملفات المحتوى سليمة البنية (node tools/check-content.js)',cp.status===0,(cp.stdout.split('أخطاء')[1]||'').slice(0,300))}
     console.log('رأس القراءة وأزرار المقابل');
     let p=await page(b,SET({rm:'unit'}),'#/s/bas-solh');
     const hd=await p.evaluate(()=>({syb:[...document.querySelectorAll('.syb')].map(x=>x.textContent.trim()),btn:document.querySelectorAll('.unhb button').length}));
