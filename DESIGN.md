@@ -39,4 +39,3 @@
 - `node tools/test.js` — اختبارات انحدار قبل كل Merge.
 - `node tools/check-content.js` — فحص بنية المحتوى وتقرير التغطية.
 - `node tools/make-guide.js` — لقطات دليل البرنامج.
-- `node tools/make-icons.js` — أيقونات التطبيق من `tools/icon.svg`.
