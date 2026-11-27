@@ -555,6 +555,7 @@ html{scroll-padding-top:var(--tbh,0px)}
 #dxfab.on{background:var(--g1,var(--acc));color:var(--on-g1,#fff)}
 .dxtabs{display:flex;flex-wrap:wrap;gap:6px;margin:0 12px 10px}.dxtabs button{padding:8px 14px;border-radius:999px;border:1.5px solid var(--lk,var(--acc));color:var(--lk,var(--acc));font-weight:700}.dxtabs button.on{background:var(--g1,var(--acc));border-color:var(--g1,var(--acc));color:var(--on-g1,#fff)}.dxtabs small{opacity:.8}
 .dxtd{margin:0 12px 12px;padding:10px 0 4px;border:1.5px dashed var(--line);border-radius:14px;background:var(--card)}.dxtd>b{display:block;padding:0 12px 6px}.dxtd .dxall{display:block;margin:8px 12px;padding:10px;width:calc(100% - 24px);border-radius:12px;border:1.5px solid var(--lk,var(--acc));color:var(--lk,var(--acc));font-weight:700}
+.dxtd .dxsn{display:block;padding:0 14px 6px;color:var(--mute);font-size:.8rem}
 .dxi .go small{display:block;font-weight:400;font-size:0.72rem;color:var(--mute)}
 #qfs{position:fixed;inset-inline-end:12px;bottom:84px;z-index:60;display:flex;flex-direction:column;gap:6px}#qfs button{width:42px;height:42px;border-radius:50%;border:1.5px solid var(--g1,var(--acc));background:var(--card);color:var(--ink);font-weight:700;box-shadow:0 3px 10px rgba(0,0,0,.25)}
 .dhero{position:relative;overflow:hidden;min-height:292px;border-radius:0 0 28px 28px;margin-bottom:6px;box-shadow:0 10px 26px -12px rgba(0,0,0,.6)}.dhero svg{position:absolute;inset:0;width:100%;height:100%}.dhero .td{position:relative;color:#fff;text-shadow:0 1px 10px rgba(20,12,6,.65);padding-top:16px}.dhero .td .sub{opacity:.92}
@@ -1266,14 +1267,14 @@ function dxMenu(id){var m=document.getElementById("dxmenu");if(!m){m=document.cr
   var d=dxd();m.hidden=false;
   if(!id){m.innerHTML='<b>القائمة التي تضيف إليها</b>'+d.lists.map(function(l){var on=l.id===d.cur;return '<button data-dxm="'+l.id+'" class="'+(on?'on':'')+'"><i>'+(on?'✓':'')+'</i><span>'+esc(l.name)+'<small>'+ar9(l.items.length)+' أقسام'+(on?' · الحالية':'')+'</small></span></button>'}).join("")+'<button class="dxo" data-dxm-open="1">📋 فتح قوائمي ‹</button>';return}
   m.innerHTML='<b>قوائمي</b>'+d.lists.map(function(l){var on=l.items.indexOf(id)>=0;return '<button data-dxm="'+l.id+'" class="'+(on?'on':'')+'"><i>'+(on?'✓':'＋')+'</i><span>'+esc(l.name)+'<small>'+(on?'في القائمة · اضغط للإزالة':'اضغط للإضافة')+'</small></span></button>'}).join("")+'<button class="dxo" data-dxm-open="1">📋 فتح قوائمي ‹</button>'}
-function dxToday(){try{if(window.KS&&KS.today){var t=KS.today();return {cd:t.cd,dx:t.dx.filter(function(x){return BYID[x.id]&&BYID[x.id].has})}}}catch(e){}return {cd:null,dx:[]}}
+function dxToday(){try{if(window.KS&&KS.today){var t=KS.today();return {cd:t.cd,season:t.season,dx:t.dx.filter(function(x){return BYID[x.id]&&BYID[x.id].has})}}}catch(e){}return {cd:null,dx:[]}}
 function dxView(){
   var d=dxd(),c=dxc(),a=c.items.filter(function(id){return BYID[id]}),h='<div class="crumb"><button data-nav="#/">⌂ الرئيسية</button></div><div class="gh"><h2>📋 قوائمي</h2></div>';
   h+='<div class="dxtabs">'+d.lists.map(function(x){return '<button class="'+(x.id===d.cur?'on':'')+'" data-dxsw="'+x.id+'">'+esc(x.name)+' <small>'+ar9(x.items.length)+'</small></button>'}).join("")+'<button data-dxnew="1">＋ قائمة جديدة</button></div>';
   h+='<div class="dxbar"><button data-dxren="1">✎ تسمية</button><button data-dxdup="1">⧉ نسخ</button><button data-dxrmlist="1">🗑 حذف</button></div>';
   var t=dxToday();
   if(t.cd&&t.dx.length){var miss=t.dx.filter(function(x){return c.items.indexOf(x.id)<0}).length;
-    h+='<div class="dxtd"><b>🗓 اقتراحات اليوم — '+ar9(t.cd.d)+' '+esc(CMN[t.cd.m])+'</b>'+t.dx.map(function(x){return '<div class="dxi"><button class="go" data-nav="#/s/'+x.id+'">'+esc(x.title)+'</button>'+dxBtn(x.id)+'</div>'}).join("")+(miss?'<button class="dxall" data-dxaddtoday="1">أضف الكل إلى «'+esc(shortN(c.name,16))+'»</button>':'')+'</div>'}
+    h+='<div class="dxtd"><b>🗓 اقتراحات اليوم — '+ar9(t.cd.d)+' '+esc(CMN[t.cd.m])+'</b>'+(t.season?'<small class="dxsn">'+esc(t.season)+'</small>':'')+t.dx.map(function(x){return '<div class="dxi"><button class="go" data-nav="#/s/'+x.id+'">'+esc(x.title)+'</button>'+dxBtn(x.id)+'</div>'}).join("")+(miss?'<button class="dxall" data-dxaddtoday="1">أضف الكل إلى «'+esc(shortN(c.name,16))+'»</button>':'')+'</div>'}
   if(!a.length){h+='<div class="empty"><b>القائمة فارغة</b>اضغط ＋ بجوار أي ذكصولوجية أو أي قسم لإضافته هنا، ورتّبه بالترتيب الذي تريده. يمكنك أيضًا الإضافة أثناء القراءة من الزر العائم.</div>'}
   else{h+='<div class="dxbar"><button class="pri" data-dxgo="'+a[0]+'">▶ ابدأ القراءة</button><button data-dxclear="1">تفريغ القائمة</button></div><p class="hint" style="margin:0 14px 10px">عند القراءة من هنا، «التالي» و«السابق» والسحب ينقلونك بين أقسام القائمة بترتيبها.</p><div class="dxl">';
     a.forEach(function(id,i){h+='<div class="dxi"><span class="n">'+ar9(i+1)+'</span><button class="go" data-dxgo="'+id+'">'+esc(BYID[id].title)+'<small>'+esc(BYID[id].group.title)+'</small></button><button class="mv" data-dxmv="'+id+'" data-d="-1" '+(i?'':'disabled')+' aria-label="أعلى">▲</button><button class="mv" data-dxmv="'+id+'" data-d="1" '+(i<a.length-1?'':'disabled')+' aria-label="أسفل">▼</button><button class="mv" data-dxdel="'+id+'" aria-label="حذف">✕</button></div>'});
@@ -1603,7 +1604,7 @@ window.KH={trLine:trLine,unitsOf:unitsOf,toast:toast,render:function(id,u){reade
 </script>
 <script src="story.js"></script>
 <script src="study-data.js"></script>
-<script src="guide-news.js"></script><script src="guide-pages.js"></script><script src="study.js"></script><script src="swipe.js"></script><script src="live.js"></script>
+<script src="guide-news.js"></script><script src="guide-pages.js"></script><script src="calendar.js"></script><script src="study.js"></script><script src="swipe.js"></script><script src="live.js"></script>
 <script>if(window.KS){KS.apply();document.addEventListener("click",function(){KS.apply()},{once:true})}</script>
 </body>
 </html>

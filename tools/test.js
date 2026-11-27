@@ -22,7 +22,7 @@ async function page(b,settings,hash,opts){
     const html=fs.readFileSync(path.join(ROOT,'index.html'),'utf8');
     const code=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(x=>x[1]).join('\n');
     let syn=true;try{new Function(code)}catch(e){syn=e.message}ok('index.html بلا أخطاء صياغة',syn===true,syn);
-    for(const f of ['study.js','story.js','swipe.js','live.js','guide-news.js','sw.js']){let s=true;try{new Function(fs.readFileSync(path.join(ROOT,f),'utf8'))}catch(e){s=e.message}ok(f+' بلا أخطاء صياغة',s===true,s)}
+    for(const f of ['calendar.js','study.js','story.js','swipe.js','live.js','guide-news.js','sw.js']){let s=true;try{new Function(fs.readFileSync(path.join(ROOT,f),'utf8'))}catch(e){s=e.message}ok(f+' بلا أخطاء صياغة',s===true,s)}
     const sw=fs.readFileSync(path.join(ROOT,'sw.js'),'utf8');const files=(sw.match(/const FILES=\[([^\]]*)\]/)||[,''])[1].match(/'([^']+)'/g)||[];
     const missing=files.map(x=>x.replace(/'/g,'')).filter(f=>f!=='./'&&!fs.existsSync(path.join(ROOT,f)));ok('كل ملفات sw.js موجودة',!missing.length,missing);
 
