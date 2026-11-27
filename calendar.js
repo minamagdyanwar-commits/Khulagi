@@ -197,7 +197,8 @@ function rite(dt){
   if(!sat&&!sun&&!lordFeast&&!pasc)n.push('أوشية المسافرين في باكر');
   if(!sat||pasc||lordFeast)n.push('أوشية المرضى في باكر'+(pasc?' وعشيات الخمسين':''));
   if(!pasc)n.push('أوشية الراقدين في العشيات'+(sat?' وباكر السبت':''));
-  return {rite:r,tune:tune,tuneDays:tune==='آدام'?'الأحد والاثنين والثلاثاء':'الأربعاء والخميس والجمعة والسبت',hymns:h,notes:n};
+  var dt6=r==='الطقس الصيامي'?(sat||sun?'صيامي آحاد':'صيامي أيام'):r==='الطقس الحزايني'?'':r.replace('الطقس ','');
+  return {rite:r,doxTune:dt6,tune:tune,tuneDays:tune==='آدام'?'الأحد والاثنين والثلاثاء':'الأربعاء والخميس والجمعة والسبت',hymns:h,notes:n};
 }
 
 window.KCAL={rite:rite,coptic:coptic,easter:easter,seasons:seasons,dayInfo:dayInfo,label:labelOf,occasions:occasions,CM:CM,GM:GM,ard:ard,fixed:FIXED};
