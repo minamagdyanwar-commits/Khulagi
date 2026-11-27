@@ -569,6 +569,7 @@ html{scroll-padding-top:var(--tbh,0px)}
 .vx{display:flex;align-items:center;gap:10px;margin:2px 14px;color:var(--acc)}
 .vx:before,.vx:after{content:"";flex:1;height:2px;background:linear-gradient(90deg,transparent,var(--acc),transparent);opacity:.55}
 .vx span{font-size:calc(var(--fs)*.9);line-height:1}
+.dxcur{margin:0 14px 8px;font-size:calc(var(--fs)*.7)}.dxcur small{opacity:.7}.dxall .dxi.cur{border-color:var(--acc)}
 .dxpre{margin:0 12px 12px;border:1.5px solid var(--line);border-radius:14px;background:var(--card)}.dxpre>summary{padding:12px;font-weight:700;cursor:pointer}
 .dxtd .dxsn{display:block;padding:0 14px 6px;color:var(--mute);font-size:.8rem}
 .dxi .go small{display:block;font-weight:400;font-size:0.72rem;color:var(--mute)}
@@ -1324,7 +1325,7 @@ function dxPresets(){
   out.sort(function(a,b){return (b.t?1:0)-(a.t?1:0)});return out}
 function dxView(){
   var d=dxd(),c=dxc(),a=c.items.filter(function(id){return BYID[id]}),h='<div class="crumb"><button data-nav="#/">⌂ الرئيسية</button></div><div class="gh"><h2>📋 قوائمي</h2></div>';
-  h+='<div class="dxtabs">'+d.lists.map(function(x){return '<button class="'+(x.id===d.cur?'on':'')+'" data-dxsw="'+x.id+'">'+esc(x.name)+' <small>'+ar9(x.items.length)+'</small></button>'}).join("")+'<button data-dxnew="1">＋ قائمة جديدة</button></div>';
+  h+='<div class="dxcur">القائمة الحالية: <b>'+esc(c.name)+'</b> <small>'+ar9(c.items.length)+' قسمًا</small></div>';
   var fx=!!c.fixed;
   h+=fx?'<div class="dxbar"><button data-dxdup="1">⧉ انسخها لتعدّل عليها</button></div><p class="hint" style="margin:0 14px 8px">🔒 قائمة ثابتة: تتجدد مع تحديث المحتوى ولا تُحذف ولا يُعاد ترتيبها.</p>':'<div class="dxbar"><button data-dxren="1">✎ تسمية</button><button data-dxdup="1">⧉ نسخ</button><button data-dxrmlist="1">🗑 حذف</button></div>';
   var t=dxToday();
@@ -1336,6 +1337,7 @@ function dxView(){
   else{h+='<div class="dxbar"><button class="pri" data-dxgo="'+a[0]+'">▶ ابدأ القراءة</button>'+(fx?'':'<button data-dxclear="1">تفريغ القائمة</button>')+'</div><p class="hint" style="margin:0 14px 10px">عند القراءة من هنا، «التالي» و«السابق» والسحب ينقلونك بين أقسام القائمة بترتيبها.</p><div class="dxl">';
     a.forEach(function(id,i){h+='<div class="dxi"><span class="n">'+ar9(i+1)+'</span><button class="go" data-dxgo="'+id+'">'+esc(BYID[id].title)+'<small>'+esc(BYID[id].group.title)+'</small></button>'+(fx?'':'<button class="mv" data-dxmv="'+id+'" data-d="-1" '+(i?'':'disabled')+' aria-label="أعلى">▲</button><button class="mv" data-dxmv="'+id+'" data-d="1" '+(i<a.length-1?'':'disabled')+' aria-label="أسفل">▼</button><button class="mv" data-dxdel="'+id+'" aria-label="حذف">✕</button>')+'</div>'});
     h+='</div>'}
+  h+='<div class="h2"><span>كل قوائمي</span></div><div class="dxall">'+d.lists.map(function(x){return '<div class="dxi'+(x.id===d.cur?' cur':'')+'"><button class="go" data-dxsw="'+x.id+'">'+(x.fixed?'🔒 ':'')+esc(x.name)+'<small>'+ar9(x.items.length)+' قسمًا'+(x.id===d.cur?' · الحالية':'')+'</small></button>'+(x.fixed?'':'<button class="mv" data-dxrmid="'+x.id+'" aria-label="حذف القائمة">🗑</button>')+'</div>'}).join("")+'<div class="dxbar"><button data-dxnew="1">＋ قائمة جديدة</button></div></div>';
   h+='<div class="dxbar"><button data-ks="export">💾 نسخة احتياطية للقوائم والإعدادات</button></div>'+bnav('');app.innerHTML=h;window.scrollTo(0,0)}
 var CMN=["توت","بابة","هاتور","كيهك","طوبة","أمشير","برمهات","برمودة","بشنس","بؤونة","أبيب","مسرى","النسيء"];
 var OCCL=[["nayrouz","عيد النيروز"],["cross","عيد الصليب"],["nativity","الميلاد"],["kiahk","شهر كيهك"],["kiahk-sun1","أحد كيهك الأول"],["kiahk-sun2","أحد كيهك الثاني"],["kiahk-sun3","أحد كيهك الثالث"],["kiahk-sun4","أحد كيهك الرابع"],["epiphany","الغطاس"],["nineveh","صوم نينوى"],["lent","الصوم الكبير"],["lent-sun1","الأحد الأول من الصوم الكبير"],["lent-sun2","الأحد الثاني من الصوم الكبير"],["lent-sun3","الأحد الثالث من الصوم الكبير"],["lent-sun4","الأحد الرابع من الصوم الكبير"],["lent-sun5","الأحد الخامس من الصوم الكبير"],["lent-sun6","الأحد السادس من الصوم الكبير"],["lentfri","جمعة ختام الصوم"],["lazarus","سبت لعازر"],["palm","أحد الشعانين"],["holyweek","أسبوع الآلام"],["joysat","سبت الفرح"],["resurrection","القيامة"],["pascha","الخمسين المقدسة"],["thomas","أحد توما"],["pascha-sun2","الأحد الثاني من الخمسين"],["pascha-sun3","الأحد الثالث من الخمسين"],["pascha-sun4","الأحد الرابع من الخمسين"],["pascha-sun5","الأحد الخامس من الخمسين"],["pascha-sun6","الأحد السادس من الخمسين"],["ascension","الصعود"],["pentecost","العنصرة"],["apostlesfast","صوم الرسل"],["apostles","عيد الرسل"],["annunciation","البشارة"],["virgin","السيدة العذراء"],["michael","رئيس الملائكة ميخائيل"]];
@@ -1469,6 +1471,7 @@ app.addEventListener("click",function(e){
   if(e.target.closest("[data-dxnew]")){var nn=prompt("اسم القائمة الجديدة (مثال: قداس الأحد)");if(nn&&nn.trim()){var d2=dxd(),id2="l"+Date.now();d2.lists.push({id:id2,name:nn.trim(),items:[]});d2.cur=id2;dxw(d2)}dxView();return}
   if(e.target.closest("[data-dxren]")){var d3=dxd(),c3=dxc(),rn=prompt("اسم القائمة",c3.name);if(rn&&rn.trim()){d3.lists.forEach(function(x){if(x.id===d3.cur)x.name=rn.trim()});dxw(d3)}dxView();return}
   if(e.target.closest("[data-dxdup]")){var d4=dxd(),c4=dxc(),id4="l"+Date.now();d4.lists.push({id:id4,name:c4.name+" (نسخة)",items:c4.items.slice()});d4.cur=id4;dxw(d4);dxView();return}
+  var rm=e.target.closest("[data-dxrmid]");if(rm){var rid=rm.getAttribute("data-dxrmid"),dr=dxd(),nm=(dr.lists.filter(function(x){return x.id===rid})[0]||{}).name;if(confirm("حذف القائمة «"+nm+"»؟")){dr.lists=dr.lists.filter(function(x){return x.id!==rid});dxw(dr)}dxView();return}
   if(e.target.closest("[data-dxrmlist]")){var c5=dxc();if(confirm("حذف القائمة «"+c5.name+"»؟")){var d5=dxd();d5.lists=d5.lists.filter(function(x){return x.id!==d5.cur});dxw(d5)}dxView();return}
   if(e.target.closest("[data-dxaddtoday]")){var a6=dxl().slice();dxToday().dx.forEach(function(x){if(a6.indexOf(x.id)<0)a6.push(x.id)});dxs(a6);dxView();return}
   var qf=e.target.closest("[data-qfs]");if(qf){S.fs=Math.max(14,Math.min(40,S.fs+parseInt(qf.getAttribute("data-qfs"),10)));save();apply();return}
