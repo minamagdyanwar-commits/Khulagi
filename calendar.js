@@ -137,6 +137,7 @@ function occasions(dt){
   if(rel===-66||rel===-67||rel===-68||rel===-69)add('nineveh','صوم نينوى');
   if(rel>=-55&&rel<=-8)add('lent','الصوم الكبير');
   if(wdOf(dt)===0&&rel>=-55&&rel<=-8)add('lent-sun'+Math.round((rel+56)/7),'');
+  if(rel===-9)add('lentfri','جمعة ختام الصوم');
   if(rel===-8)add('lazarus','سبت لعازر');
   if(rel===-7)add('palm','أحد الشعانين');
   if(rel>=-6&&rel<=-1)add('holyweek','أسبوع الآلام');
