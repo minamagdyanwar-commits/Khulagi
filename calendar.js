@@ -138,6 +138,7 @@ function occasions(dt){
   if(rel===-8)add('lazarus','سبت لعازر');
   if(rel===-7)add('palm','أحد الشعانين');
   if(rel>=-6&&rel<=-1)add('holyweek','أسبوع الآلام');
+  if(rel===-1)add('joysat','سبت الفرح');
   if(rel===0)add('resurrection','عيد القيامة المجيد');
   if(rel>=0&&rel<=49)add('pascha','الخمسين المقدسة');
   if(rel===7)add('thomas','أحد توما');
