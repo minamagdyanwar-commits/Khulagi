@@ -368,7 +368,10 @@ window.KHULAGI = {
       { id: "tawzi_palm_3", occ: "palm", title: "مديح لباكر أحد الشعانين", sub: "يُرتَّل أثناء التوزيع في أحد الشعانين" },
       { id: "tawzi_apostles_1", occ: "apostlesfast", title: "مديح لصوم الآباء الرسل", sub: "يُرتَّل أثناء التوزيع في صوم الرسل" },
       { id: "tawzi_apostles_2", occ: "apostlesfast", title: "مديح ثانٍ لصوم الآباء الرسل", sub: "يُرتَّل أثناء التوزيع في صوم الرسل" },
-      { id: "tawzi_joysat", occ: "joysat", title: "مديح عربي على ابصالية سبت الفرح", sub: "يُقال في سبت الفرح بعد الإبصالية" } ] },
+      { id: "tawzi_joysat", occ: "joysat", title: "مديح عربي على ابصالية سبت الفرح", sub: "يُقال في سبت الفرح بعد الإبصالية" },
+      { id: "tawzi_apostles_3", occ: "apostles", title: "مديح لعيد الآباء الرسل ٥ أبيب", sub: "يُرتَّل أثناء التوزيع في عيد الآباء الرسل (٥ أبيب)" },
+      { id: "tawzi_apostles_4", occ: "apostles", title: "مديح آدام للقديس بطرس الرسول", sub: "يُرتَّل أثناء التوزيع في عيد الآباء الرسل (٥ أبيب)" },
+      { id: "tawzi_apostles_5", occ: "apostles", title: "مديح آدام للقديس بولس الرسول", sub: "يُرتَّل أثناء التوزيع في عيد الآباء الرسل (٥ أبيب)" } ] },
     { id: "bless", title: "صلوات تبريك", sections: [
       { id: "b1", title: "١. صلاة على خبز البركة", page: 917 },
       { id: "b2", title: "٢. صلاة قبل الأكل", page: 919 },
