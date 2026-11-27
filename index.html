@@ -556,6 +556,16 @@ html{scroll-padding-top:var(--tbh,0px)}
 .dxtabs{display:flex;flex-wrap:wrap;gap:6px;margin:0 12px 10px}.dxtabs button{padding:8px 14px;border-radius:999px;border:1.5px solid var(--lk,var(--acc));color:var(--lk,var(--acc));font-weight:700}.dxtabs button.on{background:var(--g1,var(--acc));border-color:var(--g1,var(--acc));color:var(--on-g1,#fff)}.dxtabs small{opacity:.8}
 .dxtd{margin:0 12px 12px;padding:10px 0 4px;border:1.5px dashed var(--line);border-radius:14px;background:var(--card)}.dxtd>b{display:block;padding:0 12px 6px}.dxtd .dxall{display:block;margin:8px 12px;padding:10px;width:calc(100% - 24px);border-radius:12px;border:1.5px solid var(--lk,var(--acc));color:var(--lk,var(--acc));font-weight:700}
 .rtc{margin:0 12px 12px;border:1.5px solid var(--line);border-radius:14px;background:var(--card)}.rtc>summary{padding:12px;font-weight:700;cursor:pointer}.rtb{padding:0 14px 12px}.rtb ul{margin:4px 0 8px;padding-inline-start:20px}.rtb small{display:block;opacity:.75}
+.vt{margin:6px auto 14px;max-width:92%;padding:10px 16px;border:3px double var(--ink);border-radius:14px;text-align:center;font-weight:800;font-size:calc(var(--fs)*.95)}
+.vs{display:flex;gap:10px;align-items:flex-start;padding:8px 6px;border-block-end:1px dotted var(--line)}
+.vn{flex:0 0 2.2em;text-align:center;font-weight:800;color:var(--acc);font-size:calc(var(--fs)*.75);padding-top:.35em}
+.vb{flex:1;min-width:0}
+.vl{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.vl.vfull{grid-template-columns:1fr}
+.vh{padding:3px 8px;line-height:1.9;font-size:calc(var(--fs)*.85);overflow-wrap:anywhere}
+.vh2{border-inline-start:2px solid var(--line)}
+.vref{color:var(--line);letter-spacing:.1em}.vref:before{content:"……………"}
+@media(max-width:420px){.vh{font-size:calc(var(--fs)*.78);padding:3px 5px}}
 .dxpre{margin:0 12px 12px;border:1.5px solid var(--line);border-radius:14px;background:var(--card)}.dxpre>summary{padding:12px;font-weight:700;cursor:pointer}
 .dxtd .dxsn{display:block;padding:0 14px 6px;color:var(--mute);font-size:.8rem}
 .dxi .go small{display:block;font-weight:400;font-size:0.72rem;color:var(--mute)}
@@ -945,7 +955,15 @@ function expHtml(it,q,n){var nl=n?' '+ar9(n):'';var b=fnify(it.ar,q).replace(/ \
   if(S.ex!=="fold")return '<div class="exp"><span class="expl">شرح'+nl+'</span>'+b+'</div>';
   var lead=plain(it.ar||"").split(/\s+/).slice(0,8).join(" ");
   return '<div class="exp xf"><button class="exb" data-exp="1" aria-expanded="false"><span class="expl">شرح'+nl+'</span><span class="ext">'+esc(lead)+'…</span><span class="exc">▾</span></button><div class="exbody" hidden>'+b+'</div></div>'}
+function isVerse(s){return !!s&&s.group&&s.group.id==="tawzi"&&/مديح/.test(s.title)}
+function verseHtml(it,st,q){
+  var P=fnify(it.ar,q).split(" / ");st.vn=(st.vn||0)+1;var rows="",i;
+  if(P.length===1)rows='<div class="vl vfull"><span class="vh">'+P[0]+'</span></div>';
+  else for(i=0;i<P.length;i+=2){rows+='<div class="vl"><span class="vh">'+P[i]+'</span><span class="vh vh2'+(P[i+1]===undefined?' vref':'')+'">'+(P[i+1]!==undefined?P[i+1]:"")+'</span></div>'}
+  return '<div class="vs"><b class="vn" aria-label="البيت '+ar9(st.vn)+'">'+ar9(st.vn)+'</b><div class="vb">'+rows+'</div></div>'}
+function verseCount(us,u){var n=0,i;for(i=0;i<u;i++)us[i].items.forEach(function(x){if(x.k==="p"&&x.ar&&!x.cop&&!x.tr)n++});return n}
 function rowHtml(it,cols,isDox,st,q){
+  if(st.vs&&it.k==="p"&&it.ar&&!it.cop&&!it.tr&&S.ar)return verseHtml(it,st,q);
   if(isExp(it)){st.ex=(st.ex||0)+1;if(st.dr)return '<button class="exm" data-ut="e" data-exn="'+st.ex+'" aria-label="شرح '+ar9(st.ex)+' في الدرج السفلي">📝 شرح '+ar9(st.ex)+'</button>';return expHtml(it,q,st.ex)}
   var zc="";if(isDox&&!it.sp){zc=(st.alt++%2)?' zb':' za'}
   var h='<div class="row'+(it.sp?' sp-'+it.sp:'')+zc+'">';
@@ -958,7 +976,7 @@ function rowHtml(it,cols,isDox,st,q){
 function cnt(n){return '<span class="cnt" dir="ltr">('+String(n).replace(/\d/g,function(d){return "٠١٢٣٤٥٦٧٨٩"[d]})+')</span>'}
 function plain(t){return String(t).replace(/<[^>]*>/g,"").replace(/\[\^\d+\]/g,"")}
 function unitParts(id,s,c,us,u,q,cols){
-  var U=us[u],n=us.length,isDox=s.group.id==="dox",st={alt:0,dr:S.ex==="drawer"},pct=Math.round((u+1)/n*100);
+  var U=us[u],n=us.length,isDox=s.group.id==="dox",st={alt:0,dr:S.ex==="drawer"},pct=Math.round((u+1)/n*100);if(isVerse(s)){st.vs=1;st.vn=verseCount(us,u)}
   var si=(S.story!==false&&window.KST)?storyIdx(id):-1,few=U.med.length<=2;
   var syo=window.KS?KS.syncOthers(id):null,syb=syo?syo.map(function(x){return x.id?'<button data-syncgo="'+x.id+'" data-sl="'+x.lit+'" class="syb" aria-label="انتقل إلى '+KS.lname[x.lit]+'" title="'+esc(x.title)+' — اضغط مطولا لكل المقابلات">⇄ '+KS.lshort[x.lit]+'</button>':'<button class="syb off" disabled aria-label="لا مقابل في '+KS.lname[x.lit]+'">⇄ '+KS.lshort[x.lit]+'</button>'}).join(""):'';
   var inner=(si>=0?stripHtml(si):'')+'<div class="unh"><span>القطعة '+ar9(u+1)+' من '+ar9(n)+(U.who?' · '+esc(U.who):'')+'</span><span class="unhb"><button data-more="1" aria-label="خيارات القراءة" title="الهمسات ووضع الكنيسة">⋯</button>'+syb+'<button data-uidx="1" aria-label="فهرس القطع" title="فهرس القطع">☰</button></span></div><div class="unb"><i style="width:'+pct+'%"></i></div>';
@@ -974,7 +992,7 @@ function unitParts(id,s,c,us,u,q,cols){
   if(window.KS)tabs.push(["g","📖","دليل"]);
   var tab=tabs.some(function(t){return t[0]===UT})?UT:"a";
   var th='<div class="dtabs" id="untabs" role="tablist">'+tabs.map(function(t){return '<button role="tab" data-ut="'+t[0]+'" class="'+(t[0]===tab?'on':'')+'" aria-selected="'+(t[0]===tab)+'" aria-label="'+t[2]+'" title="'+t[2]+'">'+t[1]+'</button>'}).join("")+'</div>';
-  var tx='<div class="rd" style="--n:'+Math.max(cols.length,1)+'">';
+  var tx='<div class="rd" style="--n:'+Math.max(cols.length,1)+'">'+(st.vs&&u===0?'<div class="vt">'+esc(s.title)+'</div>':'');
   U.items.forEach(function(it){
     if(it.k==="pg"){if(S.pg)tx+='<div class="pgm">ص '+it.n+'</div>'}
     else if(it.k==="r"){if(S.rub)tx+='<button class="rubi" data-ut="c" title="اضغط لمعنى الحركة">'+esc(plain(it.t))+'</button>'}
@@ -1033,7 +1051,7 @@ function reader(id,q,u){
   else{
     var art=c.items.every(function(i){return i.k!=="p"||isExp(i)});
     h+='<div class="rd'+(art?' art':'')+'" style="--n:'+Math.max(cols.length,1)+'">';
-    var st={alt:0},isDox=s.group.id==="dox";
+    var st={alt:0},isDox=s.group.id==="dox";if(isVerse(s)){st.vs=1;st.vn=0;h+='<div class="vt">'+esc(s.title)+'</div>'}
     c.items.forEach(function(it){
       if(it.k==="pg"){if(S.pg)h+='<div class="pgm">ص '+it.n+'</div>'}
       else if(it.k==="r"){if(S.rub)h+=(window.KS?KS.rub(it.t,fnify(it.t,q)):'<div class="rub">'+fnify(it.t,q)+'</div>');h+=medHtml(it)}
@@ -1275,6 +1293,15 @@ function dxPresets(){
   var now=null;try{now=window.KCAL?KCAL.occasions(new Date()):null}catch(e){}
   var tk=now?now.keys:[],sun=new Date().getDay()===0,out=[];
   OCCL.forEach(function(o){var ids=[];D.groups.forEach(function(g){if(g.id!=="dox"&&g.id!=="tawzi")return;g.sections.forEach(function(x){var ks=x.occ?x.occ.split(" "):[];if(ks.indexOf(o[0])>=0&&BYID[x.id]&&BYID[x.id].has)ids.push(x.id)})});if(ids.length)out.push({k:o[0],n:o[1],ids:ids,t:tk.indexOf(o[0])>=0})});
+  var rt=null;try{rt=window.KCAL&&KCAL.rite?KCAL.rite(new Date()):null}catch(e){}
+  var ok=function(id){return BYID[id]&&BYID[id].has},gi=function(id){var g=D.groups.filter(function(x){return x.id===id})[0];return g?g.sections.map(function(x){return x.id}):[]};
+  var rafI=["raf-shukr","raf-after","raf-altar","raf-raqdin","raf-mardah","raf-musafirin","raf-qarabin","raf-bakhur","raf-allahumma","raf-ewash-ing","raf-reading","raf-after-ing","raf-tahalil","raf-blessing"],
+      doxI=["dox_virgin_morning","dox_virgin_morning_rest","dox_virgin_closing"],
+      masI=gi("bas").filter(function(x){return x!=="bas-rushum"&&x!=="bas-qisma-intro"}),
+      tzI=[];D.groups.forEach(function(g){if(g.id==="tawzi")g.sections.forEach(function(x){if(x.occ==="always")tzI.push(x.id)})});
+  var full=rafI.concat(doxI,masI,tzI).filter(ok);
+  if(full.length>20){out.push({k:"adam",n:"قداس آدام سنوي (الأحد والاثنين والثلاثاء)",ids:full.slice(),t:!!(rt&&rt.tune==="آدام"&&rt.rite==="الطقس السنوي")});
+    out.push({k:"watos",n:"قداس واطس سنوي (الأربعاء والخميس والجمعة والسبت)",ids:full.slice(),t:!!(rt&&rt.tune==="واطس"&&rt.rite==="الطقس السنوي")})}
   var an=[];D.groups.forEach(function(g){if(g.id!=="tawzi")return;g.sections.forEach(function(x){if(x.occ==="always"&&BYID[x.id]&&BYID[x.id].has)an.push(x.id)})});
   if(an.length)out.push({k:"sunday",n:"أحد عادي — مدائح التوزيع السنوية",ids:an,t:sun});
   out.sort(function(a,b){return (b.t?1:0)-(a.t?1:0)});return out}
