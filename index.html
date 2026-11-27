@@ -1289,13 +1289,13 @@ function dxFullIds(){
       masI=gi("bas").filter(function(x){return x!=="bas-rushum"&&x!=="bas-qisma-intro"}),tzI=[];
   D.groups.forEach(function(g){if(g.id==="tawzi")g.sections.forEach(function(x){if(x.occ==="always")tzI.push(x.id)})});
   return rafI.concat(doxI,masI,tzI).filter(ok)}
-var FXL=[["fx-adam","قداس آدام سنوي (الأحد والاثنين والثلاثاء)"],["fx-watos","قداس واطس سنوي (الأربعاء والخميس والجمعة والسبت)"]];
+var FXL=[["fx-sun","قداس سنوي: الأحد",["raf-musafirin"]],["fx-days","قداس سنوي: باقي أيام الأسبوع",["raf-qarabin"]],["fx-adam","قداس آدام سنوي (الأحد والاثنين والثلاثاء)",[]],["fx-watos","قداس واطس سنوي (الأربعاء والخميس والجمعة والسبت)",[]]];
 function dxFixed(d){var ids=dxFullIds(),keep=d.lists.filter(function(x){return !x.fixed&&x.id.indexOf("fx-")!==0});
-  d.lists=FXL.map(function(f){return {id:f[0],name:f[1],items:ids.slice(),fixed:true}}).concat(keep);return d}
+  d.lists=FXL.map(function(f){return {id:f[0],name:f[1],items:ids.filter(function(x){return f[2].indexOf(x)<0}),fixed:true}}).concat(keep);return d}
 function dxd(){var d=null;try{d=JSON.parse(localStorage.getItem("khulagi.dxlists")||"null")}catch(e){}
   if(!d||!Array.isArray(d.lists)||!d.lists.length){var old=[];try{old=JSON.parse(localStorage.getItem("khulagi.dxlist")||"[]")}catch(e){}d={cur:"l1",lists:[{id:"l1",name:"قائمتي",items:Array.isArray(old)?old:[]}]};dxw(d)}
   var first=!d.lists.some(function(x){return x.fixed});dxFixed(d);
-  if(first&&d.cur==="l1"&&d.lists.length===3&&!d.lists[2].items.length){var rt=null;try{rt=window.KCAL&&KCAL.rite?KCAL.rite(new Date()):null}catch(e){}d.cur=rt&&rt.tune==="واطس"?"fx-watos":"fx-adam"}
+  if(first&&d.cur==="l1"&&d.lists.length===5&&!d.lists[4].items.length){var rt=null;try{rt=window.KCAL&&KCAL.rite?KCAL.rite(new Date()):null}catch(e){}var wd=new Date().getDay(),an=rt&&rt.rite==="الطقس السنوي";d.cur=an?(wd===0?"fx-sun":"fx-days"):(rt&&rt.tune==="واطس"?"fx-watos":"fx-adam")}
   if(!d.lists.some(function(x){return x.id===d.cur}))d.cur=d.lists[0].id;return d}
 function dxc(){var d=dxd();return d.lists.filter(function(x){return x.id===d.cur})[0]}
 function dxl(){return dxc().items}
