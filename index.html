@@ -964,8 +964,7 @@ function verseHtml(it,st,q){
   var P=fnify(it.ar,q).split(" / ");st.vn=(st.vn||0)+1;var rows="",i;
   var first=st.vn===1,R=st.ref?esc(st.ref):"";
   if(P.length<=2){P.forEach(function(x){rows+='<div class="vl vfull"><span class="vh">'+x+'</span></div>'});if(R&&first)rows+='<div class="vl vfull"><span class="vh vrc">'+R+'</span></div>'}
-  else{for(i=0;i<P.length;i+=2){var m=P[i+1]===undefined;rows+='<div class="vl"><span class="vh">'+P[i]+'</span><span class="vh vh2'+(m&&!(R&&first)?' vref':'')+(m&&R&&first?' vrc':'')+'">'+(!m?P[i+1]:(R&&first?R:""))+'</span></div>'}
-    if(R&&first&&P.length%2===0)rows+='<div class="vl vfull"><span class="vh vrc">'+R+'</span></div>'}
+  else{for(i=0;i<P.length;i+=2){var m=P[i+1]===undefined;rows+='<div class="vl"><span class="vh">'+P[i]+'</span><span class="vh vh2'+(m&&!(R&&first)?' vref':'')+(m&&R&&first?' vrc':'')+'">'+(!m?P[i+1]:(R&&first?R:""))+'</span></div>'}}
   var dv=st.vdone?'<div class="vx" aria-hidden="true"><span>✠</span></div>':"";st.vdone=1;
   return dv+'<div class="vs"><b class="vn" aria-label="البيت '+ar9(st.vn)+'">'+ar9(st.vn)+'</b><div class="vb">'+rows+'</div></div>'}
 function fitVerses(){
