@@ -1130,7 +1130,7 @@ function homeD1(){
   if(window.KST)h+='<div class="sw2"><button data-hm="path" class="'+(S.hm!=="story"?'on':'')+'">مسار القداس</button><button data-hm="story" class="'+(S.hm==="story"?'on':'')+'">مسار القصة</button></div>';
   if(window.KST&&S.hm==="story")h+='<div class="h2"><span>رحلة المسيح في القداس · '+esc(LNAME[lit])+'</span></div>'+storyRoad(lit)+'<p class="hint" style="margin:6px 18px"><span class="tag">مسوّدة</span> الربط بين القداس وحياة المسيح اقتراح تفسيري</p>';
   else h+='<div class="h2"><span>مراحل القداس · '+esc(LNAME[lit])+'</span></div><div class="stg1">'+stageCards(lit,"sc1")+'</div>';
-  h+='<div class="h2"><span>الأقسام</span></div><div class="hs1">'+otherGroups().map(function(g){var k=g.sections.length;return '<button data-nav="#/g/'+g.id+'"><i>'+(ICONS[g.id]||"☩")+'</i><span>'+esc(g.title)+'</span><small>'+ar9(k)+'</small></button>'}).join("")+'</div>';
+  h+='<div class="h2"><span>الأقسام</span></div><div class="hs1">'+otherGroups().map(function(g){var k=g.sections.length;return '<button data-nav="#/g/'+g.id+'"><i>'+(ICONS[g.id]||"☩")+'</i><span>'+esc(g.title)+'</span><small>'+ar9(k)+'</small></button>'}).join("")+'<button data-nav="#/g/occ"><i>🎼</i><span>ألحان المناسبات</span><small>◂</small></button></div>';
   return h+'</div>'+bnav("home")}
 function mnGet(){try{return JSON.parse(localStorage.getItem("khulagi.mynotes")||"{}")}catch(e){return{}}}
 function mnSet(o){try{localStorage.setItem("khulagi.mynotes",JSON.stringify(o))}catch(e){}}
@@ -1194,6 +1194,7 @@ function libView(){
   ctl(false);document.title="المكتبة — الخولاجي";var hid=S.hide||[];
   var h='<div class="hd" style="padding:6px 14px 0">المكتبة</div><button class="search lib" data-bn="search">🔎 ابحث بالعربي أو القبطي…</button><div class="grid">';
   D.groups.forEach(function(g){if(hid.indexOf(g.id)>=0||g.id==="lit")return;h+='<button class="g" data-nav="#/g/'+g.id+'"><b>'+esc(g.title)+'</b><small>'+ar9(g.sections.length)+' قسمًا</small></button>'});
+  h+='<button class="g" data-nav="#/g/occ"><b>🎼 ألحان المناسبات</b><small>ذكصولوجيات ومدائح لكل مناسبة</small></button>';
   h+='</div><div class="tdl">أدوات</div><div class="chips"><button data-bn="map">☰ الفهرس</button><button data-bn="med">💭 تأملاتي</button><button data-bn="study">🔎 دراسة</button><button data-opensettings="1">⚙ الإعدادات</button></div>'+bnav('lib');
   app.innerHTML=h;window.scrollTo(0,0)}
 var DM=false;
@@ -1281,8 +1282,19 @@ function dxView(){
     h+='</div>'}
   h+='<div class="dxbar"><button data-ks="export">💾 نسخة احتياطية للقوائم والإعدادات</button></div>'+bnav('');app.innerHTML=h;window.scrollTo(0,0)}
 var CMN=["توت","بابة","هاتور","كيهك","طوبة","أمشير","برمهات","برمودة","بشنس","بؤونة","أبيب","مسرى","النسيء"];
+var OCCL=[["nayrouz","عيد النيروز"],["cross","عيد الصليب"],["nativity","الميلاد"],["kiahk","شهر كيهك"],["kiahk-sun1","أحد كيهك الأول"],["kiahk-sun2","أحد كيهك الثاني"],["kiahk-sun3","أحد كيهك الثالث"],["kiahk-sun4","أحد كيهك الرابع"],["epiphany","الغطاس"],["nineveh","صوم نينوى"],["lent","الصوم الكبير"],["lazarus","سبت لعازر"],["palm","أحد الشعانين"],["holyweek","أسبوع الآلام"],["joysat","سبت الفرح"],["resurrection","القيامة"],["pascha","الخمسين المقدسة"],["thomas","أحد توما"],["pascha-sun2","الأحد الثاني من الخمسين"],["pascha-sun3","الأحد الثالث من الخمسين"],["pascha-sun4","الأحد الرابع من الخمسين"],["pascha-sun5","الأحد الخامس من الخمسين"],["pascha-sun6","الأحد السادس من الخمسين"],["ascension","الصعود"],["pentecost","العنصرة"],["apostlesfast","صوم الرسل"],["apostles","عيد الرسل"],["annunciation","البشارة"],["virgin","السيدة العذراء"],["michael","رئيس الملائكة ميخائيل"]];
+function occView(){
+  ctl(false);document.title="ألحان المناسبات — الخولاجي";
+  var now=null;try{now=window.KCAL?KCAL.occasions(new Date()):null}catch(e){}
+  var tk=now?now.keys:[];
+  var h='<div class="crumb"><button data-nav="#/">⌂ الرئيسية</button></div><div class="gh"><h2>🎼 ألحان المناسبات</h2></div><p class="hint" style="margin:0 14px 10px">ذكصولوجيات ومدائح كل مناسبة، مرتبة بحسب السنة القبطية. مناسبات اليوم في الأعلى، وتبقى ضمن اقتراحات اليوم.</p>';
+  var rows=OCCL.map(function(o){var list=[];D.groups.forEach(function(g){if(g.id!=="dox"&&g.id!=="tawzi")return;g.sections.forEach(function(x){if(x.occ&&x.occ.split(" ").indexOf(o[0])>=0)list.push({x:x,g:g.id})})});return {k:o[0],n:o[1],l:list,t:tk.indexOf(o[0])>=0}}).filter(function(r){return r.l.length});
+  rows.sort(function(a,b){return (b.t?1:0)-(a.t?1:0)});
+  rows.forEach(function(r){h+='<div class="h2"><span>'+esc(r.n)+(r.t?' · اليوم':'')+'</span><small>'+ar9(r.l.length)+'</small></div>'+r.l.map(function(i){return '<button class="sec" data-nav="#/s/'+i.x.id+'"><span>'+esc(i.x.title)+'</span><span class="pn">'+(i.g==='tawzi'?'توزيع':'')+'</span></button>'}).join("")});
+  h+=bnav('');app.innerHTML=h;window.scrollTo(0,0)}
 function groupView(gid){
   if(gid==="lit")return home();
+  if(gid==="occ")return occView();
   var g=D.groups.filter(function(x){return x.id===gid})[0];if(!g)return home();
   ctl(false);document.title=g.title+" — الخولاجي";
   var h='<div class="crumb"><button data-nav="#/">⌂ الرئيسية</button></div><div class="gh"><h2>'+esc(g.title)+'</h2></div>';
