@@ -154,5 +154,51 @@ function occasions(dt){
   if(rel>=7&&rel<=42&&rel%7===0)add('pascha-sun'+(rel/7),'الأحد '+['','الأول','الثاني','الثالث','الرابع','الخامس','السادس'][rel/7]+' من الخمسين');
   return {keys:o,names:names,info:i,label:labelOf(dt)};
 }
-window.KCAL={coptic:coptic,easter:easter,seasons:seasons,dayInfo:dayInfo,label:labelOf,occasions:occasions,CM:CM,GM:GM,ard:ard,fixed:FIXED};
+
+/* طقس اليوم وألحانه — مبني على «ملاحظات طقسية» في كتاب الألحان للدياكون أسامة لطفي (ص ٢–٩).
+   الأيام الآدام: الأحد والاثنين والثلاثاء. الأيام الواطس: الأربعاء والخميس والجمعة والسبت. */
+function rite(dt){
+  var i=dayInfo(dt),c=i.c,y=dt.getFullYear(),rel=dnum(dt)-dnum(easter(y)),wd=dt.getDay(),
+      has=function(k){return i.seasons.some(function(z){return z.k===k})},
+      pasc=rel>=0&&rel<=49,holyw=rel>=-6&&rel<=-1,palm=rel===-7,lent=rel>=-55&&rel<=-8,jonah=has('jonah'),
+      cross=(c.m===1&&c.d===17)||(c.m===7&&c.d===10),
+      lordFeast=[[4,29],[5,6],[5,11],[5,13],[6,8],[7,29],[9,24],[12,13]].some(function(f){return f[0]===c.m&&f[1]===c.d}),
+      m29=c.d===29&&c.m!==5&&c.m!==6,
+      fastN=has('adv')||has('apostles')||has('virgin'),sat=wd===6,sun=wd===0,
+      joy=(c.m===1&&(c.d<=16))||(c.m===4&&c.d>=29)||(c.m===5&&(c.d<=6||(c.d>=11&&c.d<=13)))||pasc||lordFeast||m29,
+      r;
+  if(holyw)r='الطقس الحزايني';
+  else if(palm||cross)r='الطقس الشعانيني';
+  else if(joy)r='الطقس الفرايحي';
+  else if(lent||jonah)r='الطقس الصيامي';
+  else if(c.m===4)r='الطقس الكيهكي';
+  else r='الطقس السنوي';
+  var thu=rel===-3,jsat=rel===-1;
+  var tune=(wd<=2)?'آدام':'واطس';
+  var h=[];
+  /* الليلويا وطاي شوري */
+  if(!thu&&!jsat){
+    var f1=joy||(rel===-8)||(fastN&&(sat||sun))||cross||(c.m===1&&c.d<17);
+    if(f1)h.push('ليلويا فاي بيه بي','طاي شوري');
+    else if((lent||jonah)&&!sat&&!sun)h.push('ليلويا إي إيه إيخون','إنثو تيه تي شوري');
+    else if((!fastN&&!lent&&!jonah&&(wd===3||wd===5))||(fastN&&!sat&&!sun)||((lent||palm)&&(sat||sun)))h.push('ليلويا چيه إفميه في','تي شوري');
+  }
+  /* چيه آف ... */
+  var nx=dayInfo(new Date(dt.getTime()+7*864e5)).c;
+  var nm=null;
+  if((c.m===4&&c.d>=28)||(c.m===5&&c.d<=6))nm='چيه آف ماسك';
+  else if(c.m===5&&c.d>=10&&c.d<=12)nm='چيه آكتشي أومس';
+  else if(cross||holyw)nm='چيه آف آشك';
+  else if(pasc||(sun&&!palm&&((rel>=50&&c.m>=9)||c.m<=2||(c.m===3&&nx.m===4)))||(m29&&c.m!==5&&c.m!==6))nm='چيه آك طونك';
+  else nm='چيه آك إي';
+  h.push(nm);
+  var n=[];
+  if(sun||joy||lordFeast)n.push('أوشية القرابين تُصلَّى');
+  if(!sat&&!sun&&!lordFeast&&!pasc)n.push('أوشية المسافرين في باكر');
+  if(!sat||pasc||lordFeast)n.push('أوشية المرضى في باكر'+(pasc?' وعشيات الخمسين':''));
+  if(!pasc)n.push('أوشية الراقدين في العشيات'+(sat?' وباكر السبت':''));
+  return {rite:r,tune:tune,tuneDays:tune==='آدام'?'الأحد والاثنين والثلاثاء':'الأربعاء والخميس والجمعة والسبت',hymns:h,notes:n};
+}
+
+window.KCAL={rite:rite,coptic:coptic,easter:easter,seasons:seasons,dayInfo:dayInfo,label:labelOf,occasions:occasions,CM:CM,GM:GM,ard:ard,fixed:FIXED};
 })();

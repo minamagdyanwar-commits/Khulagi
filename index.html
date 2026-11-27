@@ -555,6 +555,7 @@ html{scroll-padding-top:var(--tbh,0px)}
 #dxfab.on{background:var(--g1,var(--acc));color:var(--on-g1,#fff)}
 .dxtabs{display:flex;flex-wrap:wrap;gap:6px;margin:0 12px 10px}.dxtabs button{padding:8px 14px;border-radius:999px;border:1.5px solid var(--lk,var(--acc));color:var(--lk,var(--acc));font-weight:700}.dxtabs button.on{background:var(--g1,var(--acc));border-color:var(--g1,var(--acc));color:var(--on-g1,#fff)}.dxtabs small{opacity:.8}
 .dxtd{margin:0 12px 12px;padding:10px 0 4px;border:1.5px dashed var(--line);border-radius:14px;background:var(--card)}.dxtd>b{display:block;padding:0 12px 6px}.dxtd .dxall{display:block;margin:8px 12px;padding:10px;width:calc(100% - 24px);border-radius:12px;border:1.5px solid var(--lk,var(--acc));color:var(--lk,var(--acc));font-weight:700}
+.rtc{margin:0 12px 12px;border:1.5px solid var(--line);border-radius:14px;background:var(--card)}.rtc>summary{padding:12px;font-weight:700;cursor:pointer}.rtb{padding:0 14px 12px}.rtb ul{margin:4px 0 8px;padding-inline-start:20px}.rtb small{display:block;opacity:.75}
 .dxpre{margin:0 12px 12px;border:1.5px solid var(--line);border-radius:14px;background:var(--card)}.dxpre>summary{padding:12px;font-weight:700;cursor:pointer}
 .dxtd .dxsn{display:block;padding:0 14px 6px;color:var(--mute);font-size:.8rem}
 .dxi .go small{display:block;font-weight:400;font-size:0.72rem;color:var(--mute)}
@@ -1284,7 +1285,7 @@ function dxView(){
   var t=dxToday();
   if(t.cd&&t.dx.length){var miss=t.dx.filter(function(x){return c.items.indexOf(x.id)<0}).length;
     h+='<div class="dxtd"><b>🗓 اقتراحات اليوم — '+ar9(t.cd.d)+' '+esc(CMN[t.cd.m])+'</b>'+(t.season?'<small class="dxsn">'+esc(t.season)+'</small>':'')+t.dx.map(function(x){return '<div class="dxi"><button class="go" data-nav="#/s/'+x.id+'">'+esc(x.title)+'</button>'+dxBtn(x.id)+'</div>'}).join("")+(miss?'<button class="dxall" data-dxaddtoday="1">أضف الكل إلى «'+esc(shortN(c.name,16))+'»</button>':'')+'</div>'}
-  var pr=dxPresets();
+  h+=riteCard();var pr=dxPresets();
   if(pr.length)h+='<details class="dxpre"'+(a.length?'':' open')+'><summary>⚡ قوائم جاهزة للاستخدام الفوري ('+ar9(pr.length)+')</summary><p class="hint" style="margin:6px 14px">تتغير ترتيبا حسب تاريخ اليوم. اضغط أي قائمة لتُضاف إلى قوائمك، ثم ابدأ القراءة منها فورا أو عدّل ترتيبها وأضف إليها.</p>'+pr.map(function(x){return '<div class="dxi"><button class="go" data-dxpre="'+x.k+'">'+(x.t?'🗓 ':'')+esc(x.n)+'<small>'+ar9(x.ids.length)+' قسمًا'+(x.t?' · اليوم':'')+'</small></button><button class="mv" data-dxpre="'+x.k+'">＋ قائمة</button></div>'}).join("")+'</details>';
   if(!a.length){h+='<div class="empty"><b>القائمة فارغة</b>اضغط ＋ بجوار أي ذكصولوجية أو أي قسم لإضافته هنا، ورتّبه بالترتيب الذي تريده. يمكنك أيضًا الإضافة أثناء القراءة من الزر العائم.</div>'}
   else{h+='<div class="dxbar"><button class="pri" data-dxgo="'+a[0]+'">▶ ابدأ القراءة</button><button data-dxclear="1">تفريغ القائمة</button></div><p class="hint" style="margin:0 14px 10px">عند القراءة من هنا، «التالي» و«السابق» والسحب ينقلونك بين أقسام القائمة بترتيبها.</p><div class="dxl">';
@@ -1293,11 +1294,14 @@ function dxView(){
   h+='<div class="dxbar"><button data-ks="export">💾 نسخة احتياطية للقوائم والإعدادات</button></div>'+bnav('');app.innerHTML=h;window.scrollTo(0,0)}
 var CMN=["توت","بابة","هاتور","كيهك","طوبة","أمشير","برمهات","برمودة","بشنس","بؤونة","أبيب","مسرى","النسيء"];
 var OCCL=[["nayrouz","عيد النيروز"],["cross","عيد الصليب"],["nativity","الميلاد"],["kiahk","شهر كيهك"],["kiahk-sun1","أحد كيهك الأول"],["kiahk-sun2","أحد كيهك الثاني"],["kiahk-sun3","أحد كيهك الثالث"],["kiahk-sun4","أحد كيهك الرابع"],["epiphany","الغطاس"],["nineveh","صوم نينوى"],["lent","الصوم الكبير"],["lazarus","سبت لعازر"],["palm","أحد الشعانين"],["holyweek","أسبوع الآلام"],["joysat","سبت الفرح"],["resurrection","القيامة"],["pascha","الخمسين المقدسة"],["thomas","أحد توما"],["pascha-sun2","الأحد الثاني من الخمسين"],["pascha-sun3","الأحد الثالث من الخمسين"],["pascha-sun4","الأحد الرابع من الخمسين"],["pascha-sun5","الأحد الخامس من الخمسين"],["pascha-sun6","الأحد السادس من الخمسين"],["ascension","الصعود"],["pentecost","العنصرة"],["apostlesfast","صوم الرسل"],["apostles","عيد الرسل"],["annunciation","البشارة"],["virgin","السيدة العذراء"],["michael","رئيس الملائكة ميخائيل"]];
+function riteCard(){
+  var r=null;try{r=window.KCAL&&KCAL.rite?KCAL.rite(new Date()):null}catch(e){}if(!r)return "";
+  return '<details class="rtc"><summary>🕯 طقس اليوم: '+esc(r.rite)+' · يوم '+esc(r.tune)+'</summary><div class="rtb"><p>الأيام الآدام: الأحد والاثنين والثلاثاء. الأيام الواطس: الأربعاء والخميس والجمعة والسبت. اليوم من أيام <b>'+esc(r.tune)+'</b> ('+esc(r.tuneDays)+').</p><b>ألحان تُقال اليوم</b><ul>'+r.hymns.map(function(x){return '<li>'+esc(x)+'</li>'}).join("")+'</ul>'+(r.notes.length?'<b>أواشي</b><ul>'+r.notes.map(function(x){return '<li>'+esc(x)+'</li>'}).join("")+'</ul>':'')+'<small>المصدر: «ملاحظات طقسية» — كتاب ألحان الدياكون أسامة لطفي (ص ٢–٩). مسوّدة تحتاج مراجعة؛ لا تحل محل توجيه الكاهن.</small></div></details>'}
 function occView(){
   ctl(false);document.title="ألحان المناسبات — الخولاجي";
   var now=null;try{now=window.KCAL?KCAL.occasions(new Date()):null}catch(e){}
   var tk=now?now.keys:[];
-  var h='<div class="crumb"><button data-nav="#/">⌂ الرئيسية</button></div><div class="gh"><h2>🎼 ألحان المناسبات</h2></div><p class="hint" style="margin:0 14px 10px">ذكصولوجيات ومدائح كل مناسبة، مرتبة بحسب السنة القبطية. مناسبات اليوم في الأعلى، وتبقى ضمن اقتراحات اليوم.</p>';
+  var h='<div class="crumb"><button data-nav="#/">⌂ الرئيسية</button></div><div class="gh"><h2>🎼 ألحان المناسبات</h2></div><p class="hint" style="margin:0 14px 10px">ذكصولوجيات ومدائح كل مناسبة، مرتبة بحسب السنة القبطية. مناسبات اليوم في الأعلى، وتبقى ضمن اقتراحات اليوم.</p>'+riteCard();
   var rows=OCCL.map(function(o){var list=[];D.groups.forEach(function(g){if(g.id!=="dox"&&g.id!=="tawzi")return;g.sections.forEach(function(x){if(x.occ&&x.occ.split(" ").indexOf(o[0])>=0)list.push({x:x,g:g.id})})});return {k:o[0],n:o[1],l:list,t:tk.indexOf(o[0])>=0}}).filter(function(r){return r.l.length});
   rows.sort(function(a,b){return (b.t?1:0)-(a.t?1:0)});
   rows.forEach(function(r){h+='<div class="h2"><span>'+esc(r.n)+(r.t?' · اليوم':'')+'</span><small>'+ar9(r.l.length)+'</small></div>'+r.l.map(function(i){return '<button class="sec" data-nav="#/s/'+i.x.id+'"><span>'+esc(i.x.title)+'</span><span class="pn">'+(i.g==='tawzi'?'توزيع':'')+'</span></button>'}).join("")});
