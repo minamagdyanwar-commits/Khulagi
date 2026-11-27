@@ -1062,7 +1062,7 @@ function stepPos(dir,unitsOnly){
 function goPos(p){if(!p)return;if(p.id!==CUR.id){location.hash="#/s/"+p.id;usave(p.id,p.u<0?-1:p.u);return}if(!setUnit(p.u))reader(p.id,undefined,p.u)}
 
 /* home & group views */
-var ICONS={intro:"📖",raf:"🕯️",bas:"⛪",greg:"⛪",cyr:"⛪",qisam:"✝",misc:"📜",bless:"🙏",app:"📎",taqs:"🕯",dox:"🌟"};
+var ICONS={intro:"📖",raf:"🕯️",bas:"⛪",greg:"⛪",cyr:"⛪",qisam:"✝",misc:"📜",bless:"🙏",app:"📎",taqs:"🕯",dox:"🌟",tawzi:"🎶"};
 function ctl(on){$("#opts").style.display=on?"":"none";$("#selw").style.display="none"}
 /* فهرس الكتاب: الفقرات الرئيسية (كما في فهرس الخولاجي ص١٠٣٣) وما تحتها من أجزاء مفصّلة */
 function outline(g){
@@ -1086,7 +1086,7 @@ function stageCards(lit,cls){
   if(l&&BYID[l]&&DT.stageOf){var gm=DT.stageOf[BYID[l].group.id];if(gm&&gm[l]!==undefined)lastSt=gm[l]}
   return stgs.map(function(sg,i){var secs=stageSecs(lit,i),n=secs.length,done=secs.filter(function(x){return seen[x.id]}).length,first=secs.filter(function(x){return !seen[x.id]})[0]||secs[0],st=n&&done===n?'dn':(lastSt===i?'on':'');
     return '<button class="'+cls+' '+st+'" '+(first?'data-nav="#/s/'+first.id+'"':'disabled')+'><b>'+esc(sg[0])+'</b><small>'+(n?ar9(done)+' من '+ar9(n)+(st==='dn'?' ✓':''):'—')+'</small></button>'}).join("")}
-function otherGroups(){var hid=S.hide||[];return ["raf","dox","qisam","bless","misc","taqs","canons","app"].map(function(id){return D.groups.filter(function(x){return x.id===id&&hid.indexOf(id)<0})[0]}).filter(Boolean)}
+function otherGroups(){var hid=S.hide||[];return ["raf","dox","tawzi","qisam","bless","misc","taqs","canons","app"].map(function(id){return D.groups.filter(function(x){return x.id===id&&hid.indexOf(id)<0})[0]}).filter(Boolean)}
 
 /* ===== القصة والهمسات والطبقات ===== */
 function storyIdx(id){var sc=BYID[id];if(!sc||!window.KST)return -1;var g=sc.group.id;if(g!=="bas"&&g!=="greg"&&g!=="cyr")return -1;
@@ -1475,7 +1475,7 @@ function ixGroup(){
   if(h.indexOf("s/")===0){var id=h.slice(2).split("?")[0];return BYID[id]?BYID[id].group:null}
   if(h.indexOf("g/")===0){var gid=h.slice(2);return D.groups.filter(function(x){return x.id===gid})[0]||null}
   return null}
-var IXSN={raf:"البخور",canons:"القوانين",bas:"باسيلي",greg:"غريغوري",cyr:"كيرلسي",qisam:"القسمة",misc:"متنوعة",dox:"ذكصولوجيات",bless:"التبريك",taqs:"الطقس",app:"الملحق"};
+var IXSN={raf:"البخور",canons:"القوانين",bas:"باسيلي",greg:"غريغوري",cyr:"كيرلسي",qisam:"القسمة",misc:"متنوعة",dox:"ذكصولوجيات",tawzi:"التوزيع",bless:"التبريك",taqs:"الطقس",app:"الملحق"};
 function buildIdx(){
   var ix=idxEl(),g=ixGroup();
   var h='<div class="ixh"><b>📑 '+(g?esc(g.title):'الأقسام الرئيسية')+'</b><span><button data-live="1" aria-label="وضع الكنيسة">🕯</button><button data-ixset="1" aria-label="الإعدادات">⚙</button><button data-ixc="1" aria-label="إغلاق">✕</button></span></div>';

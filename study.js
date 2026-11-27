@@ -190,7 +190,7 @@ function nm(t){return String(t).replace(/[ً-ٰٟ]/g,"").replace(/[أإآ]/g,"ا
 function occNow(){try{return window.KCAL?KCAL.occasions(new Date()):null}catch(e){return null}}
 function occDox(o){
   var out=[];if(!o)return out;
-  K.D.groups.forEach(function(g){if(g.id!=="dox")return;g.sections.forEach(function(s){
+  K.D.groups.forEach(function(g){if(g.id!=="dox"&&g.id!=="tawzi")return;g.sections.forEach(function(s){
     if(!s.occ)return;var ks=s.occ.split(" ");
     if(ks.indexOf("always")>=0)return;
     for(var i=0;i<ks.length;i++){if(o.keys.indexOf(ks[i])>=0){out.push(s);break}}})});
