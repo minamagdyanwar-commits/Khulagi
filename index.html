@@ -557,15 +557,17 @@ html{scroll-padding-top:var(--tbh,0px)}
 .dxtd{margin:0 12px 12px;padding:10px 0 4px;border:1.5px dashed var(--line);border-radius:14px;background:var(--card)}.dxtd>b{display:block;padding:0 12px 6px}.dxtd .dxall{display:block;margin:8px 12px;padding:10px;width:calc(100% - 24px);border-radius:12px;border:1.5px solid var(--lk,var(--acc));color:var(--lk,var(--acc));font-weight:700}
 .rtc{margin:0 12px 12px;border:1.5px solid var(--line);border-radius:14px;background:var(--card)}.rtc>summary{padding:12px;font-weight:700;cursor:pointer}.rtb{padding:0 14px 12px}.rtb ul{margin:4px 0 8px;padding-inline-start:20px}.rtb small{display:block;opacity:.75}
 .vt{margin:6px auto 14px;max-width:92%;padding:10px 16px;border:3px double var(--ink);border-radius:14px;text-align:center;font-weight:800;font-size:calc(var(--fs)*.95)}
-.vs{display:flex;gap:10px;align-items:flex-start;padding:8px 6px;border-block-end:1px dotted var(--line)}
-.vn{flex:0 0 2.2em;text-align:center;font-weight:800;color:var(--acc);font-size:calc(var(--fs)*.75);padding-top:.35em}
+.vs{display:flex;gap:6px;align-items:flex-start;padding:6px 4px}
+.vn{flex:0 0 1.7em;text-align:center;font-weight:800;color:var(--acc);font-size:calc(var(--fs)*.7);padding-top:.5em}
 .vb{flex:1;min-width:0}
 .vl{display:grid;grid-template-columns:1fr 1fr;gap:0}
 .vl.vfull{grid-template-columns:1fr}
-.vh{padding:3px 8px;line-height:1.9;font-size:calc(var(--fs)*.85);overflow-wrap:anywhere}
+.vh{display:block;padding:2px 6px;line-height:1.9;font-size:calc(var(--fs)*.85*var(--vz,1));white-space:nowrap;overflow:hidden}
 .vh2{border-inline-start:2px solid var(--line)}
-.vref{color:var(--line);letter-spacing:.1em}.vref:before{content:"……………"}
-@media(max-width:420px){.vh{font-size:calc(var(--fs)*.78);padding:3px 5px}}
+.vref{color:var(--line)}.vref:before{content:"…………"}
+.vx{display:flex;align-items:center;gap:10px;margin:2px 14px;color:var(--acc)}
+.vx:before,.vx:after{content:"";flex:1;height:2px;background:linear-gradient(90deg,transparent,var(--acc),transparent);opacity:.55}
+.vx span{font-size:calc(var(--fs)*.9);line-height:1}
 .dxpre{margin:0 12px 12px;border:1.5px solid var(--line);border-radius:14px;background:var(--card)}.dxpre>summary{padding:12px;font-weight:700;cursor:pointer}
 .dxtd .dxsn{display:block;padding:0 14px 6px;color:var(--mute);font-size:.8rem}
 .dxi .go small{display:block;font-weight:400;font-size:0.72rem;color:var(--mute)}
@@ -958,9 +960,18 @@ function expHtml(it,q,n){var nl=n?' '+ar9(n):'';var b=fnify(it.ar,q).replace(/ \
 function isVerse(s){return !!s&&s.group&&s.group.id==="tawzi"&&/مديح/.test(s.title)}
 function verseHtml(it,st,q){
   var P=fnify(it.ar,q).split(" / ");st.vn=(st.vn||0)+1;var rows="",i;
-  if(P.length===1)rows='<div class="vl vfull"><span class="vh">'+P[0]+'</span></div>';
+  if(P.length<=2)P.forEach(function(x){rows+='<div class="vl vfull"><span class="vh">'+x+'</span></div>'});
   else for(i=0;i<P.length;i+=2){rows+='<div class="vl"><span class="vh">'+P[i]+'</span><span class="vh vh2'+(P[i+1]===undefined?' vref':'')+'">'+(P[i+1]!==undefined?P[i+1]:"")+'</span></div>'}
-  return '<div class="vs"><b class="vn" aria-label="البيت '+ar9(st.vn)+'">'+ar9(st.vn)+'</b><div class="vb">'+rows+'</div></div>'}
+  var dv=st.vdone?'<div class="vx" aria-hidden="true"><span>✠</span></div>':"";st.vdone=1;
+  return dv+'<div class="vs"><b class="vn" aria-label="البيت '+ar9(st.vn)+'">'+ar9(st.vn)+'</b><div class="vb">'+rows+'</div></div>'}
+function fitVerses(){
+  document.querySelectorAll(".rd").forEach(function(rd){
+    var vbs=rd.querySelectorAll(".vb");if(!vbs.length)return;
+    rd.style.setProperty("--vz","1");
+    var sc=1;vbs.forEach(function(vb){vb.querySelectorAll(".vh").forEach(function(h){var cw=h.clientWidth;var w=h.scrollWidth;if(w>cw&&cw>0)sc=Math.min(sc,cw/w)})});
+    rd.style.setProperty("--vz",String(Math.max(.3,Math.floor(sc*97)/100)))})}
+var FVT=0;function fitSoon(){cancelAnimationFrame(FVT);FVT=requestAnimationFrame(fitVerses)}
+try{new MutationObserver(function(){if(document.querySelector(".vs"))fitSoon()}).observe(document.getElementById("app")||document.body,{childList:true,subtree:true});window.addEventListener("resize",fitSoon)}catch(e){}
 function verseCount(us,u){var n=0,i;for(i=0;i<u;i++)us[i].items.forEach(function(x){if(x.k==="p"&&x.ar&&!x.cop&&!x.tr)n++});return n}
 function rowHtml(it,cols,isDox,st,q){
   if(st.vs&&it.k==="p"&&it.ar&&!it.cop&&!it.tr&&S.ar)return verseHtml(it,st,q);
