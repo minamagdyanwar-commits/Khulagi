@@ -40,6 +40,11 @@ fs.readdirSync(ROOT).filter(f=>/^content-.*\.txt$/.test(f)).sort().forEach(f=>{
 const withContent=new Set(Object.keys(seen));
 const soon=Object.keys(defined).filter(id=>!withContent.has(id));
 orphanIds.forEach(x=>errors.push(`محتوى بلا تعريف في data.js: ${x}`));
+
+/* قاعدة ثابتة للمدائح: كل بيت = شطران يمين وشطران شمال (٤ أشطر، أو ٣ إذا كان الشطر الأخير ردًّا متكرّرا) */
+(function(){var fs=require('fs'),t=fs.readFileSync('content-tawzi.txt','utf8'),skip={tawzi_psalm150:1,tawzi_marad:1,tawzi_pentecost_hymns:1},cur=null;
+  t.split('\n').forEach(function(l,i){var m=l.match(/^## (\S+) \|/);if(m){cur=m[1];return}
+    if(cur&&!skip[cur]&&l.indexOf('a: ')===0){var n=l.slice(3).split(' / ').length;if(n!==3&&n!==4)errors.push('content-tawzi.txt:'+(i+1)+' '+cur+': بيت بعدد أشطر '+n+' (المطلوب ٤، أو ٣ مع ردّ)')}})})();
 const pad=(s,n)=>String(s).padEnd(n);
 console.log(pad('المجموعة',10),pad('أقسام',7),pad('مقاطع',7),pad('قبطي',7),pad('معرَّب آلي*',16),pad('بلا عربي',9),pad('تأمل',6),pad('همسة',6),'مسوّدة/مراجَع');
 let tot={s:0,st:0,c:0,n:0};
