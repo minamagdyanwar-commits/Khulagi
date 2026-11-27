@@ -118,6 +118,7 @@ function D(y,m,d){ return new Date(y,m,d,12,0,0); }          /* ظهرًا لت�
 
   
 /* مفاتيح المناسبات لتاريخ ما — تُربط بـ occ في data.js */
+function wdOf(d){return d.getDay()}
 function occasions(dt){
   var i=dayInfo(dt),c=i.c,y=dt.getFullYear(),E=easter(y),rel=dnum(dt)-dnum(E),o=[],names=[];
   function add(k,n){if(o.indexOf(k)<0)o.push(k);if(n)names.push(n)}
@@ -135,6 +136,7 @@ function occasions(dt){
   if(c.m===3&&c.d===12)add('michael');
   if(rel===-66||rel===-67||rel===-68||rel===-69)add('nineveh','صوم نينوى');
   if(rel>=-55&&rel<=-8)add('lent','الصوم الكبير');
+  if(wdOf(dt)===0&&rel>=-55&&rel<=-8)add('lent-sun'+Math.round((rel+56)/7),'');
   if(rel===-8)add('lazarus','سبت لعازر');
   if(rel===-7)add('palm','أحد الشعانين');
   if(rel>=-6&&rel<=-1)add('holyweek','أسبوع الآلام');
