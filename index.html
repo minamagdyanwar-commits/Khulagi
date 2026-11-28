@@ -1280,7 +1280,7 @@ function preView(){
     +'<div class="stl">الإضافات داخل القراءة</div><div class="sw">'+[["rub","الإرشادات"],["med","التأملات"]].map(function(c){return '<button data-tg="'+c[0]+'" class="'+(S[c[0]]?'on':'')+'">'+c[1]+'</button>'}).join("")+'</div>'
     +'<div class="stl">الهمسات</div><div class="sw">'+[["off","مخفية"],["strip","شريط"],["open","مفتوحة"],["drawer","درج"]].map(function(c){return '<button data-set="wh" data-v="'+c[0]+'" class="'+(S.wh===c[0]?'on':'')+'">'+c[1]+'</button>'}).join("")+'</div>'
     +'<div class="stl">طريقة القراءة</div><div class="sw">'+[["unit","قطعة قطعة"],["flow","عرض متصل"]].map(function(c){return '<button data-set="rm" data-v="'+c[0]+'" class="'+(S.rm===c[0]?'on':'')+'">'+c[1]+'</button>'}).join("")+'</div>'
-    +'<div class="stl">حجم الخط</div><div class="fsr"><button data-qfs="-2">أ−</button><span>'+ar9(S.fs)+'</span><button data-qfs="2">أ+</button></div>'
+    +'<div class="stl">حجم الخط</div><div class="fsr"><button data-qfs="-2">أ−</button><span>'+ar9(S.fs)+'</span><button data-qfs="2">أ+</button></div><div class="fsp" style="font-size:var(--fs);padding:4px 8px;text-align:center">بِاسْمِ الآبِ وَالِابْنِ</div>'
     +'<button class="lnk" data-qset="1">كل الإعدادات ‹</button></div></details>';
   h+='<button class="tdstart" data-dmgo="pre">ابدأ القداس ‹</button></div>'+bnav('lit');
   app.innerHTML=h;window.scrollTo(0,keep)}
@@ -1644,7 +1644,7 @@ app.addEventListener("click",function(e){
   var rm=e.target.closest("[data-dxrmid]");if(rm){var rid=rm.getAttribute("data-dxrmid"),dr=dxd(),nm=(dr.lists.filter(function(x){return x.id===rid})[0]||{}).name;if(confirm("حذف القائمة «"+nm+"»؟")){dr.lists=dr.lists.filter(function(x){return x.id!==rid});dxw(dr);if(DXSEL===rid)DXSEL=""}dxView();return}
   if(e.target.closest("[data-dxrmlist]")){var c5=dxc();if(confirm("حذف القائمة «"+c5.name+"»؟")){var d5=dxd();d5.lists=d5.lists.filter(function(x){return x.id!==d5.cur});dxw(d5)}dxView();return}
   if(e.target.closest("[data-dxaddtoday]")){var a6=dxTgt().items.slice();dxToday().dx.forEach(function(x){if(a6.indexOf(x.id)<0)a6.push(x.id)});dxs(a6);dxView();return}
-  var qf=e.target.closest("[data-qfs]");if(qf){S.fs=Math.max(14,Math.min(40,S.fs+parseInt(qf.getAttribute("data-qfs"),10)));save();apply();return}
+  var qf=e.target.closest("[data-qfs]");if(qf){S.fs=Math.max(14,Math.min(40,S.fs+parseInt(qf.getAttribute("data-qfs"),10)));save();apply();document.querySelectorAll(".fsr span").forEach(function(n){n.textContent=ar9(S.fs)});return}
   var dg=e.target.closest("[data-dxgo]");if(dg){PL=true;location.hash="#/s/"+dg.getAttribute("data-dxgo");return}
   var dm=e.target.closest("[data-dxmv]");if(dm){var a2=dxl(),i2=a2.indexOf(dm.getAttribute("data-dxmv")),j=i2+ +dm.getAttribute("data-d");if(i2>=0&&j>=0&&j<a2.length){var t=a2[i2];a2[i2]=a2[j];a2[j]=t;dxs(a2)}dxView();return}
   var dd=e.target.closest("[data-dxdel]");if(dd){dxs(dxl().filter(function(x){return x!==dd.getAttribute("data-dxdel")}));dxView();return}
