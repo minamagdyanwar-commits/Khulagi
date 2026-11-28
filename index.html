@@ -592,6 +592,8 @@ html{scroll-padding-top:var(--tbh,0px)}
 .rtd a,.rtd button.kcl{color:inherit;text-decoration:underline;background:none;border:0;padding:0;font:inherit;cursor:pointer}
 .prop{display:flex;gap:10px;align-items:center;width:100%;text-align:start;margin:6px 0;padding:10px 12px;border-radius:12px;border:1.5px solid var(--line);background:var(--card);color:var(--ink)}.prop.on{border-color:var(--acc);background:rgba(212,168,74,.14)}.prop i{font-style:normal;font-size:18px;color:var(--acc)}.prop small{display:block;opacity:.7;font-size:calc(var(--fs)*.55)}
 .prmore summary{cursor:pointer;padding:4px 0}.prset{margin:10px 14px;border:1.5px solid var(--line);border-radius:14px;background:var(--card)}.prset>summary{padding:12px;font-weight:700;cursor:pointer}.prsb{padding:0 12px 12px}
+.prc .chk>div:last-child{flex:1;min-width:0}.prmore summary{display:flex;align-items:center;gap:6px;list-style:none}.prc .chk{margin:0 10px 5px;padding:6px 9px;gap:8px}.prc .chk .c{width:20px;height:20px;font-size:.7rem}.prc .chk b{font-size:.85rem}.prc .seg{margin:4px 0 0}.prc .seg button{padding:6px 2px;font-size:.8rem}.prc .prop{padding:5px 9px;margin:3px 0;gap:8px;font-size:.8rem;border-radius:10px}.prc .prop small{display:inline;margin-inline-start:6px}.prc .prop i{font-size:15px}.prc .prlst>small{display:block;margin:2px 0}.prc .prset{margin:4px 10px 6px}.prc .prset>summary{padding:8px 12px;font-size:.85rem}.prc .stl{margin:6px 0 2px}.prc .sw button{padding:5px 8px}.prc .tdstart{margin:8px 10px 4px;padding:11px}
+.dxi{padding:6px 10px}.dxi .go{padding:3px 4px;line-height:1.4}.dxsec>summary{padding:9px 12px}.dxsec{margin:0 10px 6px}.dxin{padding:0 6px 6px}.rtm{margin:0 10px 6px;padding:7px 10px}.dxtd2{margin:0 10px 6px}.dxtd2>summary{padding:6px 10px}.kcdet{margin:6px 10px;padding:8px 10px}.kcc{min-height:46px}.kctabs{margin:0 10px 6px}.kctabs button{padding:6px}
 .dxpre{margin:0 12px 12px;border:1.5px solid var(--line);border-radius:14px;background:var(--card)}.dxpre>summary{padding:12px;font-weight:700;cursor:pointer}
 .dxtd .dxsn{display:block;padding:0 14px 6px;color:var(--mute);font-size:.8rem}
 .dxi .go small{display:block;font-weight:400;font-size:0.72rem;color:var(--mute)}
@@ -1263,7 +1265,7 @@ var PSEL="";
 function preView(){
   ctl(false);document.title="قبل القداس — الخولاجي";var lit=S.lit||"bas",d=dxd(),pr=dxPresets();
   var keep=document.querySelector(".prlst")?window.scrollY:0;
-  var h='<div class="sub" style="padding:6px 14px 0">قبل القداس</div><div class="hd" style="padding:0 14px 10px">جهّز قداسك</div>';
+  var h='<div class="prc"><div class="sub" style="padding:2px 12px 0">قبل القداس</div><div class="hd" style="padding:0 12px 6px;font-size:1.1rem">جهّز قداسك</div>';
   h+='<div class="chk"><div class="c ok">١</div><div><b>اختر القداس</b><div class="seg">'+["bas","greg","cyr"].map(function(k){return '<button data-lt="'+k+'" data-pre="1" class="'+(lit===k?'on':'')+'">'+LNAME[k]+'</button>'}).join("")+'</div></div></div>';
   var opt=function(id,name,sub,star){return '<button class="prop'+(PSEL===id?' on':'')+'" data-psel="'+esc(id)+'" aria-pressed="'+(PSEL===id)+'"><i>'+(PSEL===id?'◉':'○')+'</i><span>'+(star?'✨ ':'')+esc(name)+'<small>'+sub+'</small></span></button>'};
   var cnt=function(x){return ar9(x.items.length)+' قسمًا'};
@@ -1280,7 +1282,7 @@ function preView(){
     +'<div class="stl">طريقة القراءة</div><div class="sw">'+[["unit","قطعة قطعة"],["flow","عرض متصل"]].map(function(c){return '<button data-set="rm" data-v="'+c[0]+'" class="'+(S.rm===c[0]?'on':'')+'">'+c[1]+'</button>'}).join("")+'</div>'
     +'<div class="stl">حجم الخط</div><div class="fsr"><button data-qfs="-2">أ−</button><span>'+ar9(S.fs)+'</span><button data-qfs="2">أ+</button></div>'
     +'<button class="lnk" data-qset="1">كل الإعدادات ‹</button></div></details>';
-  h+='<button class="tdstart" data-dmgo="pre">ابدأ القداس ‹</button>'+bnav('lit');
+  h+='<button class="tdstart" data-dmgo="pre">ابدأ القداس ‹</button></div>'+bnav('lit');
   app.innerHTML=h;window.scrollTo(0,keep)}
 function dxApplySel(id){var d=dxd();
   if(id.indexOf("pre:")===0){var P=dxPresets().filter(function(x){return "pre:"+x.k===id})[0];if(!P)return false;d.lists=d.lists.filter(function(x){return x.id!=="l-tmp"});d.lists.push({id:"l-tmp",tmp:true,name:P.n,items:P.ids.slice()});d.cur="l-tmp";dxw(d);return true}
