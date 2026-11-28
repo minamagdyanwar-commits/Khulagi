@@ -570,7 +570,8 @@ html{scroll-padding-top:var(--tbh,0px)}
 .vx:before,.vx:after{content:"";flex:1;height:2px;background:linear-gradient(90deg,transparent,var(--acc),transparent);opacity:.55}
 .vx span{font-size:calc(var(--fs)*.9);line-height:1}
 .dxcur{margin:0 14px 8px;font-size:calc(var(--fs)*.7)}.dxcur small{opacity:.7}.dxall .dxi.cur{border-color:var(--acc)}
-.rtm{margin:0 12px 10px;padding:8px 12px;border:1.5px solid var(--line);border-radius:12px;background:var(--card)}.rtm1{display:flex;justify-content:space-between;gap:8px;font-size:calc(var(--fs)*.72)}.rtm1 span{opacity:.8}.rtm2{display:flex;flex-wrap:wrap;gap:4px;margin:6px 0}.rtch{font-size:calc(var(--fs)*.6);padding:2px 8px;border-radius:999px;background:var(--bg);border:1px solid var(--line)}.rtm details summary{font-size:calc(var(--fs)*.6);opacity:.8;cursor:pointer}.rtm ul{margin:4px 0;padding-inline-start:18px;font-size:calc(var(--fs)*.62)}.rtm small{display:block;opacity:.7;font-size:calc(var(--fs)*.55)}
+.rtd{display:flex;justify-content:space-between;gap:6px;font-size:calc(var(--fs)*.6);opacity:.85;margin-bottom:4px}.rtx{margin:4px 0;font-size:calc(var(--fs)*.66);line-height:1.8}.rtf{margin:4px 0;padding-inline-start:18px;font-size:calc(var(--fs)*.62)}.rts{display:block;opacity:.65;font-size:calc(var(--fs)*.52);margin-top:4px}.rtb2{margin-top:8px;padding-top:6px;border-top:1px dashed var(--line)}.rtb2 small{display:block;font-size:calc(var(--fs)*.6)}
+.rtm{margin:0 12px 10px;padding:10px 12px;border:1.5px solid var(--line);border-radius:12px;background:var(--card)}.rtm1{display:flex;justify-content:space-between;gap:8px;font-size:calc(var(--fs)*.72)}.rtm1 span{opacity:.8}.rtm2{display:flex;flex-wrap:wrap;gap:4px;margin:6px 0}.rtch{font-size:calc(var(--fs)*.6);padding:2px 8px;border-radius:999px;background:var(--bg);border:1px solid var(--line)}.rtm details summary{font-size:calc(var(--fs)*.6);opacity:.8;cursor:pointer}.rtm ul{margin:4px 0;padding-inline-start:18px;font-size:calc(var(--fs)*.62)}.rtm small{display:block;opacity:.7;font-size:calc(var(--fs)*.55)}
 .dxtd2{margin:0 12px 10px;border:1.5px dashed var(--line);border-radius:12px;background:var(--card)}.dxtd2>summary{padding:8px 12px;font-size:calc(var(--fs)*.7);cursor:pointer}
 .dxsec{margin:0 12px 10px;border:1.5px solid var(--line);border-radius:14px;background:var(--card)}.dxsec>summary{padding:12px;font-weight:700;cursor:pointer}.dxin{padding:0 8px 10px}.dxsub{margin:10px 4px 4px;font-weight:700;font-size:calc(var(--fs)*.65);opacity:.8}
 #dxsel{width:100%;padding:10px;border-radius:10px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);font-size:calc(var(--fs)*.7)}.dxsr{margin:8px 0}.dxsr input{width:100%;padding:10px;border-radius:10px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);font-size:calc(var(--fs)*.7)}
@@ -1328,11 +1329,24 @@ function dxPresets(){
   if(an.length)out.push({k:"sunday",n:"أحد عادي — مدائح التوزيع السنوية",ids:an,t:sun});
   out.sort(function(a,b){return (b.t?1:0)-(a.t?1:0)});return out}
 var DXO={},DXSEL="";
-function riteMini(){
+var RITED={"الطقس السنوي":"طقس أيام السنة العادية: ألحان سنوية هادئة بلا مظاهر فرح خاصة ولا حزن، وهو الأصل الذي نصلي به ما لم تكن مناسبة أو صوم.","الطقس الفرايحي":"طقس الأفراح (الأعياد السيدية والخمسين وأيام الفرح): ألحان فرايحية بهجة، بلا ميطانيات ولا صوم انقطاعي.","الطقس الكيهكي":"طقس شهر كيهك (التسبحة والاستعداد للميلاد): ألحان كيهكية ومدائح العذراء في عشية وباكر.","الطقس الصيامي":"طقس الصوم (الكبير أو نينوى): ألحان صيامية خاشعة، وصوم انقطاعي من الاثنين إلى الجمعة مع الميطانيات.","الطقس الحزايني":"طقس أسبوع الآلام: ألحان حزايني، وتُقرأ فيه صلوات الساعات والبصخة.","الطقس الشعانيني":"طقس أحد الشعانين وعيدي الصليب: ألحان تجمع الفرح والجلال (شعانيني وفرايحي)."};
+function dxBest(d,pr){
+  var r=null;try{r=window.KCAL&&KCAL.rite?KCAL.rite(new Date()):null}catch(e){}if(!r)return null;
+  var wd=new Date().getDay(),t=pr.filter(function(x){return x.t&&x.k!=="sunday"})[0];
+  if(r.rite!=="الطقس السنوي"&&t)return {pre:t,why:"لأن اليوم "+t.n+" والطقس "+r.rite.replace("الطقس ","")};
+  var id=r.rite==="الطقس السنوي"?(wd===0?"fx-sun":"fx-days"):(r.tune==="واطس"?"fx-watos":"fx-adam");
+  var l=d.lists.filter(function(x){return x.id===id})[0];
+  var why=r.rite==="الطقس السنوي"?"لأن الطقس سنوي واليوم "+(wd===0?"أحد":"من أيام الأسبوع"):"لأن اليوم من أيام "+r.tune+" والطقس "+r.rite.replace("الطقس ","");
+  return l?{list:l,why:why}:null}
+function riteMini(d,pr){
   var r=null;try{r=window.KCAL&&KCAL.rite?KCAL.rite(new Date()):null}catch(e){}if(!r)return "";
+  var now=new Date(),td=dxToday(),cd=td.cd,gd=now.toLocaleDateString("ar-EG",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
   var ch=r.hymns.map(function(x){return '<span class="rtch">'+esc(x)+'</span>'}).join("");
-  var det=(r.ebsTune?'<li>الإبصاليات بـ«'+esc(r.ebsTune)+'»</li>':'')+(r.doxTune?'<li>ذكصولوجيات رفع البخور بوزن: '+esc(r.doxTune)+'</li>':'')+r.notes.map(function(x){return '<li>'+esc(x)+'</li>'}).join("")+(r.occNotes||[]).map(function(x){return '<li>'+esc(x)+'</li>'}).join("");
-  return '<div class="rtm"><div class="rtm1"><b>🕯 '+esc(r.rite)+'</b><span>يوم '+esc(r.tune)+'</span></div><div class="rtm2">'+ch+'</div><details><summary>تفاصيل طقس اليوم</summary><ul>'+det+'</ul><small>المصدر: ملاحظات طقسية — كتاب أسامة لطفي (مسوّدة، لا تحل محل توجيه الكاهن).</small></details></div>'}
+  var facts='<li>يوم <b>'+esc(r.tune)+'</b> ('+esc(r.tuneDays)+'): الإبصاليات والثيؤطوكيات والألباش والأسبازموس بلحن '+esc(r.tune)+'.</li>'+(r.ebsTune?'<li>نغمة الإبصاليات: '+esc(r.ebsTune)+'.</li>':'')+(r.doxTune?'<li>وزن ذكصولوجيات رفع البخور: '+esc(r.doxTune)+'.</li>':'')+r.notes.map(function(x){return '<li>'+esc(x)+'</li>'}).join("");
+  var best=dxBest(d,pr),bh="";
+  if(best){var nm=best.list?best.list.name:best.pre.n,f1=best.list?best.list.items.filter(function(id){return BYID[id]})[0]:best.pre.ids[0];
+    bh='<div class="rtb2"><small>✨ الأنسب لليوم '+esc(best.why)+'</small><div class="dxi"><span class="go">'+(best.list?'🔒 ':'')+esc(nm)+'</span>'+(f1?(best.list?'<button class="mv" data-lid="'+best.list.id+'" data-dxgo="'+f1+'">▶ قراءة</button>':'<button class="mv" data-dxpre="'+best.pre.k+'" data-go="1">▶ قراءة</button>'):'')+'</div></div>'}
+  return '<div class="rtm"><div class="rtd"><span>📅 '+(cd?ar9(cd.d)+' '+esc(CMN[cd.m])+' '+ar9(cd.y)+' للشهداء':'')+'</span><span>'+esc(gd)+'</span></div><div class="rtm1"><b>🕯 '+esc(r.rite)+'</b></div><p class="rtx">'+esc(RITED[r.rite]||"")+'</p><div class="rtm2">'+ch+'</div><ul class="rtf">'+facts+'</ul>'+((r.occNotes&&r.occNotes.length)?'<details><summary>ملاحظات مناسبة اليوم ('+ar9(r.occNotes.length)+')</summary><ul>'+r.occNotes.map(function(x){return '<li>'+esc(x)+'</li>'}).join("")+'</ul></details>':'')+'<small class="rts">المصدر: «ملاحظات طقسية» — كتاب أسامة لطفي (مسوّدة، لا تحل محل توجيه الكاهن).</small>'+bh+'</div>'}
 function dxRows(x,own){var a=x.items.filter(function(id){return BYID[id]});if(!a.length)return '<div class="empty"><b>القائمة فارغة</b>أضف أقساما من مربع البحث أعلاه.</div>';
   return '<div class="dxl">'+a.map(function(id,i){return '<div class="dxi"><span class="n">'+ar9(i+1)+'</span><button class="go" data-lid="'+x.id+'" data-dxgo="'+id+'">'+esc(BYID[id].title)+'<small>'+esc(BYID[id].group.title)+'</small></button>'+(own?'<button class="mv" data-lid="'+x.id+'" data-dxmv="'+id+'" data-d="-1" '+(i?'':'disabled')+' aria-label="أعلى">▲</button><button class="mv" data-lid="'+x.id+'" data-dxmv="'+id+'" data-d="1" '+(i<a.length-1?'':'disabled')+' aria-label="أسفل">▼</button><button class="mv" data-lid="'+x.id+'" data-dxdel="'+id+'" aria-label="حذف">✕</button>':'')+'</div>'}).join("")+'</div>'}
 function dxEditHtml(d,pr){
@@ -1349,7 +1363,7 @@ function dxEditHtml(d,pr){
 function dxView(){
   var keep=document.querySelector(".dxsec")?window.scrollY:0;
   var d=dxd(),h='<div class="crumb"><button data-nav="#/">⌂ الرئيسية</button></div><div class="gh"><h2>📋 قوائمي</h2></div>';
-  h+=riteMini();
+  var pr0=dxPresets();h+=riteMini(d,pr0);
   var t=dxToday(),tg=dxTgt(d);
   if(t.cd&&t.dx.length){var miss=tg?t.dx.filter(function(x){return tg.items.indexOf(x.id)<0}).length:0;
     h+='<details class="dxtd2"><summary>🗓 اقتراحات اليوم ('+ar9(t.dx.length)+')'+(t.season?' · '+esc(t.season):'')+'</summary>'+t.dx.map(function(x){return '<div class="dxi"><button class="go" data-nav="#/s/'+x.id+'">'+esc(x.title)+'</button>'+dxBtn(x.id)+'</div>'}).join("")+(miss?'<button class="dxall" data-dxaddtoday="1">أضف الكل إلى «'+esc(shortN(tg.name,16))+'»</button>':'')+'</details>'}
